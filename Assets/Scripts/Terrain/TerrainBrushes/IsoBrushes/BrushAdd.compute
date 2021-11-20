@@ -1,0 +1,37 @@
+﻿#pragma kernel ApplyBrush
+
+RWStructuredBuffer<float> dataBuffer;
+
+uint extent;
+uint chunkSize;
+
+float brushPosX;
+float brushPosY;
+float brushPosZ;
+
+float strength;
+float smooth;
+float size;
+
+uint indexFromCoord(int x, int y, int z)
+{
+    return z * (extent) * (extent) + y * (extent) + x;
+}
+
+[numthreads(8, 8, 8)]
+void ApplyBrush(uint3 id : SV_DispatchThreadID)
+{
+    float3 currentPos = float3(id.x, id.y, id.z);
+    float brushDistance = distance(currentPos, float3(brushPosX, brushPosY, brushPosZ));
+
+    if (brushDistance < size)
+    {
+        float brushTime = brushDistance / size;
+        float brushInfluence = ((1 - brushTime) * 0.05f * strength) * smooth + exp(-pow((-brushTime), 2)) * 0.05f * strength * (1 - smooth);
+        
+        float index = indexFromCoord(id.x, id.y, id.z);
+        float initialValue = dataBuffer[index];
+        
+        dataBuffer[index] = lerp(initialValue, 1.0f, brushInfluence);
+    }
+}

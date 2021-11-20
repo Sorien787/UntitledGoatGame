@@ -1,0 +1,55 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel ApplyBrush
+
+RWStructuredBuffer<float4> dataBuffer;
+
+float brushPosX;
+float brushPosY;
+float brushPosZ;
+
+uint extent;
+uint chunkSize;
+
+float strength;
+float smooth;
+float size;
+
+uint indexFromCoord(int x, int y, int z)
+{
+    return z * (extent) * (extent) + y * (extent) + x;
+}
+
+float4 colourValue(int x, int y, int z)
+{
+    int offset = (3 + (floor((float) x / extent) * 3 + floor((float) y / extent) * 2 + floor((float) z / extent))) * chunkSize;
+    return dataBuffer[offset + indexFromCoord(x % extent, y % extent, z % extent)];
+}
+
+float addBrushFunc(float dist)
+{
+    return smooth + (1 - dist) * (1 - smooth);
+}
+
+[numthreads(8, 8, 8)]
+void ApplyBrush(uint3 id : SV_DispatchThreadID)
+{
+    float brushDistance = distance(float3(id.x, id.y, id.z), float3(brushPosX, brushPosY, brushPosZ));
+    if (brushDistance < size)
+    {
+        float brushInfluence = strength * addBrushFunc(brushDistance/size);
+        float index = 3 * chunkSize + indexFromCoord(id.x, id.y, id.z);
+        
+        float4 initialValue = colourValue(id.x, id.y, id.z);
+        float4 total = initialValue;
+        total += colourValue(id.x + 1, id.y, id.z);
+        total += colourValue(id.x - 1, id.y, id.z);
+        total += colourValue(id.x, id.y + 1, id.z);
+        total += colourValue(id.x, id.y - 1, id.z);
+        total += colourValue(id.x, id.y, id.z + 1);
+        total += colourValue(id.x, id.y, id.z - 1);
+        total /= 7;
+        
+        
+        dataBuffer[index] = lerp(initialValue, total, brushInfluence);
+    }
+}

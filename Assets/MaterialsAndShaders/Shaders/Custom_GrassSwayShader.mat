@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_GrassSwayShader
+  m_Shader: {fileID: 4800000, guid: 2282343b533573b4da40bc0c2d0502e2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _WindDistortionMap:
+        m_Texture: {fileID: 2800000, guid: 43fd351b8b2ff4a4b8bbec8a6dd7cfb5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BendRotationRandom: 0.186
+    - _BladeCurve: 1.82
+    - _BladeForward: 0.31
+    - _BladeHeight: 0.92
+    - _BladeHeightMinimum: 0.2
+    - _BladeHeightMultiplier: 1
+    - _BladeHeightRandom: 0.1
+    - _BladeWidth: 0.07
+    - _BladeWidthRandom: 0.01
+    - _TranslucentGain: 1
+    - _WindGustSize: 232.38
+    - _WindStrength: 1
+    m_Colors:
+    - _BottomColor: {r: 0.043609817, g: 0.26415092, b: 0.080366686, a: 1}
+    - _TopColor: {r: 0.47147563, g: 0.6132076, b: 0.4862394, a: 1}
+    - _WindFrequency: {r: 0.01, g: 0, b: 0, a: 0}
+    - _WindSpeed: {r: 1.99, g: 1.58, b: 0, a: 0}

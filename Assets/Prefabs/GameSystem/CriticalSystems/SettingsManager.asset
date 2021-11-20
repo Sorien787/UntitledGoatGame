@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8beb81855b1de74ba7ee6782b4e2b0f, type: 3}
+  m_Name: SettingsManager
+  m_EditorClassIdentifier: 
+  m_KeyBindings:
+  - {fileID: 11400000, guid: 601cc5fa8ef63aa4e821e1173eb27def, type: 2}
+  - {fileID: 11400000, guid: 7095bc097a12e68468e0487bc631490d, type: 2}
+  - {fileID: 11400000, guid: 97c000695a42e784b80e19c298772b58, type: 2}
+  - {fileID: 11400000, guid: ed6c68160958bb943b5dbadfd1e55901, type: 2}
+  - {fileID: 11400000, guid: b29e09475030400479de0dfcecf2e355, type: 2}
+  - {fileID: 11400000, guid: aef47ab2110d0414284da26bba151f06, type: 2}
+  - {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
+  m_SFXVol: 1
+  m_AmbientVol: 1
+  m_MusicVol: 1
+  m_UISFXVol: 1
+  m_bIsMuted: 0
+  m_MouseSensitivityX: 1
+  m_MouseSensitivityY: 1
+  m_InvertY: 0
+  m_DisplayMode: 0
+  m_FoV: 61.2
+  m_Bloom: 1
+  m_MotionBlur: 1
+  m_Brightness: 1
+  m_Contrast: 1
+  m_DepthOfField: 1

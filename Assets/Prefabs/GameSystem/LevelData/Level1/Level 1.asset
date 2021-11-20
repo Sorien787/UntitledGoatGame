@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52bcf59d6003374baf968310ba8618e, type: 3}
+  m_Name: Level 1
+  m_EditorClassIdentifier: 
+  m_sLevelName: Chikin Fuckin
+  m_nTargetTime: 200
+  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_LevelObjectives:
+  - {fileID: 11400000, guid: f80f16ff19e9a074499f662c27269d5f, type: 2}
+  - {fileID: 11400000, guid: 10c5f6a1e41708741a7db697e3a6b042, type: 2}
+  m_Checkpoints:
+  - 100
+  - 200
+  m_nAchievedTime: 69
+  m_LevelCompleteTime: 0
+  m_StarRating: 2
+  m_AchievedScore: 0

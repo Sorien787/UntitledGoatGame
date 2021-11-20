@@ -1,0 +1,33 @@
+﻿#pragma kernel CSMain
+
+int extendedInfluence;
+float transmittedForcePerPoint;
+
+float springConstant;
+
+RWStructuredBuffer<float3> positions;
+RWStructuredBuffer<float3> forces;
+
+float forceProportionality;
+
+int numTotalPoints;
+
+
+// simulate max of 1024 points
+[numthreads(1024, 1, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    int lowerBound = max(0, id.x - extendedInfluence);
+    // -2, since we pair the current one of interest with the one in front
+    int upperBound = max(numTotalPoints - 2, id.x + extendedInfluence);
+    
+    int startingDistance = id.x - lowerBound;
+    for (int i = lowerBound; i < upperBound; i++)
+    {
+        float totalForceFelt = 
+        
+        
+        startingDistance++;
+    }
+
+}

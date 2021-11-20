@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc49b0e4e688a84b92b4abe1d91a135, type: 3}
+  m_Name: TerrainBrushPlateau
+  m_EditorClassIdentifier: 
+  m_BrushProperties:
+  - {fileID: 11400000, guid: 374f3cff4aabf2c43937b99a63dda361, type: 2}
+  - {fileID: 11400000, guid: cf5948437094997438a6dd6d1d6b09ae, type: 2}
+  - {fileID: 11400000, guid: cee05b31e63d25a4caa5f0e92793792d, type: 2}
+  - {fileID: 11400000, guid: 3b1a9966a84032e478f050b2f76be892, type: 2}
+  - {fileID: 11400000, guid: c9cbf5ec7dddfe54e86eb702d3c30685, type: 2}
+  m_BrushShader: {fileID: 7200000, guid: 209e5b2e41045b54bb63a1ce35a13282, type: 3}
+  m_SizeBrushProperty: {fileID: 11400000, guid: 374f3cff4aabf2c43937b99a63dda361,
+    type: 2}
+  m_TerrainGenerator: {fileID: 11400000, guid: c55d03aa31ddf1d4eb27862670502232, type: 2}
+  m_NormalProperty: {fileID: 11400000, guid: c9cbf5ec7dddfe54e86eb702d3c30685, type: 2}
+  m_OrientUpProperty: {fileID: 11400000, guid: 3b1a9966a84032e478f050b2f76be892, type: 2}

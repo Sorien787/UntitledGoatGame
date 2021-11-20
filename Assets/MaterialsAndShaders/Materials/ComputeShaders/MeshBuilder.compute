@@ -1,0 +1,198 @@
+﻿
+#pragma kernel March
+#include "Assets/MaterialsAndShaders/Materials/ComputeShaders/MarchTables.compute"
+
+
+struct Triangle {
+    float3 vertexC;
+    float3 vertexB;
+    float3 vertexA;
+
+	float3 colourA;
+    float3 colourB;
+    float3 colourC;
+};
+
+RWStructuredBuffer<float> isoBuffer;
+RWStructuredBuffer<float4> colourBuffer;
+
+//RWStructuredBuffer<float4> angleColours;
+//RWStructuredBuffer<float4> chunkColours;
+AppendStructuredBuffer<Triangle> triangles;
+
+uint3 chunkPos;
+float3 chunkOrigin;
+int3 renderTo;
+int3 renderFrom;
+
+//uint textureSize;
+
+float isoLevel;
+float scale;
+uint extent;
+
+float isoInterp(float iso1, float iso2)
+{
+    return (isoLevel - iso1) / (iso2 - iso1);
+}
+
+float3 interpolateIsoVerts(float3 v1, float3 v2, float proportion) 
+{
+    return v1 + proportion * (v2 - v1);
+}
+
+float4 interpolateColourVerts(float4 c1, float4 c2, float proportion)
+{
+    return c1 + proportion * (c2- c1);
+}
+
+uint indexFromCoord(int x, int y, int z) 
+{
+    return z * (extent) * (extent) + y * (extent) + x;
+}
+
+//uint colourIndexFromCoord(uint x, uint y){
+//	return (x*textureSize + y); 
+//}
+
+float3 getGridPos(uint x, uint y, uint z)
+{
+    return chunkOrigin + float3((x + chunkPos.x * extent) * scale, (y + chunkPos.y * extent) * scale, (z + chunkPos.z * extent) * scale);
+}
+
+// Color/iso values need to be accessed from neighbouring chunks: hence, add an offset for the number of chunks, multiply by number of points in chunk
+// also, if we move forward in x, apply modulo of x
+// hence, if extent is 16, x goes up to 15: returns to 0 at 16
+float4 colourValue(int x, int y, int z)
+{
+    if (x >= renderFrom.x && y >= renderFrom.y && z >= renderFrom.z && x < renderTo.x && y < renderTo.y && z < renderTo.z)
+    {
+        int offset = ((int) floor(x / extent) + (int) floor(y / extent) * 2 + (int) floor(z / extent)*4) * extent * extent * extent;
+        return colourBuffer[offset + indexFromCoord(x % extent, y % extent, z % extent)];
+    }
+    return 0;
+
+}
+
+float isoValue(int x, int y, int z)
+{
+    if (x >= renderFrom.x && y >= renderFrom.y && z >= renderFrom.z && x < renderTo.x && y < renderTo.y && z < renderTo.z)
+    {
+        int offset = ((int) floor(x / extent) + (int) floor(y / extent) * 2 + (int) floor(z / extent) * 4) * extent * extent * extent;
+        return isoBuffer[offset + indexFromCoord(x % extent, y % extent, z % extent)];
+    }
+    return 0;
+}
+
+
+[numthreads(8,8,8)]
+void March (uint3 id : SV_DispatchThreadID)
+{   
+    float isoCubeCorners[8] =
+    {
+        isoValue(id.x, id.y, id.z),
+        isoValue(id.x + 1, id.y, id.z),
+        isoValue(id.x + 1, id.y, id.z + 1),
+        isoValue(id.x, id.y, id.z + 1),
+        isoValue(id.x, id.y + 1, id.z),
+        isoValue(id.x + 1, id.y + 1, id.z),
+        isoValue(id.x + 1, id.y + 1, id.z + 1),
+        isoValue(id.x, id.y + 1, id.z + 1)
+    };
+    
+    float4 colorCubeCorners[8] =
+    {
+        colourValue(id.x, id.y, id.z),
+        colourValue(id.x + 1, id.y, id.z),
+        colourValue(id.x + 1, id.y, id.z + 1),
+        colourValue(id.x, id.y, id.z + 1),
+        colourValue(id.x, id.y + 1, id.z),
+        colourValue(id.x + 1, id.y + 1, id.z),
+        colourValue(id.x + 1, id.y + 1, id.z + 1),
+        colourValue(id.x, id.y + 1, id.z + 1)
+    };
+    
+    float3 pointCubeCorners[8] =
+    {
+        getGridPos(id.x, id.y, id.z),
+        getGridPos(id.x + 1, id.y, id.z),
+        getGridPos(id.x + 1, id.y, id.z + 1),
+        getGridPos(id.x, id.y, id.z + 1),
+        getGridPos(id.x, id.y + 1, id.z),
+        getGridPos(id.x + 1, id.y + 1, id.z),
+        getGridPos(id.x + 1, id.y + 1, id.z + 1),
+        getGridPos(id.x, id.y + 1, id.z + 1)
+    };
+    
+    int cubeIndex = 0;
+    if (isoCubeCorners[0] < isoLevel)
+        cubeIndex |= 1;
+    if (isoCubeCorners[1] < isoLevel)
+        cubeIndex |= 2;
+    if (isoCubeCorners[2] < isoLevel)
+        cubeIndex |= 4;
+    if (isoCubeCorners[3] < isoLevel)
+        cubeIndex |= 8;
+    if (isoCubeCorners[4] < isoLevel)
+        cubeIndex |= 16;
+    if (isoCubeCorners[5] < isoLevel)
+        cubeIndex |= 32;
+    if (isoCubeCorners[6] < isoLevel)
+        cubeIndex |= 64;
+    if (isoCubeCorners[7] < isoLevel)
+        cubeIndex |= 128;
+
+    // Create triangles for current cube configuration
+    for (int i = 0; triangulation[cubeIndex][i] != -1; i += 3)
+    {
+        // Get indices of corner points A and B for each of the three edges
+        // of the cube that need to be joined to form the triangle.
+        int a0 = cornerIndexAFromEdge[triangulation[cubeIndex][i]];
+        int b0 = cornerIndexBFromEdge[triangulation[cubeIndex][i]];
+
+        int a1 = cornerIndexAFromEdge[triangulation[cubeIndex][i + 1]];
+        int b1 = cornerIndexBFromEdge[triangulation[cubeIndex][i + 1]];
+
+        int a2 = cornerIndexAFromEdge[triangulation[cubeIndex][i + 2]];
+        int b2 = cornerIndexBFromEdge[triangulation[cubeIndex][i + 2]];
+
+		
+        Triangle tri;
+        float proportion = isoInterp(isoCubeCorners[a0], isoCubeCorners[b0]);
+        tri.vertexA = interpolateIsoVerts(pointCubeCorners[a0], pointCubeCorners[b0], proportion);
+        float3 tempCol = interpolateColourVerts(colorCubeCorners[a0], colorCubeCorners[b0], proportion).rgb;
+        //tri.colourC = interpolateColourVerts(colorCubeCorners[a0], colorCubeCorners[b0], proportion);
+
+        
+        proportion = isoInterp(isoCubeCorners[a1], isoCubeCorners[b1]);
+        tri.vertexB = interpolateIsoVerts(pointCubeCorners[a1], pointCubeCorners[b1], proportion);
+        tempCol += interpolateColourVerts(colorCubeCorners[a1], colorCubeCorners[b1], proportion).rgb;
+        //tri.colourB = interpolateColourVerts(colorCubeCorners[a1], colorCubeCorners[b1], proportion);
+
+        
+        proportion = isoInterp(isoCubeCorners[a2], isoCubeCorners[b2]);
+        tri.vertexC = interpolateIsoVerts(pointCubeCorners[a2], pointCubeCorners[b2], proportion);
+        tempCol += interpolateColourVerts(colorCubeCorners[a2], colorCubeCorners[b2], proportion).rgb;
+        //tri.colourA = interpolateColourVerts(colorCubeCorners[a2], colorCubeCorners[b2], proportion);
+
+        //tempCol = float3(0.5, 0.5f, 0.5f);
+
+        //float3 line1 = tri.vertexB.xyz - tri.vertexA.xyz;
+		
+        //float3 line2 = tri.vertexC.xyz - tri.vertexA.xyz;
+
+        //uint height = floor(textureSize * (float) id.y / extent);
+
+        //uint angle = floor(textureSize * (float) acos(normalize(cross(line1, line2)).y) / (3.1415926535));
+
+        //float4 thisColour = angleColours[colourIndexFromCoord(height, 1 - angle)];
+        
+        //float3 finishColour = thisColour.rgb * (tempCol.a) + tempCol.rgb * (1 - tempCol.a);
+        
+        tri.colourA = tempCol;
+        tri.colourB = tempCol;
+        tri.colourC = tempCol;
+	
+        triangles.Append(tri);
+    }
+}

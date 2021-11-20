@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Terrain
+  - LassoColliderGround
+  - Creatures
+  - Decorations
+  - CreatureEffects
+  - Player
+  - 
+  - DeathLayer
+  - AbductionLayer
+  - UfoLayer
+  - CreatureGroundCollider
+  - 
+  - ThrowableObjectLayer
+  - LassoColliderThrowable
+  - PlayerBlocking
+  - Explosions
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Smoke1
+    uniqueID: 3490540409
+    locked: 0
+  - name: SmokeBehind
+    uniqueID: 3654428515
+    locked: 0

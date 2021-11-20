@@ -1,0 +1,41 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel ApplyBrush
+
+RWStructuredBuffer<float4> dataBuffer;
+
+float brushPosX;
+float brushPosY;
+float brushPosZ;
+
+uint extent;
+
+float strength;
+float smooth;
+float size;
+float4 colour;
+
+uint indexFromCoord(int x, int y, int z)
+{
+    return z * (extent) * (extent) + y * (extent) + x;
+}
+
+float addBrushFunc(float dist)
+{
+    return (2 * smooth + exp(-pow((-dist * 2), 2)) * (1 - smooth) * 2);
+}
+
+[numthreads(8, 8, 8)]
+void ApplyBrush(uint3 id : SV_DispatchThreadID)
+{
+    float brushDistance = distance(float3(id.x, id.y, id.z), float3(brushPosX, brushPosY, brushPosZ));
+    if (brushDistance < size)
+    {
+        float brushFunc = addBrushFunc(brushDistance / size);
+        float4 chunkColour = dataBuffer[indexFromCoord(id.x, id.y, id.z)];
+        
+        float blend = (chunkColour.a) * brushFunc * 2;
+        float4 total = { 0, 0, 0, -blend };
+        
+        dataBuffer[indexFromCoord(id.x, id.y, id.z)] += total;
+    }
+}
