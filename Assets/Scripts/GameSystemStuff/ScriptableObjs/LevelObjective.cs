@@ -74,9 +74,9 @@ public class LevelObjective : ScriptableObject
 
 	public void Reset()
 	{
-		m_InternalCounterVal = 0;
 		m_bIsCurrentlyFailing = false;
 		m_bIsCurrentlyWithinGoal = false;
+		m_InternalCounterVal = 0;
 	}
 
 	public void AddObjectiveListener(IObjectiveListener listener)
@@ -162,14 +162,14 @@ public class LevelObjective : ScriptableObject
 		m_ObjectiveListeners.ForEachListener((IObjectiveListener listener) => listener.OnObjectiveLeftGoal());
 	}
 
-	private void CheckChanged()
+	public void CheckChanged()
 	{
 		bool withinGoal = false;
 		bool withininFailure = false;
 
-		if (m_InternalCounterVal > m_MinimumGoal || m_InternalCounterVal < m_MaximumGoal)
+		if (m_InternalCounterVal > m_MinimumGoal && m_InternalCounterVal < m_MaximumGoal)
 			withinGoal = true;
-		if ((m_HasMaximumFailure && m_InternalCounterVal == m_MaximumValue) || (m_HasMinimumFailure && m_InternalCounterVal == m_MinimumValue))
+		if ((m_HasMaximumFailure && m_InternalCounterVal >= m_MaximumValue) || (m_HasMinimumFailure && m_InternalCounterVal <= m_MinimumValue))
 			withininFailure = true;
 
 		if (withinGoal != m_bIsCurrentlyWithinGoal)

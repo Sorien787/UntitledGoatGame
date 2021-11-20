@@ -309,7 +309,7 @@ public class LevelManager : MonoBehaviour
 			LevelObjectiveUI objectiveUI = go.GetComponent<LevelObjectiveUI>();
 			objective.Reset();
 			objective.AddObjectiveListener(objectiveUI);
-			objectiveUI.InitializeData(objective);
+			objective.CheckChanged();
 		});
 	}
 

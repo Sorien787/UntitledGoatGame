@@ -107,7 +107,7 @@ public class CountdownTimerUI : MonoBehaviour
 	private void TimerTick(in string timerText, in string audioIdentifier)
 	{
 		m_AudioManager.Play(audioIdentifier);
-		OnTimerTick?.Invoke(m_CurrentTime / m_InitialTime);
+		OnTimerTick?.Invoke(1 - m_CurrentTime / m_InitialTime);
 		m_TimerRect.localScale = Vector3.one * (1 + m_TextPulseSizeByTimer.Evaluate(m_CurrentTime / m_InitialTime));
 		LeanTween.scale(m_TimerRect.gameObject, Vector3.one, 1.0f).setEaseInOutCubic();
 		m_TextCanvasGroup.alpha = 1.0f;

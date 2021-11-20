@@ -8,6 +8,8 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	[Header("Internal References")]
 	[SerializeField] private RectTransform m_GoalImage;
 	[SerializeField] private RectTransform m_NeutralImage;
+	[SerializeField] private RectTransform m_FailImageLeft;
+	[SerializeField] private RectTransform m_FailImageRight;
 	[SerializeField] private Slider m_Slider;
 	[SerializeField] private RectTransform m_SliderBackgroundRect;
 	[SerializeField] private Image m_SliderBackgroundImage;
@@ -28,11 +30,13 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	[SerializeField] private Color m_ExitGoalPulseColour;
 	[SerializeField] private AnimationCurve m_PulseStrengthByTimer;
 	[SerializeField] [Range(0.0f, 0.2f)] private float m_FailureEndBarSize;
+	[SerializeField] private float m_fPulseTime = 0.7f;
 
 	private float m_fCurrentSliderPosition;
 	private float m_fCurrentSliderVelocity;
 	private Color m_InitialBackgroundColor = default;
 	private int m_PulseAnimationId = 0;
+	private int m_PulseSizeAnimationId = 0;
 	private int m_TopTextPulseAnimationId = 0;
 
 	#region UnityFunctions
@@ -106,7 +110,7 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	{
 		m_CountdownTimer.StopTimer();
 		m_SliderBackgroundImage.color = m_EnterGoalPulseColour;
-		LeanTween.color(m_SliderBackgroundRect, m_InitialBackgroundColor, 0.5f);
+		LeanTween.color(m_SliderBackgroundRect, m_InitialBackgroundColor, 0.5f).setRecursive(false).setEaseOutCubic();
 	}
 
 	public void OnObjectiveEnteredGoal()
@@ -132,14 +136,17 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 		m_GoalImage.anchorMin = new Vector2(goalAnchorXMin, m_GoalImage.anchorMin.y);
 		m_GoalImage.anchorMax = new Vector2(goalAnchorXMax, m_GoalImage.anchorMax.y);
 
-		m_NeutralImage.anchorMin = new Vector2(objective.HasMinimumFailure ? m_FailureEndBarSize : 0.0f, m_NeutralImage.anchorMin.y);
-		m_NeutralImage.anchorMax = new Vector2(objective.HasMaximumFailure ? 1 - m_FailureEndBarSize : 1.0f, m_NeutralImage.anchorMax.y);
-
+		m_FailImageLeft.anchorMax = new Vector2(objective.HasMinimumFailure ? m_FailureEndBarSize : 0.0f, m_FailImageLeft.anchorMax.y);
+		m_FailImageRight.anchorMin = new Vector2(objective.HasMaximumFailure ? 1 - m_FailureEndBarSize : 1.0f, m_FailImageLeft.anchorMin.y);
+		
 		m_fDesiredCounterVal = objective.GetInternalCounterVal();
 		m_MinValue = objective.GetLowestValue;
 		m_MaxValue = objective.GetHighestValue;
 
-		m_InitialText = objective.GetObjectiveType == ObjectiveType.Capturing ? "Capture " : "Population of " + objective.GetEntityInformation.name + " : ";
+		m_InitialText = objective.GetObjectiveType == ObjectiveType.Capturing ? "Capture " : "Population of " + objective.GetEntityInformation.name + "s : ";
+
+		m_fDesiredCounterVal = 0;
+		m_TopText.text = GenerateTopText(0);
 	}
 
 	public void OnObjectiveFailed()
@@ -153,15 +160,18 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	private void PulseBackground(in Color pulseColor, in float time)
 	{
 		LeanTween.cancel(m_PulseAnimationId);
-		m_SliderBackgroundImage.color = Color.Lerp(pulseColor, m_InitialBackgroundColor, time);
-		m_PulseAnimationId = LeanTween.color(m_SliderBackgroundRect, m_InitialBackgroundColor, 3.8f).setRecursive(false).setEaseInCubic().uniqueId;
+		LeanTween.cancel(m_PulseSizeAnimationId);
+		m_SliderBackgroundImage.color = Color.Lerp(m_InitialBackgroundColor, pulseColor, time);
+		m_PulseAnimationId = LeanTween.color(m_SliderBackgroundRect, m_InitialBackgroundColor, m_fPulseTime).setRecursive(false).setEaseInCubic().uniqueId;
+		m_SliderBackgroundImage.rectTransform.localScale = new Vector3(1.0f, 1.4f, 1.0f);
+		m_PulseSizeAnimationId = LeanTween.scale(m_SliderBackgroundImage.rectTransform, Vector3.one, m_fPulseTime).setEaseOutCubic().uniqueId;
 	}
 
 	private void PulseTopText(in float size) 
 	{
 		LeanTween.cancel(m_TopTextPulseAnimationId);
 		m_TopTextTransform.localScale = Vector3.one * size;
-		m_TopTextPulseAnimationId = LeanTween.scale(m_TopTextTransform, Vector3.one, 0.8f).setEaseInCubic().uniqueId;	
+		m_TopTextPulseAnimationId = LeanTween.scale(m_TopTextTransform, Vector3.one, m_fPulseTime).setEaseOutCubic().uniqueId;	
 	}
 	#endregion
 }
