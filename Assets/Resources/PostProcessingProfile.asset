@@ -62,16 +62,16 @@ MonoBehaviour:
     value: 1
   focusDistance:
     overrideState: 1
-    value: 4.54
+    value: 5.7
   aperture:
     overrideState: 1
-    value: 7.55
+    value: 3.32
   focalLength:
     overrideState: 1
-    value: 67.1
+    value: 58.3
   kernelSize:
     overrideState: 1
-    value: 3
+    value: 0
 --- !u!114 &-5354685683164504923
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f6f3f7c722b4544b97e3c75840aa33, type: 3}
   m_Name: AutoExposure
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1

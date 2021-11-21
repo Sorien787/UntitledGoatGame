@@ -19,14 +19,14 @@ public class PlayerComponent : MonoBehaviour, IPauseListener, IHealthListener
 	[Header("Control Bindings")]
 	[SerializeField] private ControlBinding m_GrabBinding;
 
-	private void Awake()
+
+	private void Start()
 	{
+		m_GameManager.AddToPauseUnpause(this);
 		m_LassoComponent.OnSetPullingObject += (ThrowableObjectComponent throwable) => OnStartGrappling();
 		m_LassoComponent.OnStoppedPullingObject += OnStopGrappling;
 		m_HealthComponent.AddListener(this);
 		m_GrapplingBufferCollider.enabled = false;
-		m_GameManager.AddToPauseUnpause(this);
-		m_GameManager.RegisterInitialCameraContainerTransform(m_CamContainer);
 	}
 
 	private void Update()

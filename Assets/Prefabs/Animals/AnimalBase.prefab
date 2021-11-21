@@ -19981,9 +19981,9 @@ MonoBehaviour:
   m_ConfusionEffectTiltTransform: {fileID: 2166936210534490605}
   m_ConfusionEffectRotationTransform: {fileID: 2166936210989144864}
   m_DraggingParticlesTransform: {fileID: 2166936209954653869}
-  m_GroundImpactEffectsPrefab: {fileID: 4068980853593095550, guid: 689f5a59205d25a458c991c686c60fa2,
+  m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
-  m_BornEffectsPrefab: {fileID: 1678326098787252981, guid: 66c5e0797aec4f8459d905b962dcbc5e,
+  m_BornEffectsPrefab: {fileID: 6561680838554816563, guid: 811f068f0d50d5345a58ddc8e434cf28,
     type: 3}
   m_AlertAttackEffectsController: {fileID: 2973502529295201285}
   m_AlertFoodEffectsController: {fileID: 2973502529295201285}
@@ -20108,7 +20108,6 @@ MonoBehaviour:
   m_EntityInformation: {fileID: 0}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_TrackingTransform: {fileID: 6261768213309388384}
-  m_PhysicsTransform: {fileID: 0}
   m_TrackableRadius: 0
 --- !u!114 &1882132010931915330
 MonoBehaviour:
@@ -20719,6 +20718,7 @@ MonoBehaviour:
   m_RamPoint: {fileID: 0}
   m_RamFXPrefabs: {fileID: 1799111400563434416, guid: 00aab8f0eed66424bb05ca2211591cea,
     type: 3}
+  m_AnimalEntity: {fileID: 0}
 --- !u!114 &5535792141253275086
 MonoBehaviour:
   m_ObjectHideFlags: 0

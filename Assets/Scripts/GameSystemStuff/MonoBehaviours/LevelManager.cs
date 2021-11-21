@@ -171,9 +171,16 @@ public class LevelManager : MonoBehaviour
 	public void StartSucceedCountdown()
 	{
 		int successTime = m_LevelData.GetSuccessTimerTime;
-		m_FinalCountdownTimer.ShowTimer();
-		m_FinalCountdownTimer.StartTimerFromTime(successTime);
-		m_FinalCountdownTimer.OnTimerComplete += OnLevelSucceeded;
+		if (successTime > Mathf.Epsilon) 
+		{
+			m_FinalCountdownTimer.ShowTimer();
+			m_FinalCountdownTimer.StartTimerFromTime(successTime);
+			m_FinalCountdownTimer.OnTimerComplete += OnLevelSucceeded;
+		}
+		else 
+		{
+			OnLevelSucceeded();
+		}
 	}
 
 	public void EndSucceedCountdown()
@@ -193,9 +200,8 @@ public class LevelManager : MonoBehaviour
 		m_LevelState.AddState(new EndSuccessState( m_EndSuccessCanvas, m_LevelUIAnimator));
 		m_LevelState.AddState(new PlayingState( m_MainCanvas));
 		m_LevelTransitionAnimator.Play("TransitionIn", -1);
-
-		PauseLevel(true);
 		m_Manager.NewLevelLoaded(this);
+		PauseLevel(true);
 	}
 
 	private void Start()
@@ -218,7 +224,6 @@ public class LevelManager : MonoBehaviour
 	{
 		m_LevelTransitionAnimator.Play("TransitionOut", -1);
 		yield return new WaitForSeconds(m_fTransitionTime);
-		m_Manager.ClearLevelData();
 		queuedOnFinish();
 	}
 

@@ -144,7 +144,7 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
         m_CameraStateMachine.RequestTransition(m_CachedType);
     }
 
-    void Start()
+    void Awake()
     {
 		m_SettingsManager.PropertyChanged += OnPropertyChanged;
 

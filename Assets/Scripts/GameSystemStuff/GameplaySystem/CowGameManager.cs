@@ -90,6 +90,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	// called when new scene is loaded
 	public void NewLevelLoaded(LevelManager newLevel)
 	{
+		ClearLevelData();
 		m_bHasStarted = false;
 		GetCurrentLevel = newLevel;
 		GetCurrentLevelIndex = newLevel.GetLevelNumber;
@@ -118,8 +119,6 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		});
 		m_NumObjectivesToComplete = 0;
 		m_NumObjectivesCompleted = 0;
-		m_PlayerCameraTransform = null;
-		m_PlayerCameraContainerTransform = null;
 		m_EntityCache.Clear();
 		m_ObjectiveDict.Clear();
 		m_LevelListeners.Clear();
@@ -194,8 +193,9 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	public void StartLevel() 
 	{
-		TryBeginSuccessCountdown();
 		m_bHasStarted = true;
+
+		TryBeginSuccessCountdown();
 		m_LevelListeners.ForEachListener((ILevelListener listener) => listener.LevelStarted()); 
 		m_LevelData[GetCurrentLevelIndex - 1].ForEachObjective((LevelObjective objective) => {
 			objective.StartLevel();

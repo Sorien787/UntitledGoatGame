@@ -36,8 +36,8 @@ public class LevelObjective : ScriptableObject
 	public EntityInformation GetEntityInformation => m_CounterAnimalType;
 	public ObjectiveType GetObjectiveType => m_ObjectiveType;
 
-	public float GetStartGoalPos => (float)(m_MinimumGoal - m_MinimumValue) / (m_MaximumValue - m_MinimumValue);
-	public float GetEndGoalPos => (float)(m_MaximumGoal - m_MinimumValue) / (m_MaximumValue - m_MinimumValue);
+	public float GetStartGoalPos => (float)(m_MinimumGoal - 0.5f - m_MinimumValue) / (m_MaximumValue - m_MinimumValue);
+	public float GetEndGoalPos => (float)(m_MaximumGoal + 0.5f - m_MinimumValue) / (m_MaximumValue - m_MinimumValue);
 	public float GetLowestValue => m_MinimumValue;
 	public float GetHighestValue => m_MaximumValue;
 	public bool HasMaximumFailure => m_HasMaximumFailure;
@@ -102,21 +102,21 @@ public class LevelObjective : ScriptableObject
 
 	public void IncrementCounter()
 	{
-		m_InternalCounterVal = Mathf.Min(m_InternalCounterVal + 1, m_MaximumValue);
+		m_InternalCounterVal++;
 		m_ObjectiveListeners.ForEachListener((IObjectiveListener listener) => listener.OnCounterChanged(m_InternalCounterVal));
 		CheckChanged();
 	}
 
 	public void IncrementCounter(int counterChanged) 
 	{
-		m_InternalCounterVal = Mathf.Min(m_InternalCounterVal + counterChanged, m_MaximumValue);
+		m_InternalCounterVal += counterChanged;
 		m_ObjectiveListeners.ForEachListener((IObjectiveListener listener) => listener.OnCounterChanged(m_InternalCounterVal));
 		CheckChanged();
 	}
 
 	public void DecrementCounter()
 	{
-		m_InternalCounterVal = Mathf.Max(m_InternalCounterVal - 1, m_MinimumValue);
+		m_InternalCounterVal--;
 		m_ObjectiveListeners.ForEachListener((IObjectiveListener listener) => listener.OnCounterChanged(m_InternalCounterVal));
 		CheckChanged();
 	}
@@ -167,7 +167,7 @@ public class LevelObjective : ScriptableObject
 		bool withinGoal = false;
 		bool withininFailure = false;
 
-		if (m_InternalCounterVal > m_MinimumGoal && m_InternalCounterVal < m_MaximumGoal)
+		if (m_InternalCounterVal >= m_MinimumGoal && m_InternalCounterVal <= m_MaximumGoal)
 			withinGoal = true;
 		if ((m_HasMaximumFailure && m_InternalCounterVal >= m_MaximumValue) || (m_HasMinimumFailure && m_InternalCounterVal <= m_MinimumValue))
 			withininFailure = true;

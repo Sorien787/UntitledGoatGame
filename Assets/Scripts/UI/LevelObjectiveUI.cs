@@ -55,7 +55,12 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 
 	private string GenerateTopText(in int val) 
 	{
-		return m_InitialText + val.ToString();
+		string initial = m_InitialText + val.ToString();
+		if (m_fDesiredCounterVal >= m_MaxValue)
+			initial += " / " + m_MaxValue.ToString();
+		else if (m_fDesiredCounterVal <= m_MinValue)
+			initial += " / " + m_MinValue.ToString();
+		return initial;
 	}
 
 	void Update()
