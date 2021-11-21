@@ -91,6 +91,10 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 		m_TractorBeamComponent.OnTractorBeamFinished += () => OnCowDied(null, null, DamageType.Undefined);
 		m_Manager.AddToPauseUnpause(this);
 	}
+	private void OnDestroy()
+	{
+		m_Manager.RemoveFromPauseUnpause(this);
+	}
 	public void Pause()
 	{
 		enabled = false;

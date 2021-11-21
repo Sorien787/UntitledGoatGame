@@ -36,6 +36,10 @@ public class UfoAnimationComponent : MonoBehaviour, IPauseListener
         m_AnimationStateMachine.AddState(new UFODeathAnimationState());
         m_Manager.AddToPauseUnpause(this);
     }
+    private void OnDestroy()
+    {
+        m_Manager.RemoveFromPauseUnpause(this);
+    }
     public void Pause()
     {
         enabled = false;

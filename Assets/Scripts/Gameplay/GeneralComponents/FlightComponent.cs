@@ -33,6 +33,11 @@ public class FlightComponent : MonoBehaviour, IPauseListener
         m_Manager.AddToPauseUnpause(this);
     }
 
+    private void OnDestroy()
+    {
+        m_Manager.RemoveFromPauseUnpause(this);
+    }
+
     public void Pause() 
     {
         enabled = false;

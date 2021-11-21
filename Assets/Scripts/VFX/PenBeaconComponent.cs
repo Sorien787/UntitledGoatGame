@@ -34,7 +34,10 @@ public class PenBeaconComponent : MonoBehaviour, IPauseListener, IHealthListener
         m_BeaconStateMachine.RequestTransition(typeof(PenBeaconPlayState));
     }
 
-
+    private void OnDestroy()
+    {
+        m_GameManager.RemoveFromPauseUnpause(this);
+    }
 
     private void OnLevelFinished() 
     {

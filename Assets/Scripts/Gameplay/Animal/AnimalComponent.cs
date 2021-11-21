@@ -787,7 +787,12 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.InitializeStateMachine();
     }
 
-    private bool ShouldEnterWrangled() 
+	private void OnDestroy()
+	{
+        m_Manager.RemoveFromPauseUnpause(this);
+    }
+
+	private bool ShouldEnterWrangled() 
     {
         if (IsWrangled && !IsInTractorBeam && !IsStaggered()) 
         {

@@ -28,7 +28,10 @@ public class PlayerComponent : MonoBehaviour, IPauseListener, IHealthListener
 		m_HealthComponent.AddListener(this);
 		m_GrapplingBufferCollider.enabled = false;
 	}
-
+	private void OnDestroy()
+	{
+		m_GameManager.RemoveFromPauseUnpause(this);
+	}
 	private void Update()
 	{
 		// Add validation to the control bindings - essentially a "Type" (or control token?) that it can respond to/is valid for
