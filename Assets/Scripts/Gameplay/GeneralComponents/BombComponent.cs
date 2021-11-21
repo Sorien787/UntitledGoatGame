@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 [RequireComponent(typeof(ThrowableObjectComponent))]
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
 public class BombComponent : MonoBehaviour
@@ -27,7 +27,12 @@ public class BombComponent : MonoBehaviour
         m_ThrowableObject.OnThrown += OnThrown;
     }
 
-    void OnThrown(ProjectileParams projectileParams) 
+	private void OnDrawGizmosSelected()
+	{
+        Gizmos.DrawWireSphere(transform.position, m_MaxExplosionRadius);
+	}
+
+	void OnThrown(ProjectileParams projectileParams) 
     {
         m_bBombPrimed = true;
         m_ParticleFXController.TurnOnAllSystems();
@@ -41,10 +46,19 @@ public class BombComponent : MonoBehaviour
         m_bBombPrimed = false;
         m_ParticleFXController.TurnOffAllSystems();
 
-        Collider[] animals = Physics.OverlapSphere(m_Transform.position, m_MaxExplosionRadius, m_ExplosionLayer);
-        for (int i = 0; i < animals.Length; i++)
+        List<AnimalComponent> animals = new List<AnimalComponent>();
+
+        m_Manager.ForEachAnimal((EntityToken token) => 
         {
-            AnimalComponent animal = animals[i].GetComponentInParent<AnimalComponent>();
+            if (((token.GetEntityTransform.position - m_Transform.position).sqrMagnitude < m_MaxExplosionRadius * m_MaxExplosionRadius) && token.GetEntityTransform.TryGetComponent(out AnimalComponent animal)) 
+            {
+                animals.Add(animal);
+            }
+        });
+
+        for (int i = 0; i < animals.Count; i++)
+        {
+            AnimalComponent animal = animals[i];
             Vector3 position = animal.GetBodyTransform.position;
             Vector3 offsetFromBlastCentre = position - m_Transform.position;
             float normalizedDistance = offsetFromBlastCentre.magnitude / m_MaxExplosionRadius;

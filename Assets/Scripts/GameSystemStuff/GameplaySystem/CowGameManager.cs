@@ -16,6 +16,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	private readonly Dictionary<EntityInformation, List<EntityToken>> m_EntityCache = new Dictionary<EntityInformation, List<EntityToken>>();
 	private readonly List<LevelObjective> m_ObjectiveDict = new List<LevelObjective>();
 	private readonly Dictionary<UIObjectReference, GameObject> m_UICache = new Dictionary<UIObjectReference, GameObject>();
+	
 	private Transform m_PlayerCameraTransform;
 	private Transform m_PlayerCameraContainerTransform;
 
@@ -359,6 +360,18 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 			}
 		}
 		return null;
+	}
+
+	public void ForEachAnimal(in Action<EntityToken> forEachDelegate) 
+	{
+		
+		foreach(List<EntityToken> tokens in m_EntityCache.Values) 
+		{
+			foreach(EntityToken token in tokens) 
+			{
+				forEachDelegate(token);
+			}
+		}
 	}
 
 	public void GetTransformsMatchingType(in EntityInformation entity, out List<EntityToken> outEntityToken)
