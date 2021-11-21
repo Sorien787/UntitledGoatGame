@@ -57,9 +57,9 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	{
 		string initial = m_InitialText + val.ToString();
 		if (m_fDesiredCounterVal >= m_MaxValue)
-			initial += " / " + m_MaxValue.ToString();
+			initial += " / " + (m_MaxValue-1).ToString();
 		else if (m_fDesiredCounterVal <= m_MinValue)
-			initial += " / " + m_MinValue.ToString();
+			initial += " / " + (m_MinValue+1).ToString();
 		return initial;
 	}
 

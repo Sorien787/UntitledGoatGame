@@ -179,7 +179,8 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 	private void OnDestroy()
 	{
 		m_SettingsManager.PropertyChanged -= OnPropertyChanged;
-	}
+        m_Manager.RemoveFromPauseUnpause(this);
+    }
 
 	public void ProcessTargetFOV() 
     {

@@ -54,6 +54,11 @@ private LocalDebugData m_GrassDebug;
         enabled = true;
     }
 
+    private void OnDestroy()
+    {
+        m_Manager.RemoveFromPauseUnpause(this);
+    }
+
     void Update()
     {
         if (!m_HealthComponent)
