@@ -9715,9 +9715,6 @@ MonoBehaviour:
     type: 3}
   m_ExplosionRef: {fileID: 6897984119125962195, guid: 8b3977f006b393e4e9137ed051c5eb71,
     type: 3}
-  m_ExplosionLayer:
-    serializedVersion: 2
-    m_Bits: 8388608
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_MaxExplosionRadius: 5
   m_MaxExplosionPower: 5
@@ -9767,6 +9764,7 @@ MonoBehaviour:
   m_MainTransform: {fileID: 8229195216089481791}
   m_fMassMultiplier: 1
   m_FreeFallComponent: {fileID: 3983800817042991405}
+  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
 --- !u!114 &3983800817042991405
 MonoBehaviour:
   m_ObjectHideFlags: 0

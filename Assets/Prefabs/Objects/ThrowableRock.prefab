@@ -142,6 +142,8 @@ MonoBehaviour:
   m_throwableObjectComponent: {fileID: 1444594708651495008}
   m_freeFallTrajectoryComponent: {fileID: 1444594708651495009}
   m_objectRigidBody: {fileID: 1444594708651495038}
+  m_ImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
+    type: 3}
 --- !u!114 &1444594708651495008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,12 +156,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcfe60cde1112248a1fa74e6bae57f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FreeFallComponent: {fileID: 1444594708651495009}
   m_GravityMultiplier: 1.93
+  m_CowGameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+  m_CausesHeavyImpact: 0
   m_ThrowingBody: {fileID: 1444594708651495038}
   m_CameraFocusTransform: {fileID: 8565041533130692324}
   m_AttachmentTransform: {fileID: 8565041533130692324}
   m_MainTransform: {fileID: 8565041533130692324}
+  m_fMassMultiplier: 1
+  m_FreeFallComponent: {fileID: 1444594708651495009}
 --- !u!114 &1444594708651495009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,3 +178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rMovingBody: {fileID: 1444594708651495038}
+  m_Manager: {fileID: 0}
+  m_debugTextComponent: {fileID: 0}
+  m_listOfObjsToChangeLayer: []
+  m_ThrownLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  m_bIsFalling: 0

@@ -16,8 +16,6 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 
 	[SerializeField] protected FreeFallTrajectoryComponent m_FreeFallComponent;
 
-	[SerializeField] private CowGameManager m_Manager;
-
 	public event Action OnDestroyed;
 
 	public bool IsImmediatelyThrowable { get; set; } = false;
@@ -56,7 +54,7 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 
 	public void Awake()
 	{
-		m_Manager.AddToPauseUnpause(this);
+		m_CowGameManager.AddToPauseUnpause(this);
 		m_FreeFallComponent.OnObjectNotInFreeFall += OnObjectLanded;
 		if (TryGetComponent(out HealthComponent healthComponent))
 		{
@@ -66,7 +64,7 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 
 	private void OnDestroy()
 	{
-		m_Manager.RemoveFromPauseUnpause(this);
+		m_CowGameManager.RemoveFromPauseUnpause(this);
 	}
 
 	Vector3 m_cachedVelocity = Vector3.zero;

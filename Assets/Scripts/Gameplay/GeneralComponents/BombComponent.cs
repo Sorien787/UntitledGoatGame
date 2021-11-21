@@ -6,7 +6,6 @@ public class BombComponent : MonoBehaviour
 {
     [SerializeField] private GameObject m_HazardRef;
     [SerializeField] private GameObject m_ExplosionRef;
-    [SerializeField] private LayerMask m_ExplosionLayer;
     [SerializeField] private CowGameManager m_Manager;
     [SerializeField] private float m_MaxExplosionRadius;
     [SerializeField] private float m_MaxExplosionPower;
