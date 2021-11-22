@@ -7796,6 +7796,41 @@ Transform:
   m_Father: {fileID: 838394019361634306}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &479561213
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WeatherMap
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 512
+  m_Height: 512
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 0
+  m_ColorFormat: 24
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 512
 --- !u!1001 &481866831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8623,41 +8658,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562374149}
   m_CullTransparentMesh: 0
---- !u!84 &577813476
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DetailNoise
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 64
-  m_Height: 64
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 0
-  m_ColorFormat: 24
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 3
-  m_VolumeDepth: 64
 --- !u!1001 &589334493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8668,7 +8668,7 @@ PrefabInstance:
     - target: {fileID: 3983800817042991403, guid: 58f6693b93de1ff4e8d7027e0c08aa24,
         type: 3}
       propertyPath: m_MaxExplosionPower
-      value: 40
+      value: 145.52
       objectReference: {fileID: 0}
     - target: {fileID: 3983800817042991403, guid: 58f6693b93de1ff4e8d7027e0c08aa24,
         type: 3}
@@ -10908,8 +10908,8 @@ MonoBehaviour:
   viewerTileAmount: 1
   viewerSize: 0.217
   showSettingsEditor: 1
-  shapeTexture: {fileID: 1888971329}
-  detailTexture: {fileID: 577813476}
+  shapeTexture: {fileID: 830590313}
+  detailTexture: {fileID: 1467666230}
 --- !u!1 &728056241
 GameObject:
   m_ObjectHideFlags: 0
@@ -11863,6 +11863,41 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 820246476}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &830590313
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShapeNoise
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 132
+  m_Height: 132
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 0
+  m_ColorFormat: 24
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_Dimension: 3
+  m_VolumeDepth: 132
 --- !u!1 &838413309
 GameObject:
   m_ObjectHideFlags: 0
@@ -12062,47 +12097,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 865116225}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &880685806
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_GrassSwayShader
-  m_Shader: {fileID: 4800000, guid: 2282343b533573b4da40bc0c2d0502e2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _WindDistortionMap:
-        m_Texture: {fileID: 2800000, guid: 43fd351b8b2ff4a4b8bbec8a6dd7cfb5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _BendRotationRandom: 0.186
-    - _BladeCurve: 1.82
-    - _BladeForward: 0.31
-    - _BladeHeight: 0.92
-    - _BladeHeightMinimum: 0.2
-    - _BladeHeightMultiplier: 1
-    - _BladeHeightRandom: 0.1
-    - _BladeWidth: 0.07
-    - _BladeWidthRandom: 0.01
-    - _TranslucentGain: 1
-    - _WindGustSize: 232.38
-    - _WindStrength: 1
-    m_Colors:
-    - _BottomColor: {r: 0.043609817, g: 0.26415092, b: 0.080366686, a: 1}
-    - _TopColor: {r: 0.47147563, g: 0.6132076, b: 0.4862394, a: 1}
-    - _WindFrequency: {r: 0.01, g: 0, b: 0, a: 0}
-    - _WindSpeed: {r: 1.99, g: 1.58, b: 0, a: 0}
 --- !u!1001 &900358497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12363,6 +12357,47 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 922367283}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &926559013
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_GrassSwayShader
+  m_Shader: {fileID: 4800000, guid: 2282343b533573b4da40bc0c2d0502e2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _WindDistortionMap:
+        m_Texture: {fileID: 2800000, guid: 43fd351b8b2ff4a4b8bbec8a6dd7cfb5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BendRotationRandom: 0.186
+    - _BladeCurve: 1.82
+    - _BladeForward: 0.31
+    - _BladeHeight: 0.92
+    - _BladeHeightMinimum: 0.2
+    - _BladeHeightMultiplier: 1
+    - _BladeHeightRandom: 0.1
+    - _BladeWidth: 0.07
+    - _BladeWidthRandom: 0.01
+    - _TranslucentGain: 1
+    - _WindGustSize: 232.38
+    - _WindStrength: 1
+    m_Colors:
+    - _BottomColor: {r: 0.043609817, g: 0.26415092, b: 0.080366686, a: 1}
+    - _TopColor: {r: 0.47147563, g: 0.6132076, b: 0.4862394, a: 1}
+    - _WindFrequency: {r: 0.01, g: 0, b: 0, a: 0}
+    - _WindSpeed: {r: 1.99, g: 1.58, b: 0, a: 0}
 --- !u!1001 &942043881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15055,7 +15090,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 880685806}
+  - {fileID: 926559013}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17226,6 +17261,41 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1463937148}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &1467666230
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DetailNoise
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 64
+  m_Height: 64
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 0
+  m_ColorFormat: 24
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_Dimension: 3
+  m_VolumeDepth: 64
 --- !u!1 &1472247233
 GameObject:
   m_ObjectHideFlags: 0
@@ -24276,7 +24346,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.04219818
+        value: 0.02684784
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -24285,7 +24355,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.24404538
+        value: 0.2550012
         inSlope: 0.43582475
         outSlope: 0.43582475
         tangentMode: 0
@@ -24877,41 +24947,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1728620200
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: WeatherMap
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 512
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 0
-  m_ColorFormat: 24
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 512
 --- !u!1001 &1744960244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25495,41 +25530,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!84 &1888971329
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: ShapeNoise
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 132
-  m_Height: 132
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 0
-  m_ColorFormat: 24
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 3
-  m_VolumeDepth: 132
 --- !u!1 &1904158898
 GameObject:
   m_ObjectHideFlags: 0
@@ -25577,7 +25577,7 @@ MonoBehaviour:
   noiseCompute: {fileID: 7200000, guid: 610906fb135f245baaa76a04f34d7c24, type: 3}
   noiseSettings: {fileID: 11400000, guid: 8f9c3a65f6f63a54d82c0477aedeac54, type: 2}
   resolution: 512
-  weatherMap: {fileID: 1728620200}
+  weatherMap: {fileID: 479561213}
   testParams: {x: 0, y: 1, z: 1, w: 0}
   container: {fileID: 1119820183}
   viewerEnabled: 0
