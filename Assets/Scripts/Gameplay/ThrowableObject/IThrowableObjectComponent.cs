@@ -8,6 +8,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [SerializeField] private float m_GravityMultiplier = 1;
     [SerializeField] protected CowGameManager m_CowGameManager = null;
     [SerializeField] private bool m_CausesHeavyImpact = false;
+    [SerializeField] private GameObject m_HazardRef = null;
 
     public event Action OnTuggedByLasso;
     public event Action OnStartSpinning;
@@ -32,7 +33,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         OnLanded?.Invoke();
         if (m_CausesHeavyImpact) 
         {
-
+            Instantiate(m_HazardRef, transform.position, transform.rotation, null);
         }
     }
 

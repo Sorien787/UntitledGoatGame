@@ -10,7 +10,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
     [SerializeField] private CowGameManager m_Manager;
 	[SerializeField] private DebugTextComponent m_debugTextComponent;
     [SerializeField] private List<GameObject> m_listOfObjsToChangeLayer = new List<GameObject>();
-    [SerializeField] private LayerMask m_ThrownLayer = 0;
+    [SerializeField] private int m_ThrownLayer = 0;
 
 	public event Action<Collision> OnObjectHitGround;
     public event Action OnObjectNotInFreeFall;
@@ -70,17 +70,14 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
 	private void OnCollisionStay(Collision collision)
     {
-        if (m_fCurrentTime > 0.5f) 
+        if (m_bIsFalling)
         {
-            if (m_bIsFalling)
-            {
-                OnObjectHitGround?.Invoke(collision);
-                OnObjectNotInFreeFall?.Invoke();
-                m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
-                m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
-            }
-            StopThrowingInternal();
+            OnObjectHitGround?.Invoke(collision);
+            OnObjectNotInFreeFall?.Invoke();
+            m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
+            m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
         }
+        StopThrowingInternal();
     }
 
     void Update()

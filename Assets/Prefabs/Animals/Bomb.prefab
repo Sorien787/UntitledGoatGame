@@ -9717,7 +9717,7 @@ MonoBehaviour:
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_MaxExplosionRadius: 5
-  m_MaxExplosionPower: 5
+  m_MaxExplosionPower: 19.48
   m_BombPowerScalarByDistance:
     serializedVersion: 2
     m_Curve:
@@ -9758,13 +9758,14 @@ MonoBehaviour:
   m_GravityMultiplier: 1
   m_CowGameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_CausesHeavyImpact: 0
+  m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
+    type: 3}
   m_ThrowingBody: {fileID: 3983800817042991400}
   m_CameraFocusTransform: {fileID: 8229195216089481791}
   m_AttachmentTransform: {fileID: 8229195216089481791}
   m_MainTransform: {fileID: 8229195216089481791}
   m_fMassMultiplier: 1
   m_FreeFallComponent: {fileID: 3983800817042991405}
-  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
 --- !u!114 &3983800817042991405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9780,10 +9781,9 @@ MonoBehaviour:
   m_rMovingBody: {fileID: 3983800817042991400}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_debugTextComponent: {fileID: 0}
-  m_listOfObjsToChangeLayer: []
-  m_ThrownLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_listOfObjsToChangeLayer:
+  - {fileID: 4929366444259242028}
+  m_ThrownLayer: 14
   m_bIsFalling: 0
 --- !u!1 &7469843085193080790
 GameObject:

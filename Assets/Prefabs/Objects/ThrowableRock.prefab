@@ -31,7 +31,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4649538071932314871}
-  m_LocalRotation: {x: 0.25694314, y: -0.5234881, z: 0.15480714, w: 0.7974805}
+  m_LocalRotation: {x: 0.25694108, y: -0.523488, z: 0.15480447, w: 0.79748183}
   m_LocalPosition: {x: -16.748, y: 12.97, z: -16.848}
   m_LocalScale: {x: 42.448883, y: 42.448883, z: 42.448883}
   m_Children: []
@@ -159,6 +159,7 @@ MonoBehaviour:
   m_GravityMultiplier: 1.93
   m_CowGameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_CausesHeavyImpact: 0
+  m_HazardRef: {fileID: 0}
   m_ThrowingBody: {fileID: 1444594708651495038}
   m_CameraFocusTransform: {fileID: 8565041533130692324}
   m_AttachmentTransform: {fileID: 8565041533130692324}
@@ -178,10 +179,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rMovingBody: {fileID: 1444594708651495038}
-  m_Manager: {fileID: 0}
+  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_debugTextComponent: {fileID: 0}
-  m_listOfObjsToChangeLayer: []
-  m_ThrownLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_listOfObjsToChangeLayer:
+  - {fileID: 4649538071932314871}
+  m_ThrownLayer: 14
   m_bIsFalling: 0

@@ -20137,9 +20137,7 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_debugTextComponent: {fileID: 3268333415586914426}
   m_listOfObjsToChangeLayer: []
-  m_ThrownLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_ThrownLayer: 14
   m_bIsFalling: 0
 --- !u!114 &5028166405719411816
 MonoBehaviour:
@@ -20154,8 +20152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_GravityMultiplier: 2
-  m_CowGameManager: {fileID: 0}
+  m_CowGameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_CausesHeavyImpact: 0
+  m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
+    type: 3}
   m_ThrowingBody: {fileID: 6261768213309388412}
   m_CameraFocusTransform: {fileID: 7107208444515908565}
   m_AttachmentTransform: {fileID: 2166936210622738242}
@@ -20718,7 +20718,7 @@ MonoBehaviour:
   m_RamPoint: {fileID: 0}
   m_RamFXPrefabs: {fileID: 1799111400563434416, guid: 00aab8f0eed66424bb05ca2211591cea,
     type: 3}
-  m_AnimalEntity: {fileID: 0}
+  m_AnimalEntity: {fileID: 5535792141253275086}
 --- !u!114 &5535792141253275086
 MonoBehaviour:
   m_ObjectHideFlags: 0
