@@ -2,6 +2,7 @@
 
 [RequireComponent(typeof(ThrowableObjectComponent))]
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
+[RequireComponent(typeof(PhysicalEntity))]
 public class InanimateObjectComponent : MonoBehaviour
 {
     private StateMachine<InanimateObjectComponent> m_StateMachine;
@@ -11,6 +12,11 @@ public class InanimateObjectComponent : MonoBehaviour
     [SerializeField] private FreeFallTrajectoryComponent m_freeFallTrajectoryComponent;
     [SerializeField] private Rigidbody m_objectRigidBody;
     [SerializeField] private GameObject m_ImpactEffectsPrefab;
+    [SerializeField] private PhysicalEntity m_Entity;
+    [SerializeField] private ParticleEffectsController m_DragFX;
+    [SerializeField] private float m_SpeedForDragFX;
+
+    private Transform m_DragFXTransform;
 
 	private void Awake()
 	{
@@ -19,14 +25,42 @@ public class InanimateObjectComponent : MonoBehaviour
         m_throwableObjectComponent.OnReleased += () => m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
         m_throwableObjectComponent.OnThrown += (ProjectileParams) => m_StateMachine.RequestTransition(typeof(IObjectControlledState));
 
+        m_DragFXTransform = m_DragFX.transform;
         m_freeFallTrajectoryComponent.OnObjectHitGround += OnHitObject;
+
+        m_Entity = GetComponent<PhysicalEntity>();
 
         m_StateMachine = new StateMachine<InanimateObjectComponent>(new IObjectPhysicalizedState(), this);
 
         m_StateMachine.AddState(new IObjectControlledState());
 	}
 
-    public void SetPhysicsState(bool state) 
+    bool m_bParticleFXActive = false;
+
+    private void Update()
+	{
+        bool m_bShouldParticleFXBeActive = m_Entity.GetVelocity.sqrMagnitude > (m_SpeedForDragFX * m_SpeedForDragFX) && m_Entity.IsGrounded;
+	    if (m_bShouldParticleFXBeActive != m_bParticleFXActive) 
+        {
+            m_bParticleFXActive = m_bShouldParticleFXBeActive;
+            if (m_bParticleFXActive) 
+            {
+                m_DragFX.TurnOnAllSystems();
+            }
+			else 
+            {
+                m_DragFX.TurnOffAllSystems();
+            }
+        }
+        if (m_bParticleFXActive)
+        {
+            m_DragFXTransform.position = m_Entity.GetGroundedPos;
+            m_DragFXTransform.rotation = Quaternion.LookRotation(m_Entity.GetGroundedNorm);
+        }
+        m_StateMachine.Tick(Time.deltaTime);
+    }
+
+	public void SetPhysicsState(bool state) 
     {
         m_objectRigidBody.isKinematic = !state;
         m_objectRigidBody.useGravity = state;
@@ -49,11 +83,6 @@ public class InanimateObjectComponent : MonoBehaviour
             Instantiate(m_ImpactEffectsPrefab, collision.GetContact(0).point, Quaternion.LookRotation(Vector3.forward, collision.GetContact(0).normal));
         }
         m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
-    }
-
-	void Update()
-    {
-        m_StateMachine.Tick(Time.deltaTime);
     }
 }
 

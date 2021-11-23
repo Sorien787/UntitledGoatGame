@@ -52,6 +52,11 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 		OnDestroyed?.Invoke();
 	}
 
+	public void Update()
+	{
+		
+	}
+
 	public void Awake()
 	{
 		m_CowGameManager.AddToPauseUnpause(this);
