@@ -3,18 +3,22 @@ using System;
 using System.Collections.Generic;
 public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 {
-    ProjectileParams projectile;
-    private float m_fCurrentTime = 0.0f;
- 
+
+    [Header("Internal References")]
     [SerializeField] private Rigidbody m_rMovingBody;
-    [SerializeField] private CowGameManager m_Manager;
 	[SerializeField] private DebugTextComponent m_debugTextComponent;
+    [Header("External References")]
+    [SerializeField] private CowGameManager m_Manager;
+    [Header("Settings")]
     [SerializeField] private List<GameObject> m_listOfObjsToChangeLayer = new List<GameObject>();
     [SerializeField] private int m_ThrownLayer = 0;
 
-	public event Action<Collision> OnObjectHitGround;
+    private bool m_bIsFalling = false;
+    private ProjectileParams projectile;
+    private float m_fCurrentTime = 0.0f;
+
+    public event Action<Collision> OnObjectHitGround;
     public event Action OnObjectNotInFreeFall;
-	public bool m_bIsFalling = false;
 
 	private void Awake()
 	{

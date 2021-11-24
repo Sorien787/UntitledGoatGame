@@ -1,28 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using EZCameraShake;
 
 public abstract class IThrowableObjectComponent : MonoBehaviour
 {
-    [SerializeField] private float m_GravityMultiplier = 1;
-    [SerializeField] private bool m_CausesHeavyImpact = false;
-    [SerializeField] private GameObject m_HazardRef = null;
+    [Header("Internal References")]
     [SerializeField] private ImpactEffectStrengthManager m_ParticleStrength;
-
     [SerializeField] private ParticleEffectsController m_DragFX;
-    [SerializeField] private AnimationCurve m_DragAnimationCurve;
-    [SerializeField] private bool m_bCausesDragging = false;
-
-    [SerializeField] private CowGameManager m_Manager;
-    [SerializeField] private bool m_bCausesImpacts = false;
     [SerializeField] private Transform m_Transform;
-
-    [SerializeField] private GameObject m_GroundImpactEffectsPrefab;
-    [SerializeField] AnimationCurve m_ImpactMagnitudeByImpactMomentum;
-
     [SerializeField] private PhysicalEntity m_Entity;
+
+    [Header("Animation Settings")]
+    [SerializeField] private AnimationCurve m_DragAnimationCurve;
+    [SerializeField] private AnimationCurve m_ImpactMagnitudeByImpactMomentum;
+
+    [Header("External References")]
+    [SerializeField] private GameObject m_HazardRef = null;
+    [SerializeField] private CowGameManager m_Manager;
+    [SerializeField] private GameObject m_GroundImpactEffectsPrefab;
+
+    [Header("Settings Parameters")]
+    [SerializeField] private bool m_bCausesDragging = false;
+    [SerializeField] private bool m_bCausesImpacts = false;
+    [SerializeField] protected float m_GravityMultiplier = 1;
 
     public event Action OnTuggedByLasso;
     public event Action OnStartSpinning;
@@ -138,7 +138,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     protected void OnObjectLanded()
     {
-        if (m_CausesHeavyImpact)
+        if (m_bCausesImpacts)
         {
 
         }

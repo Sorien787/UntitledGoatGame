@@ -175,13 +175,18 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private void OnHitByMomentum(float momentumMagnitude) 
     {
-
         if (momentumMagnitude > m_StaggerTimeByImpactMomentum.keys[0].time && CanImpactHard() && m_CurrentStaggerCooldown.CooldownComplete)
         {
             m_bShouldStagger = true;
             m_CurrentStaggerCooldown.SetCooldown(m_StaggerCooldown);
-            m_TotalStaggerTime = m_StaggerTimeByImpactMomentum.Evaluate(momentumMagnitude);
+            m_TotalStaggerTime = Mathf.Max(m_StaggerTimeByImpactMomentum.Evaluate(momentumMagnitude), m_TotalStaggerTime);
         }
+    }
+
+    public void AddStaggerTime(float staggerTime) 
+    {
+        m_bShouldStagger = true;
+        m_TotalStaggerTime = Mathf.Max(staggerTime, m_TotalStaggerTime);
     }
 
     public void OnReceiveImpulse(in Vector3 forceChange) 
@@ -195,9 +200,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 		Vector3 momentum = velocity * mass;
 		if (momentum.sqrMagnitude > m_StaggerTimeByImpactMomentum.keys[0].time * m_StaggerTimeByImpactMomentum.keys[0].time)
 		{
-			m_TotalStaggerTime = m_StaggerTimeByImpactMomentum.Evaluate(momentum.magnitude);
-			m_StateMachine.RequestTransition(typeof(AnimalStaggeredState));
-		}
+			m_TotalStaggerTime = Mathf.Max(m_StaggerTimeByImpactMomentum.Evaluate(momentum.magnitude), m_TotalStaggerTime);
+            m_bShouldStagger = true;
+        }
 		m_AnimalRigidBody.velocity += GetGroundDir() * momentum.magnitude / m_AnimalRigidBody.mass;
 	}
 	#endregion

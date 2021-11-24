@@ -4,11 +4,11 @@ using System;
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
 public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListener
 {
+	[Header("Internal References")]
     [SerializeField] private Rigidbody m_ThrowingBody;
 	[SerializeField] private Transform m_CameraFocusTransform;
 	[SerializeField] private Transform m_AttachmentTransform;
 	[SerializeField] private Transform m_MainTransform;
-	[SerializeField] private float m_fMassMultiplier = 1.0f;
 	[SerializeField] protected FreeFallTrajectoryComponent m_FreeFallComponent;
 
 	public event Action OnDestroyed;
@@ -25,7 +25,7 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 
 	public override float GetMass()
 	{
-		return m_ThrowingBody.mass * m_fMassMultiplier;
+		return m_ThrowingBody.mass * m_GravityMultiplier;
 	}
 
 	public override void ApplyForceToObject(Vector3 force)
