@@ -20,9 +20,10 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [SerializeField] private GameObject m_GroundImpactEffectsPrefab;
 
     [Header("Settings Parameters")]
-    [SerializeField] private bool m_bCausesDragging = false;
-    [SerializeField] private bool m_bCausesImpacts = false;
-    [SerializeField] protected float m_GravityMultiplier = 1;
+    [SerializeField] private float m_DelayBetweenImpacts = 0.3f;
+    [SerializeField] private bool m_CausesDragging = false;
+    [SerializeField] private bool m_CausesImpacts = false;
+    [SerializeField] [Range(0.1f, 5f)] private float m_GravityMultiplier = 1.0f;
 
     public event Action OnTuggedByLasso;
     public event Action OnStartSpinning;
@@ -43,7 +44,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             m_DragFXTransform = m_DragFX.transform;
         }
 
-        if (m_bCausesImpacts)
+        if (m_CausesImpacts)
             if (m_ImpactMagnitudeByImpactMomentum.keys.Length == 0) 
             {
             Debug.Log("There is no key(s) in Impact Animation Curve!", gameObject);
@@ -53,7 +54,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             m_MomentumForImpactFX =  m_ImpactMagnitudeByImpactMomentum.keys[0].time;
             }
 
-        if (m_bCausesDragging)
+        if (m_CausesDragging)
             if (m_DragAnimationCurve.keys.Length == 0) 
             {
                 Debug.Log("There is no key(s) in Drag Animation Curve!", gameObject);
@@ -62,8 +63,11 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             {
                 m_SpeedForDragFX = m_DragAnimationCurve.keys[0].time;
             }
+    }
 
-
+    public void EnableImpacts(bool isEnabled) 
+    {
+        m_CausesImpacts = isEnabled;
     }
 
     float m_fImpactFXCooldown = 0.0f;
@@ -72,7 +76,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     {
         m_fImpactFXCooldown = Mathf.Max(0.0f, m_fImpactFXCooldown - Time.deltaTime);
 
-        if (!m_bCausesDragging)
+        if (!m_CausesDragging)
             return;
         bool m_bShouldParticleFXBeActive = m_Entity.GetVelocity.sqrMagnitude > (m_SpeedForDragFX * m_SpeedForDragFX) && m_Entity.IsGrounded;
         if (m_bShouldParticleFXBeActive != m_bParticleFXActive)
@@ -109,7 +113,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     protected void CollisionEvent(Collision collision) 
     {
-        if (!m_bCausesImpacts)
+        if (!m_CausesImpacts)
             return;
         Vector3 normal = collision.GetContact(0).normal;
         Quaternion rotation = Quaternion.LookRotation(Vector3.Cross(Vector3.up, normal), normal);
@@ -118,7 +122,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     private void OnObjectHitOtherWithMomentum(float momentum, Vector3 position, Quaternion rotation) 
     {
-        if (!m_bCausesImpacts || momentum < m_MomentumForImpactFX || m_bIsWrangled)
+        if (!m_CausesImpacts || momentum < m_MomentumForImpactFX || m_bIsWrangled)
             return;
         CreateImpactAtPosition(momentum, position, rotation);
     }
@@ -128,7 +132,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         if (m_fImpactFXCooldown > Mathf.Epsilon)
             return;
 
-        m_fImpactFXCooldown = 0.2f;
+        m_fImpactFXCooldown = m_DelayBetweenImpacts;
         GameObject resultObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
         float shakeStrength = Mathf.Clamp(momentum / Mathf.Sqrt((m_Transform.position - m_Manager.GetPlayer.transform.position).magnitude) / 10, 3, 200);
         CameraShaker.Instance.ShakeOnce(shakeStrength, shakeStrength, 0.1f, 1.0f);
@@ -138,7 +142,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     protected void OnObjectLanded()
     {
-        if (m_bCausesImpacts)
+        if (m_CausesImpacts)
         {
 
         }

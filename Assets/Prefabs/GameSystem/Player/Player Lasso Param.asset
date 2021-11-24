@@ -40,7 +40,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_MaxForceForPull: 1095.8
+  m_MaxForceForPull: 1845
   m_ForceIncreasePerPull:
     serializedVersion: 2
     m_Curve:
@@ -54,13 +54,13 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.114166334
     - serializedVersion: 3
-      time: 1.0255375
-      value: 204.0405
-      inSlope: -652.9689
-      outSlope: -652.9689
+      time: 0.98659295
+      value: 445.20224
+      inSlope: -94.9837
+      outSlope: -94.9837
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.09523824
+      inWeight: 0.17448434
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -78,8 +78,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.078044154
     - serializedVersion: 3
-      time: 0.9800941
-      value: 798.19763
+      time: 1.0010902
+      value: 296.54306
       inSlope: -0.009797131
       outSlope: -0.009797131
       tangentMode: 0

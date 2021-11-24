@@ -10,6 +10,8 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 	[SerializeField] private Transform m_AttachmentTransform;
 	[SerializeField] private Transform m_MainTransform;
 	[SerializeField] protected FreeFallTrajectoryComponent m_FreeFallComponent;
+	[Header("Settings")]
+	[SerializeField] [Range(0.1f, 5f)] private float m_MassMultiplier = 1.0f;
 
 	public event Action OnDestroyed;
 	public bool IsImmediatelyThrowable { get; set; } = false;
@@ -25,7 +27,7 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 
 	public override float GetMass()
 	{
-		return m_ThrowingBody.mass * m_GravityMultiplier;
+		return m_ThrowingBody.mass * m_MassMultiplier;
 	}
 
 	public override void ApplyForceToObject(Vector3 force)

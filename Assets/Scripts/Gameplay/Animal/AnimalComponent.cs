@@ -56,7 +56,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     [SerializeField] private AttackBase m_DamageAttackType;
     [SerializeField] private AttackTypeDamage m_EatAttackType;
-
     [SerializeField] private LayerMask m_GroundLayerMask;
 
     private AttackBase m_CurrentAttackComponent;
@@ -674,6 +673,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_AnimalHealthComponent = GetComponent<HealthComponent>();
         m_ThrowableComponent = GetComponent<ThrowableObjectComponent>();
         m_AttackableComponent = GetComponent<AttackBase>();
+        DisableImpactFX();
 
         m_ThrowableComponent.OnTuggedByLasso += OnPulledByLasso;
         m_ThrowableComponent.OnStartSpinning += OnStartedLassoSpinning;
@@ -734,6 +734,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalEvadingState)).AddOnExit(OnTargetInvalidated));
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalWrangledState)).AddOnExit(OnTargetInvalidated));
 
+        m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallState), typeof(AnimalStaggeredState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
+
         m_StateMachine.AddTransition(typeof(AnimalIdleState), typeof(AnimalDeathState), () => IsDead);
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
@@ -776,6 +778,16 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
         m_Manager.AddToPauseUnpause(this);
         m_StateMachine.InitializeStateMachine();
+    }
+
+    private void EnableImpactFX() 
+    {
+        m_ThrowableComponent.EnableImpacts(true);
+    }
+
+    private void DisableImpactFX() 
+    {
+        m_ThrowableComponent.EnableImpacts(false);
     }
 
 	private void OnDestroy()
