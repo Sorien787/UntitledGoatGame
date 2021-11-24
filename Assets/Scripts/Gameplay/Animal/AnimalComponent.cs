@@ -168,19 +168,22 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private void OnHitGround(Collision collision) 
     {
-        if (m_AnimalRigidBody != null)
+        Vector3 momentum = m_AnimalRigidBody.mass * m_AnimalRigidBody.velocity;
+        float momentumInNormalDirection = -Vector3.Dot(collision.contacts[0].normal, momentum);
+        OnHitByMomentum(momentumInNormalDirection);
+    }
+
+    private void OnHitByMomentum(float momentumMagnitude) 
+    {
+
+        if (momentumMagnitude > m_StaggerTimeByImpactMomentum.keys[0].time && CanImpactHard() && m_CurrentStaggerCooldown.CooldownComplete)
         {
-            Vector3 momentum = m_AnimalRigidBody.mass * m_AnimalRigidBody.velocity;
-            float momentumInNormalDirection = -Vector3.Dot(collision.contacts[0].normal, momentum);
-            if (momentumInNormalDirection > m_StaggerTimeByImpactMomentum.keys[0].time && CanImpactHard() && m_CurrentStaggerCooldown.CooldownComplete)
-            {
-                m_bShouldStagger = true;
-                m_CurrentStaggerCooldown.SetCooldown(m_StaggerCooldown);
-                m_TotalStaggerTime = m_StaggerTimeByImpactMomentum.Evaluate(momentumInNormalDirection);
-                m_AnimalAnimator.OnHitGround(collision.GetContact(0).point, Quaternion.LookRotation(Vector3.forward, collision.GetContact(0).normal), momentumInNormalDirection);
-            }
+            m_bShouldStagger = true;
+            m_CurrentStaggerCooldown.SetCooldown(m_StaggerCooldown);
+            m_TotalStaggerTime = m_StaggerTimeByImpactMomentum.Evaluate(momentumMagnitude);
         }
     }
+
     public void OnReceiveImpulse(in Vector3 forceChange) 
     {
         ProjectileParams pParams = new ProjectileParams(m_ThrowableComponent, forceChange.magnitude, forceChange.normalized, m_AnimalBodyTransform.position, 180f);
@@ -605,9 +608,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     }
 
     private Vector3 m_BodyVelocity = Vector3.zero;
-    private Vector3 m_BodyAngularVelocity = Vector3.zero;
     private bool m_bWasUsingNavmeshAgent = false;
-    private bool m_bWasUsingRigidBody = false;
+
 
     public void Pause()
     {
@@ -615,16 +617,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         {
             m_bWasUsingNavmeshAgent = true;
             m_BodyVelocity = m_AnimalAgent.velocity;
-        }
-        if (!m_AnimalRigidBody.isKinematic)
-        {
-            m_BodyVelocity = Vector3.zero;
-            m_BodyAngularVelocity = Vector3.zero;
-            m_AnimalRigidBody.velocity = Vector3.zero;
-            m_AnimalRigidBody.angularVelocity = Vector3.zero;
-            m_bWasUsingRigidBody = true;
-            m_AnimalRigidBody.isKinematic = true;
-
         }
 
         m_AnimalAgent.enabled = false;
@@ -640,12 +632,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
             m_AnimalAgent.velocity = m_BodyVelocity;
             m_AnimalAgent.enabled = true;
             m_bWasUsingNavmeshAgent = false;
-        }
-        if (m_bWasUsingRigidBody)
-        {
-            m_bWasUsingRigidBody = false;
-            m_AnimalRigidBody.velocity = m_BodyVelocity;
-            m_AnimalRigidBody.angularVelocity = m_BodyAngularVelocity;
         }
 
         m_AnimalAnimator.enabled = true;

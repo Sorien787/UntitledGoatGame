@@ -9717,7 +9717,7 @@ MonoBehaviour:
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_MaxExplosionRadius: 10
-  m_MaxExplosionPower: 145.52
+  m_MaxExplosionPower: 500
   m_BombPowerScalarByDistance:
     serializedVersion: 2
     m_Curve:

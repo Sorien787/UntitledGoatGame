@@ -76,8 +76,9 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
             OnObjectNotInFreeFall?.Invoke();
             m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
             m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
+            StopThrowingInternal();
         }
-        StopThrowingInternal();
+
     }
 
     void Update()

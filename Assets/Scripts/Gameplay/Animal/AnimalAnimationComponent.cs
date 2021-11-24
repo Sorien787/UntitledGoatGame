@@ -49,7 +49,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [Range(0f, 0.5f)][SerializeField] private float m_AnimationSpeedRandom;
     [SerializeField] private float m_fAnimationSizeScalar;
     [SerializeField] private float m_fPullTime;
-    [SerializeField] AnimationCurve m_ImpactMagnitudeByImpactMomentum;
 
     [Header("Variation Parameters")]
     [Range(0f, 0.3f)] [SerializeField] protected float m_SizeVariation;
@@ -77,7 +76,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private Transform m_ConfusionEffectTiltTransform;
     [SerializeField] private Transform m_ConfusionEffectRotationTransform;
     [SerializeField] private Transform m_DraggingParticlesTransform;
-    [SerializeField] private GameObject m_GroundImpactEffectsPrefab;
     [SerializeField] private GameObject m_BornEffectsPrefab;
 
     [SerializeField] private ParticleEffectsController m_AlertAttackEffectsController;
@@ -189,13 +187,6 @@ public class AnimalAnimationComponent : MonoBehaviour
         ScaleTransform.localScale = GetSizeMult * Vector3.one;
     }
 
-    public void OnHitGround(Vector3 position, Quaternion rotation, float momentum) 
-    {
-        GameObject resultObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
-        float shakeStrength = Mathf.Clamp(momentum / Mathf.Sqrt((m_vCowRigidBody.position - m_Manager.GetPlayer.transform.position).magnitude) / 10, 3, 200);
-        CameraShaker.Instance.ShakeOnce(shakeStrength, shakeStrength, 0.1f, 1.0f);
-        resultObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));
-    }
 
     public void SetCurrentAttackAnimation(in AttackBase m_NewAttack) 
     {

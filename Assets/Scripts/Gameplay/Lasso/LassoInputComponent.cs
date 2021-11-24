@@ -23,6 +23,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener
 
 	[Header("Gameplay References")]
 	[SerializeField] private IThrowableObjectComponent m_ThrowableComponent;
+	[SerializeField] private FreeFallTrajectoryComponent m_FreeFallComponent;
     [SerializeField] private LassoLoopComponent m_LassoLoop;
     [SerializeField] private PlayerMovement m_Player;
     [SerializeField] private PlayerCameraComponent m_PlayerCam;
@@ -133,8 +134,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener
         m_LassoLoop.OnHitObject += OnHitObject;
 
         m_ThrowableComponent.OnThrown += (ProjectileParams pparams) => OnThrown();
-
-        m_ThrowableComponent.OnLanded += OnNotThrown;
+		m_FreeFallComponent.OnObjectNotInFreeFall += OnNotThrown;
 
         GetThrowableObject = m_LassoEndTransform.GetComponent<ThrowableObjectComponent>();
 

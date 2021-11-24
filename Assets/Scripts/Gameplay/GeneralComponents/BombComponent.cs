@@ -73,8 +73,8 @@ public class BombComponent : MonoBehaviour
         {
             forward = Vector3.Cross(contactNormal, Vector3.up);
         }
-        Quaternion upRot = Quaternion.LookRotation(forward, -contactNormal);
-        Instantiate(m_ExplosionRef, m_Transform.position, Quaternion.identity);
+        Quaternion upRot = Quaternion.LookRotation(forward, contactNormal);
+        Instantiate(m_ExplosionRef, m_Transform.position, upRot);
         Destroy(gameObject);
     }
 }

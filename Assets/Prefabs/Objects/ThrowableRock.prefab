@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!95 &2012451687
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174731008845948305}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 52b56c187eb1c544ea5e8373c4c5e64c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2012451688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174731008845948305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df2efaeda518c642b17242242510548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ParticleAnimation: {fileID: 2012451687}
+  m_Multiplier: 0
 --- !u!1 &4649538071932314871
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,9 +179,6 @@ MonoBehaviour:
   m_objectRigidBody: {fileID: 1444594708651495038}
   m_ImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
-  m_Entity: {fileID: 653192708}
-  m_DragFX: {fileID: 8617004741241626947}
-  m_SpeedForDragFX: 2
 --- !u!114 &1444594708651495008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,10 +192,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_GravityMultiplier: 1.93
-  m_CowGameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
-  m_CausesHeavyImpact: 0
+  m_CausesHeavyImpact: 1
   m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
     type: 3}
+  m_ParticleStrength: {fileID: 2012451688}
+  m_DragFX: {fileID: 8617004741241626947}
+  m_DragAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.7340498
+      value: 0.0007767603
+      inSlope: 0.017655388
+      outSlope: 0.017655388
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.9858171
+    - serializedVersion: 3
+      time: 49.893223
+      value: 1.0071299
+      inSlope: 0.01770478
+      outSlope: 0.01770478
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.9833476
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_bCausesDragging: 1
+  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+  m_bCausesImpacts: 1
+  m_Transform: {fileID: 8565041533130692324}
+  m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
+    type: 3}
+  m_ImpactMagnitudeByImpactMomentum:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 99.3188
+      value: -0.00844012
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 300.91895
+      value: 1.015591
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Entity: {fileID: 653192708}
   m_ThrowingBody: {fileID: 1444594708651495038}
   m_CameraFocusTransform: {fileID: 8565041533130692324}
   m_AttachmentTransform: {fileID: 8565041533130692324}
@@ -273,6 +359,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2a31b4dec0266946868eb6eb4814d37, type: 3}
+--- !u!1 &1174731008845948305 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1174731007121126903, guid: b2a31b4dec0266946868eb6eb4814d37,
+    type: 3}
+  m_PrefabInstance: {fileID: 1794199654}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1174731008845948310 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1174731007121126896, guid: b2a31b4dec0266946868eb6eb4814d37,
@@ -285,7 +377,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1794199654}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1174731008845948305}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcf6832effb592542ad646d39ff4ffab, type: 3}
