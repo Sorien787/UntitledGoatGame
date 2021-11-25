@@ -26,6 +26,8 @@ public class Terrain : MonoBehaviour
 		m_TerrainExtent = data.m_TerrainExtent;
 	}
 
+	[Header("Position Settings")]
+	public Vector3 originPosition;
 
 	[Header("Extent Settings")]
 	[Range(1, 100)]

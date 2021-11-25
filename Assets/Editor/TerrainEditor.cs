@@ -200,7 +200,6 @@ public class TerrainEditor : EditorWindow
 	void SceneGUI(SceneView sceneView) 
     {
         Event e = Event.current;
-        Debug.Log("SceneGUI");
         if (e.type == EventType.MouseDown && e.button == 0 && !m_bMouseDown)
         {
             if (m_SelectedBrush)

@@ -195,6 +195,17 @@ public class TerrainGenerator : ScriptableObject
 
 	public void ActiveTerrainDataSettingsChanged()
 	{
+		for (int x = 0; x < workingTerrain.m_TerrainExtent.x; x++)
+		{
+			for (int y = 0; y < workingTerrain.m_TerrainExtent.y; y++)
+			{
+				for (int z = 0; z < workingTerrain.m_TerrainExtent.z; z++)
+				{
+					Chunk chunkOfInterest = Grid.GetValueFromGrid(x, y, z, workingTerrain.m_TerrainChunks, workingTerrain.m_TerrainExtent);
+					chunkOfInterest.shouldRerender = true;
+				}
+			}
+		}
 		CreateBuffers();
 		workingTerrain.RecalcNumChunks();
 		UpdateAllChunks(true);
@@ -227,7 +238,10 @@ public class TerrainGenerator : ScriptableObject
 	/// Get chunks within radius of brush click and brush size
 	public void ApplyBrushToTerrain(in RaycastHit hit, in ITerrainBrush brush, in float brushSize)
 	{
-		Vector3 hitPoint = hit.point;
+		Debug.Log(workingTerrain.scale);
+		Debug.Log(hit.point);
+		Vector3 hitPoint = hit.point - workingTerrain.originPosition;
+		Debug.Log(hitPoint);
 		hitPoint /= workingTerrain.scale;
 		Vector2 xChunkRange = new Vector2(hitPoint.x - brushSize, hitPoint.x + brushSize) / workingTerrain.chunkSize;
 		Vector2 yChunkRange = new Vector2(hitPoint.y - brushSize, hitPoint.y + brushSize) / workingTerrain.chunkSize;
@@ -275,7 +289,7 @@ public class TerrainGenerator : ScriptableObject
 			triangleBuffer.SetCounterValue(0);
 
 			marchShader.SetInts("chunkPos", new int[] {x,y,z});
-			marchShader.SetFloats("chunkOrigin", new float[] { 0, 0, 0 });
+			marchShader.SetFloats("chunkOrigin", new float[] { workingTerrain.originPosition.x, workingTerrain.originPosition.y, workingTerrain.originPosition.z });
 			marchShader.SetInts("renderTo", new int[] { chunkOfInterest.renderTo.x, chunkOfInterest.renderTo.y, chunkOfInterest.renderTo.z });
 			marchShader.SetInts("renderFrom", new int[] { chunkOfInterest.renderFrom.x, chunkOfInterest.renderFrom.y, chunkOfInterest.renderFrom.z });
 
