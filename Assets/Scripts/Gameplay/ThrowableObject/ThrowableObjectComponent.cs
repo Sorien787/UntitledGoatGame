@@ -56,7 +56,4 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 			healthComponent.AddListener(this);
 		}
 	}
-
-	Vector3 m_cachedVelocity = Vector3.zero;
-	bool m_bHadVelocity = false;
 }

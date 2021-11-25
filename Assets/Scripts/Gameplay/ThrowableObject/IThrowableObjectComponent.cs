@@ -13,6 +13,8 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [Header("Animation Settings")]
     [SerializeField] private AnimationCurve m_DragAnimationCurve;
     [SerializeField] private AnimationCurve m_ImpactMagnitudeByImpactMomentum;
+    [SerializeField] private AnimationCurve m_HazardRadiusByImpactMomentum;
+    [SerializeField] private AnimationCurve m_HazardLifetimeByImpactMomentum;
 
     [Header("External References")]
     [SerializeField] private GameObject m_HazardRef = null;
@@ -67,8 +69,10 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     public void EnableImpacts(bool isEnabled) 
     {
-        m_CausesImpacts = isEnabled;
+        m_bImpactsDisabled = !isEnabled;
     }
+
+    private bool m_bImpactsDisabled = false;
 
     float m_fImpactFXCooldown = 0.0f;
 
@@ -99,8 +103,6 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         }
     }
 
-
-
     public virtual void ThrowObject(in ProjectileParams pParams)
     {
         OnThrown?.Invoke(pParams);
@@ -113,7 +115,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     protected void CollisionEvent(Collision collision) 
     {
-        if (!m_CausesImpacts)
+        if (!m_CausesImpacts || m_bImpactsDisabled)
             return;
         Vector3 normal = collision.GetContact(0).normal;
         Quaternion rotation = Quaternion.LookRotation(Vector3.Cross(Vector3.up, normal), normal);
@@ -122,7 +124,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     private void OnObjectHitOtherWithMomentum(float momentum, Vector3 position, Quaternion rotation) 
     {
-        if (!m_CausesImpacts || momentum < m_MomentumForImpactFX || m_bIsWrangled)
+        if (!m_CausesImpacts || momentum < m_MomentumForImpactFX || m_bIsWrangled || m_bImpactsDisabled)
             return;
         CreateImpactAtPosition(momentum, position, rotation);
     }
@@ -133,11 +135,17 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             return;
 
         m_fImpactFXCooldown = m_DelayBetweenImpacts;
-        GameObject resultObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
+
         float shakeStrength = Mathf.Clamp(momentum / Mathf.Sqrt((m_Transform.position - m_Manager.GetPlayer.transform.position).magnitude) / 10, 3, 200);
         CameraShaker.Instance.ShakeOnce(shakeStrength, shakeStrength, 0.1f, 1.0f);
-        resultObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));
-        Instantiate(m_HazardRef, transform.position, transform.rotation, null);
+
+        GameObject impactObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
+        impactObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));
+
+        GameObject hazardObject = Instantiate(m_HazardRef, transform.position, transform.rotation, null);
+        HazardComponent hazard = hazardObject.GetComponent<HazardComponent>();
+        hazard.SetLifetime(m_HazardRadiusByImpactMomentum.Evaluate(momentum));
+        hazard.SetRadius(m_HazardLifetimeByImpactMomentum.Evaluate(momentum));
     }
 
     protected void OnObjectLanded()

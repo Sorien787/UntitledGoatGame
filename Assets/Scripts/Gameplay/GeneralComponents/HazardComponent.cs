@@ -14,6 +14,16 @@ public class HazardComponent : MonoBehaviour
         StartCoroutine(StartDestroyTimer());
     }
 
+    public void SetRadius(in float radius) 
+    {
+        m_HazardRadius = radius;
+    }
+
+    public void SetLifetime(in float lifetime) 
+    {
+        m_HazardLifetime = lifetime;
+    }
+
 	private void OnDrawGizmosSelected()
 	{
         Gizmos.DrawWireSphere(transform.position, m_HazardRadius);
@@ -23,5 +33,6 @@ public class HazardComponent : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(m_HazardLifetime);
         m_EntityTypeComponent.OnKilled();
+        Destroy(gameObject);
     }
 }

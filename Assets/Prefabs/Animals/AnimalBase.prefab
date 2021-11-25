@@ -10497,7 +10497,6 @@ MonoBehaviour:
   m_AlertFleeEffectsController: {fileID: 2973502529295201285}
   m_AlertBreedEffectsController: {fileID: 0}
   m_AlertIdleEffectsController: {fileID: 2973502529295201285}
-  m_DraggingParticleController: {fileID: 8775891180349096568}
   m_FreeFallingParticleController: {fileID: 6747988760286121710}
   m_BashedParticleController: {fileID: 2973502529295201285}
   m_AudioManager: {fileID: 6261768213309388389}
@@ -10709,19 +10708,69 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_HazardRadiusByImpactMomentum:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.10632676
+      value: 0.046919554
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 20.00839
+      value: 20.279486
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_HazardLifetimeByImpactMomentum:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.004282655
+      value: 0.8986684
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 89.736725
+      value: 4.534342
+      inSlope: 0.04127885
+      outSlope: 0.04127885
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08565299
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
-  m_bCausesDragging: 1
-  m_bCausesImpacts: 1
+  m_DelayBetweenImpacts: 0.3
+  m_CausesDragging: 0
+  m_CausesImpacts: 0
   m_GravityMultiplier: 2
   m_ThrowingBody: {fileID: 6261768213309388412}
   m_CameraFocusTransform: {fileID: 7107208444515908565}
   m_AttachmentTransform: {fileID: 2166936210622738242}
   m_MainTransform: {fileID: 6261768213309388384}
   m_FreeFallComponent: {fileID: 8017869404291731759}
+  m_MassMultiplier: 1
 --- !u!114 &-7029774317778207611
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -62,5 +62,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EntityTypeComponent: {fileID: 6886230701027873543}
-  m_HazardLifetime: 8
+  m_HazardLifetime: 4
   m_HazardRadius: 21.01

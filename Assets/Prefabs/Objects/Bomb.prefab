@@ -9680,7 +9680,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929366444259242028}
   serializedVersion: 2
-  m_Mass: 7.36
+  m_Mass: 12.3
   m_Drag: 0
   m_AngularDrag: 9.64
   m_UseGravity: 1
@@ -9718,9 +9718,9 @@ MonoBehaviour:
   m_ExplosionRef: {fileID: 6897984119125962195, guid: 8b3977f006b393e4e9137ed051c5eb71,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
-  m_MaxExplosionRadius: 8
+  m_MaxExplosionRadius: 5
   m_MaxStunRadius: 12
-  m_MaxExplosionPower: 500
+  m_MaxExplosionPower: 100
   m_BombStunTimeByRadius:
     serializedVersion: 2
     m_Curve:
@@ -9816,19 +9816,33 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_HazardRadiusByImpactMomentum:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_HazardLifetimeByImpactMomentum:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
-  m_bCausesDragging: 1
-  m_bCausesImpacts: 0
+  m_DelayBetweenImpacts: 0.3
+  m_CausesDragging: 0
+  m_CausesImpacts: 0
   m_GravityMultiplier: 1
   m_ThrowingBody: {fileID: 3983800817042991400}
   m_CameraFocusTransform: {fileID: 8229195216089481791}
   m_AttachmentTransform: {fileID: 8229195216089481791}
   m_MainTransform: {fileID: 8229195216089481791}
   m_FreeFallComponent: {fileID: 3983800817042991405}
+  m_MassMultiplier: 1
 --- !u!114 &3983800817042991405
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -279,7 +279,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 		{
             if (token.GetEntityTransform.TryGetComponent(out HazardComponent hazard)) 
             {
-                if (Vector3.SqrMagnitude(token.GetEntityTransform.position - token.GetEntityTransform.position) < hazard.GetHazardRadius * hazard.GetHazardRadius) 
+                if (Vector3.SqrMagnitude(token.GetEntityTransform.position - m_AnimalMainTransform.position) < hazard.GetHazardRadius * hazard.GetHazardRadius) 
                 {
                     return true;
                 }         

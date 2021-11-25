@@ -85,7 +85,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private ParticleEffectsController m_AlertIdleEffectsController;
     private ParticleEffectsController m_ActiveController;
 
-    [SerializeField] private ParticleEffectsController m_DraggingParticleController;
     [SerializeField] private ParticleEffectsController m_FreeFallingParticleController;
     [SerializeField] private ParticleEffectsController m_BashedParticleController;
 
@@ -171,14 +170,6 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void EnableDraggingParticles(bool enabled) 
     {
-        if (enabled) 
-        {
-            m_DraggingParticleController.IterateParticleSystems((ParticleSystem particleSystem) => particleSystem.Play(false));
-        }
-        else 
-        {
-            m_DraggingParticleController.IterateParticleSystems((ParticleSystem particleSystem) => particleSystem.Stop(false));
-        }
         
     }
 
