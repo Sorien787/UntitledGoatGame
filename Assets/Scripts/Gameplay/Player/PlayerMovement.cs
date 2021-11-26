@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 
 	[SerializeField] private PlayerCameraComponent m_CameraComponent;
 	[SerializeField] private CowGameManager m_Manager;
-	[SerializeField] private ThrowableObjectNoRigidComponent m_throwableObjectComponent;
+	[SerializeField] private ThrowablePlayerComponent m_throwableObjectComponent;
 	[SerializeField] private AnimationCurve m_SpinningStrengthSlowCurve;
     [SerializeField] private AnimationCurve m_SpinningMassSlowCurve;
     [SerializeField] private AnimationCurve m_ImpactStrengthByImpactSpeed;

@@ -230,7 +230,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	private void TryBeginSuccessCountdown() 
 	{
-		if (m_NumObjectivesCompleted == m_NumObjectivesToComplete && m_bHasStarted)
+		if (m_NumObjectivesCompleted == m_NumObjectivesToComplete && m_bHasStarted && m_NumObjectivesCompleted != 0)
 		{
 			GetCurrentLevel.StartSucceedCountdown();
 		}

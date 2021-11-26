@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowableObjectNoRigidComponent : IThrowableObjectComponent
+public class ThrowablePlayerComponent : IThrowableObjectComponent
 {
 	[SerializeField] private float m_ObjectMass;
 

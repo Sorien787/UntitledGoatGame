@@ -771,7 +771,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddTransition(typeof(AnimalPredatorChaseState), typeof(AnimalIdleState), ShouldStopActionToEvadeNext);
         m_StateMachine.AddTransition(typeof(AnimalIdleState), typeof(AnimalPredatorChaseState), CanHuntEnemy);
         m_StateMachine.AddTransition(typeof(AnimalPredatorChaseState), typeof(AnimalAttackState), CanAttackEnemy);
-        m_StateMachine.AddTransition(typeof(AnimalAttackState), typeof(AnimalIdleState), () => HasLostAttackTarget(m_CurrentAttackComponent.GetAttackRange * 3.0f));
+        m_StateMachine.AddTransition(typeof(AnimalAttackState), typeof(AnimalIdleState), () => HasLostAttackTarget(m_CurrentAttackComponent.GetAttackLossRange));
 
         // only aggressive creatures can attack players from wrangled state
         m_StateMachine.AddTransition(typeof(AnimalWrangledAttackState), typeof(AnimalAttackState), CanAttackPlayerFromWrangle);
@@ -1274,7 +1274,7 @@ public class AnimalPredatorChaseState : AStateBase<AnimalComponent>
 
     public override void OnEnter()
     {
-        m_animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius);
+        m_animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius - 0.5f);
         m_animalAnimator.SetRunAnimation();
         m_animalMovement.SetRunning();
 
