@@ -236,12 +236,12 @@ public class TerrainGenerator : ScriptableObject
 	}
 
 	/// Get chunks within radius of brush click and brush size
-	public void ApplyBrushToTerrain(in RaycastHit hit, in ITerrainBrush brush, in float brushSize)
+	public void ApplyBrushToTerrain(RaycastHit hit, in ITerrainBrush brush, in float brushSize)
 	{
-		Debug.Log(workingTerrain.scale);
-		Debug.Log(hit.point);
 		Vector3 hitPoint = hit.point - workingTerrain.originPosition;
-		Debug.Log(hitPoint);
+
+		hit.point = hitPoint;
+
 		hitPoint /= workingTerrain.scale;
 		Vector2 xChunkRange = new Vector2(hitPoint.x - brushSize, hitPoint.x + brushSize) / workingTerrain.chunkSize;
 		Vector2 yChunkRange = new Vector2(hitPoint.y - brushSize, hitPoint.y + brushSize) / workingTerrain.chunkSize;
