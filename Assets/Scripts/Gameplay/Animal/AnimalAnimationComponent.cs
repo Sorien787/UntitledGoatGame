@@ -134,7 +134,7 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public float GetPullTime => m_fPullTime;
 
-	public float DamagedAnimTime => m_DamagedAnimationDuration;
+	public float DamagedAnimTime => m_AnimalComponent.GetDamagedDuration;
 	public AnimationCurve DamagedColorCurve => m_DamagedVisualsAnimationCurve;
 	public AnimationCurve DamagedHopCurve => m_DamagedHopAnimationCurve;
 	public Color DamagedFlashColor => m_DamagedColor;
@@ -254,14 +254,14 @@ public class AnimalAnimationComponent : MonoBehaviour
         Attacking,
         Hunting,
         Horny,
-        Idling
+        UnSet
     }
 
-    private AnimalMood m_LastMood = AnimalMood.Idling;
+    private AnimalMood m_LastMood = AnimalMood.UnSet;
 
-    bool TrySetAnimalMood(AnimalMood mood) 
+    bool TrySetAnimalMood(AnimalMood mood, bool overrideMood = false) 
     {
-        if (!m_LastMood.Equals(mood)) 
+        if (!m_LastMood.Equals(mood) || overrideMood) 
         {
             m_ActiveController.TurnOffAllSystems();
             m_LastMood = mood;
@@ -272,7 +272,7 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void IsScared() 
     {
-        if (TrySetAnimalMood(AnimalMood.Fleeing)) 
+        if (TrySetAnimalMood(AnimalMood.Fleeing, true)) 
         {
             m_ActiveController = m_AlertAttackEffectsController;
             m_AlertFleeEffectsController.PlayOneShot();
@@ -281,7 +281,7 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void HasSeenEnemy() 
     {
-        if (TrySetAnimalMood(AnimalMood.Attacking))
+        if (TrySetAnimalMood(AnimalMood.Attacking, true))
         {
             m_ActiveController = m_AlertAttackEffectsController;
             m_AlertAttackEffectsController.PlayOneShot();
@@ -299,19 +299,10 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void HasSeenMate() 
     {
-        if (TrySetAnimalMood(AnimalMood.Horny)) 
+        if (TrySetAnimalMood(AnimalMood.Horny, true)) 
         {
             m_ActiveController = m_AlertBreedEffectsController;
             m_AlertBreedEffectsController.TurnOnAllSystems();
-        }
-    }
-
-    public void IsIdling() 
-    {
-        if (TrySetAnimalMood(AnimalMood.Idling)) 
-        {
-            m_ActiveController = m_AlertIdleEffectsController;
-            m_AlertIdleEffectsController.PlayOneShot();
         }
     }
 
@@ -590,7 +581,12 @@ public class AnimalWalkingAnimationState : AStateBase<AnimalAnimationComponent>
 
 public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
 {
-    private List<MeshRenderer> m_VisualMeshRenderers;
+    private List<MeshRenderer> m_VisualMeshRenderers = new List<MeshRenderer>();
+
+    public AnimalDamagedAnimationState()
+    {
+        AddTimers(1);
+    }
 
     public override void OnEnter()
     {
@@ -598,7 +594,8 @@ public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
         {
             meshRenderer.enabled = true;
         });
-
+        localOffset = Host.AnimTransform.localPosition;
+        localRotation = Host.AnimTransform.localRotation;
     }
     private void ForEachMeshRenderer(List<MeshRenderer> renderers, Action<MeshRenderer> action)
     {
@@ -607,6 +604,13 @@ public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
             action.Invoke(renderer);
         }
     }
+
+    Quaternion localRotation = Quaternion.identity;
+    Quaternion rotVelocity = Quaternion.identity;
+
+    Vector3 localOffset = Vector3.zero;
+    Vector3 velocity = Vector3.zero;
+
     public override void Tick()
     {
         if (GetTimerVal(0) < Host.DamagedAnimTime)
@@ -627,9 +631,12 @@ public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
                 }
             });
 
-  
+            localRotation = UnityUtils.UnityUtils.SmoothDampQuat(localRotation, Quaternion.identity, ref rotVelocity, 0.25f);
+            Host.AnimTransform.localRotation = localRotation;
+
+            localOffset = Vector3.SmoothDamp(localOffset, Vector3.zero, ref velocity, 0.25f);
             Vector3 desiredPosition = new Vector3(0, Host.DamagedHopCurve.Evaluate(animTime), 0);
-			Host.AnimTransform.localPosition = Vector3.MoveTowards(Host.AnimTransform.localPosition, desiredPosition, Host.AnimLinearSpeed);
+            Host.AnimTransform.localPosition = localOffset + desiredPosition;
         }
     }
 

@@ -89,7 +89,7 @@ public class HealthComponent : MonoBehaviour
         if (!m_IsInvulnerable)
         {
             m_CurrentHealth -= damageAmount;
-            if (m_CurrentHealth == 0)
+            if (m_CurrentHealth <= 0)
             {
                 OnKilled(gameObject, damagedBy, damageType);
             }

@@ -58,6 +58,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     [SerializeField] private AttackTypeDamage m_EatAttackType;
     [SerializeField] private LayerMask m_GroundLayerMask;
 
+    [Header("Damaged parameters")]
+    [SerializeField] private float m_DamagedDuration = default;
+
     private AttackBase m_CurrentAttackComponent;
 
     private bool m_bIsHungry = false;
@@ -90,6 +93,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	private ThrowableObjectComponent m_ThrowableComponent = default;
 
     public float GetBornDuration => m_BornTime;
+
+    public float GetDamagedDuration => m_DamagedDuration;
 
 
     #region Component Event Handlers
@@ -912,7 +917,6 @@ public class AnimalIdleState : AStateBase<AnimalComponent>
 		Host.SetManagedByAgent(true);
 		Host.DisablePhysics();
 		m_animalMovementAnimator.SetWalkAnimation();
-		m_animalMovementAnimator.IsIdling();
 		m_animalMovement.SetWalking();
 		m_animalMovement.ClearDestination();
 	}
@@ -1036,8 +1040,22 @@ public class AnimalDamagedState : AStateBase<AnimalComponent>
     private readonly AnimalAnimationComponent animalAnimator;
     public AnimalDamagedState(AnimalAnimationComponent animalAnimator)
     {
+        AddTimers(1);
         this.animalAnimator = animalAnimator;
     }
+
+	public override void OnEnter()
+	{
+        animalAnimator.TriggerDamagedAnimation();
+	}
+
+	public override void Tick()
+	{
+	    if (GetTimerVal(0) > Host.GetDamagedDuration) 
+        {
+            RequestTransition<AnimalIdleState>();
+        }
+	}
 }
 
 public class AnimalStaggeredState : AStateBase<AnimalComponent>
