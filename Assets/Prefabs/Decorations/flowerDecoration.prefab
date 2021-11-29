@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4044804478844506718}
   - component: {fileID: 4044804478844506691}
   - component: {fileID: 4044804478844506716}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MeshRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,8 +88,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4044804479684728316}
-  m_Layer: 0
-  m_Name: FlowerObj
+  m_Layer: 11
+  m_Name: flowerDecoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

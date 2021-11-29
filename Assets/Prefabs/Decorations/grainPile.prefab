@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 5240486593034024725}
   - component: {fileID: 5240486593034024724}
   - component: {fileID: 5240486593034024727}
-  m_Layer: 0
-  m_Name: Grain
+  m_Layer: 11
+  m_Name: grainPile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,7 +151,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5240486594265447249}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TrackingTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,6 +259,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PileOfGrain
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 037d1237368eeff479dc32e3709c4514,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 037d1237368eeff479dc32e3709c4514, type: 3}
 --- !u!4 &991713327040762836 stripped
@@ -353,6 +358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PileOfGrain (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 037d1237368eeff479dc32e3709c4514,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 037d1237368eeff479dc32e3709c4514, type: 3}

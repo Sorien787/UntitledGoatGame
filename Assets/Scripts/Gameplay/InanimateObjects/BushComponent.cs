@@ -15,8 +15,6 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
     [Header("Object references")]
     [SerializeField] private Mesh m_BerryMesh;
     [SerializeField] private Material m_BerryMaterial;
-    [SerializeField] private Transform m_Transform;
-
 
     private class Flower 
     {
@@ -95,6 +93,25 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
 
 	private void Awake()
 	{
+        berryMesh = new Mesh
+        {
+            vertices = new Vector3[] { Vector3.forward, Vector3.right, Vector3.up, Vector3.back, Vector3.left, Vector3.down },
+            triangles = new int[] { 2, 0, 1, 2, 1, 3, 2, 3, 4, 2, 4, 0, 5, 1, 0, 5, 3, 1, 5, 4, 3, 5, 0, 4 }
+        };
+
+        Vector3[] normals = new Vector3[6];
+        for (int i = 0; i < normals.Length; i++) 
+        {
+            int triOffset = 3 * i;
+            Vector3 tot = Vector3.zero;
+            tot += berryMesh.vertices[berryMesh.triangles[triOffset]];
+            tot += berryMesh.vertices[berryMesh.triangles[triOffset + 1]];
+            tot += berryMesh.vertices[berryMesh.triangles[triOffset + 2]];
+            tot /= 3;
+            normals[i] = -tot.normalized;
+        }
+        berryMesh.normals = normals;
+
         m_BerryMesh = GetComponentInChildren<MeshFilter>().sharedMesh;
         GetComponent<FoodSourceComponent>().AddListener(this);
 
@@ -163,17 +180,15 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
         }
     }
 
+    private Mesh berryMesh = null;
+
     private bool m_bUpdateSizes = true;
 
     void Update()
     {
-        bool isReadable = m_BerryMesh.isReadable;
 
-        Mesh mesh = new Mesh();
-        mesh.vertices = new Vector3[] { Vector3.zero, Vector3.forward, Vector3.right};
-        mesh.triangles = new int[] { 0, 1, 2 };
-        mesh.normals = new Vector3[] { Vector3.up, Vector3.up, Vector3.up };
-        Graphics.DrawMeshInstanced(mesh, 0, m_BerryMaterial, m_Matrices);
+
+		Graphics.DrawMeshInstanced(berryMesh, 0, m_BerryMaterial, m_Matrices);
 
         if (!m_bUpdateSizes)
             return;

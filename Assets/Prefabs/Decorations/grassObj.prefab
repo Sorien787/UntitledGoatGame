@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 7550517520297860235}
   - component: {fileID: 7550517520297860234}
   - component: {fileID: 1354458672552193757}
-  m_Layer: 0
-  m_Name: GrassObj
+  m_Layer: 11
+  m_Name: grassObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,11 +189,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_FoodHealthAnimator: {fileID: 7550517520297860235}
   m_fHealthThresholdForEaten: 1
   m_fHealthThresholdForReadyForEating: 3
   m_fFoodSizeChangeTime: 0.3
-  m_FoodAnimatorParamName: GrowthAmount
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_EntityInformation: {fileID: 7550517520297860234}
 --- !u!95 &7550517520297860235
@@ -206,7 +204,7 @@ Animator:
   m_GameObject: {fileID: 7550517520297860237}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 3f9f74e330f2a9c43beadc8f5d4ebe1e, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -231,6 +229,7 @@ MonoBehaviour:
     type: 2}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_TrackingTransform: {fileID: 0}
+  m_TrackableRadius: 0
 --- !u!114 &1354458672552193757
 MonoBehaviour:
   m_ObjectHideFlags: 0

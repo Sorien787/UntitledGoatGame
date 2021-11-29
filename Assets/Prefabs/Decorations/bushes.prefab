@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8193576897066533465}
   - component: {fileID: 2864538650215313589}
   - component: {fileID: 245518832}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: bushes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,14 +31,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281739335688112978}
-  m_LocalRotation: {x: -0.68283856, y: 0.29748768, z: 0.0946604, w: 0.66050893}
+  m_LocalRotation: {x: -0.7219913, y: -0.00023756034, z: -0.29084727, w: -0.6278029}
   m_LocalPosition: {x: 0.35, y: 18.62, z: 3.4}
   m_LocalScale: {x: 60, y: 60, z: 60}
   m_Children:
   - {fileID: 8092305430058963469}
+  - {fileID: 6399751343997966264}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -73.408005, y: 112.55601, z: -80.009}
+  m_LocalEulerAnglesHint: {x: 65.012, y: 95.78001, z: -239.91899}
 --- !u!33 &5253641419182572407
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -157,11 +158,10 @@ MonoBehaviour:
   m_TargetNumOfFlowers: 200
   m_MaxAngleFromUp: 70
   m_FlowerSizeRandom: 0.2
-  m_FlowerScalar: 1.25
-  m_BerryMesh: {fileID: 289301614986012343, guid: d99a7fd548c9f4f42a1bd5f3475b3cf7,
+  m_FlowerScalar: 0.25
+  m_BerryMesh: {fileID: 4444728127320036556, guid: a2b4232d5fe9fb443aa948d4c7f124de,
     type: 3}
   m_BerryMaterial: {fileID: 2100000, guid: f6f7bc95d6e4674439999f5bd72d53d1, type: 2}
-  m_Transform: {fileID: 0}
 --- !u!114 &8193576897066533465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,10 +242,71 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    m_RolledColor: {r: 0.079471394, g: 0.36769462, b: 0.000045180786, a: 1}
+    m_RolledColor: {r: 0.05002073, g: 0.28737053, b: 0.0028252802, a: 1}
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
   m_bRandomizeOnStart: 1
+--- !u!1 &5877979536090986298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6399751343997966264}
+  - component: {fileID: 8301058262097109162}
+  - component: {fileID: 3103027669840857737}
+  m_Layer: 11
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6399751343997966264
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5877979536090986298}
+  m_LocalRotation: {x: 0.5991764, y: -0.3483255, z: -0.058602534, w: 0.7184865}
+  m_LocalPosition: {x: -0.0126, y: -0.0085, z: -0.006}
+  m_LocalScale: {x: 0.028955966, y: 0.013400667, z: 0.033957876}
+  m_Children: []
+  m_Father: {fileID: 3869623104819378497}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 55.102, y: -86.060005, z: -61.258003}
+--- !u!65 &8301058262097109162
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5877979536090986298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &3103027669840857737
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5877979536090986298}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7596582200506077565
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +316,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8092305430058963469}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TrackableTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

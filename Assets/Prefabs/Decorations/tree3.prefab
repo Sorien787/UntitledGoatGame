@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6744836975020422972}
   - component: {fileID: -8106524621464093690}
   - component: {fileID: 617912315200114479}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: tree3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,4 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DefaultShaderId: '"_Color"'
   m_MaterialColourSettingReference: 0
+  m_ColourSettings: []
   m_bRandomizeOnStart: 0

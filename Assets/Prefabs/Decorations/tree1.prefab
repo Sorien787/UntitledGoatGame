@@ -1,5 +1,93 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2938407896852872024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 287447855572245541}
+  - component: {fileID: 6131437476966921767}
+  m_Layer: 11
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &287447855572245541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2938407896852872024}
+  m_LocalRotation: {x: -0, y: -0.23113388, z: -0.00000002235174, w: 0.972922}
+  m_LocalPosition: {x: -0.00244, y: 0, z: 0.0056}
+  m_LocalScale: {x: 0.0025151714, y: 0.003110377, z: 0.013312109}
+  m_Children: []
+  m_Father: {fileID: 8590803854670833969}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -26.728, z: 0}
+--- !u!65 &6131437476966921767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2938407896852872024}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3899148622770161776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1120516294278168823}
+  - component: {fileID: 6325925577994930573}
+  m_Layer: 11
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1120516294278168823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899148622770161776}
+  m_LocalRotation: {x: -0, y: 0.13270435, z: -0.000000052154064, w: 0.9911557}
+  m_LocalPosition: {x: -0.0026, y: -0, z: 0.023}
+  m_LocalScale: {x: 0.0025151714, y: 0.0021399246, z: 0.025784709}
+  m_Children: []
+  m_Father: {fileID: 8590803854670833969}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 15.252001, z: 0}
+--- !u!65 &6325925577994930573
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899148622770161776}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4711877151813589794
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,10 +99,9 @@ GameObject:
   - component: {fileID: 8590803854670833969}
   - component: {fileID: 748631259101074183}
   - component: {fileID: 6439906960357912574}
-  - component: {fileID: 5086245999630787232}
   - component: {fileID: 8572331396248138995}
   - component: {fileID: -4660109857428498951}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +118,9 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -23.013, y: -0.88, z: -20.35}
   m_LocalScale: {x: 200, y: 200, z: 200}
-  m_Children: []
+  m_Children:
+  - {fileID: 287447855572245541}
+  - {fileID: 1120516294278168823}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -83,19 +172,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5086245999630787232
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4711877151813589794}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.00311555, y: 0.003046761, z: 0.04}
-  m_Center: {x: 0, y: 0, z: 0.02098827}
 --- !u!208 &8572331396248138995
 NavMeshObstacle:
   m_ObjectHideFlags: 0

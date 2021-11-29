@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6924603179834637479}
   - component: {fileID: 752766651504243321}
   - component: {fileID: 6483521955128327283}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: pCube8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4562216217385241879}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 29.899998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5840922292687797662}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 8704964446867052066}
   - component: {fileID: 5109103188556490813}
   - component: {fileID: 6484562792905103917}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: pCube5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5906077583961165495}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 29.899998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5840922292687797662}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 2230469825539859880}
   - component: {fileID: 1550304991097083825}
   - component: {fileID: 905376285815155922}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: pCube7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6217800882210893587}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 29.899998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5840922292687797662}
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 5840922292687797662}
   - component: {fileID: -3385785987632942776}
   - component: {fileID: 925608281488257527}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: longFence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 12.3, z: 21.49}
-  m_Center: {x: 0, y: 0, z: -19.4}
+  m_Center: {x: 0, y: 0.2, z: 10.21}
 --- !u!208 &925608281488257527
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -296,11 +296,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.62, y: 8.12, z: 10.745}
+  m_Extents: {x: 0.62, y: 8.4, z: 10.745}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: -1.3, z: -19.4}
+  m_Center: {x: 0, y: 0.46, z: 10.3}
   m_TimeToStationary: 0.5
 --- !u!1 &7769390127008456667
 GameObject:
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 5401820189682552201}
   - component: {fileID: 1809588530033168809}
   - component: {fileID: 8813523846749455800}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: pCube6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7769390127008456667}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 29.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5840922292687797662}

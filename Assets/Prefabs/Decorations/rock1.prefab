@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4071629423746114363}
   - component: {fileID: 9158968577611604749}
   - component: {fileID: 2753547716341682550}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: rock1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,4 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DefaultShaderId: _Color
   m_MaterialColourSettingReference: 0
+  m_ColourSettings: []
   m_bRandomizeOnStart: 0
