@@ -29,11 +29,13 @@ public class TerrainEditor : EditorWindow
     void LocateTerrainInLevel()
     {
         Terrain[] terrains = FindObjectsOfType(typeof(Terrain)) as Terrain[];
-        if (terrains.Length > 0)
+        GetTerrain.Clear();
+        foreach(Terrain terrain in terrains) 
         {
-            GetTerrain.Add(terrains[0]);
-            m_TerrainGenerator.LoadTerrainForEditing(terrains[0]);
+            GetTerrain.AddRange(terrains);
         }
+
+        m_TerrainGenerator.LoadTerrainForEditing(terrains[0]);
     }
 
     void CreateNewTerrainData(in string terrainDataName)
