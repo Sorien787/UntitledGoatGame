@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2735400669585439897}
   - component: {fileID: 2735400669585439903}
   - component: {fileID: 2735400669585439901}
-  - component: {fileID: 2735400669585439900}
   - component: {fileID: 2735400669585439891}
   - component: {fileID: 2735400669585439890}
   m_Layer: 13
@@ -219,47 +218,6 @@ MonoBehaviour:
   m_LRTiltAnimString: TiltLR
   m_FBTiltAnimString: TiltUD
   m_fMouseSensitivityMultiplier: 100
---- !u!114 &2735400669585439900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2735400669585439902}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2813fb8d168756b44af78b5a938185b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: cb9377628d0813f458139df2eb2d4e44, type: 3}
-  container: {fileID: 0}
-  cloudTestParams: {x: 0, y: 0, z: 0}
-  numStepsLight: 10
-  rayOffsetStrength: 2.68
-  blueNoise: {fileID: 2800000, guid: 6d82457f96ba8449597922c106f17caa, type: 3}
-  cloudScale: 0.6
-  densityMultiplier: 0.92
-  densityOffset: -3.64
-  shapeOffset: {x: 29, y: -49, z: 0.64}
-  heightOffset: {x: 0, y: 0}
-  shapeNoiseWeights: {x: 1.93, y: 0.89, z: 1.37, w: 0.57}
-  detailNoiseScale: 5.44
-  detailNoiseWeight: 1.5
-  detailNoiseWeights: {x: 2.57, y: 0.89, z: 1.37}
-  detailOffset: {x: 130, y: 0, z: 0}
-  lightAbsorptionThroughCloud: 1
-  lightAbsorptionTowardSun: 1
-  darknessThreshold: 0.438
-  forwardScattering: 0.743
-  backScattering: 0.327
-  baseBrightness: 0.347
-  phaseFactor: 0.438
-  timeScale: 1
-  baseSpeed: 1
-  detailSpeed: 2
-  colA: {r: 0.8160377, g: 0.990811, b: 1, a: 0}
-  colB: {r: 0.38768244, g: 0.64064485, b: 0.6792453, a: 0}
-  material: {fileID: 0}
 --- !u!95 &2735400669585439891
 Animator:
   serializedVersion: 3
