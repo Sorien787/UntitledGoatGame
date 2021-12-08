@@ -151,7 +151,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_MapResizerTex: {fileID: 2800000, guid: 5bb92e256168a454aa369217d922e1b3, type: 3}
-  m_MapVisualizerPrefab: {fileID: 8994647397414215100, guid: 0fa3bc9f11cd31b4ea9967f9bb1533ea,
+  m_MapVisualizerPrefab: {fileID: 4264797809652750194, guid: 82d2aa1da2a8c3f489317e63dec0a215,
     type: 3}
 --- !u!114 &7550517520297860244
 MonoBehaviour:

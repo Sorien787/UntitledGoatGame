@@ -42,7 +42,6 @@ public class GrassPatchEditor : EditorWindow
 	private void OnSceneGUI(SceneView sv) 
 	{
 		m_CurrentViewingWindow = sv;
-		m_StateMachine.Tick(Time.deltaTime);
 	}
 	private void OnGUI()
 	{
@@ -238,7 +237,6 @@ public class StateDrawingTexture : AStateBase<GrassPatchEditor>
 	public override void OnEnter()
 	{
 		grassPatchComponent = Host.GetCurrentGrassPatch;
-		m_bIsMouseDown = false;
 		m_SpriteRenderer = Host.GetCurrentGrassPatch.CreateGrassPaintVisualizer(Host.GetCurrentGrassPatch.GrassGenerationBounds.Item1).GetComponent<SpriteRenderer>();
 		grassPatchComponent.UpdateGrassPaintVisualizer(m_SpriteRenderer);
 	}
@@ -250,7 +248,6 @@ public class StateDrawingTexture : AStateBase<GrassPatchEditor>
 		base.OnExit();
 	}
 
-	bool m_bIsMouseDown = false;
 	public override void Tick()
 	{
 		Event e = Event.current;
@@ -312,71 +309,57 @@ public class StateDrawingTexture : AStateBase<GrassPatchEditor>
 
 		Vector2 screenMousePoint = GUIUtility.GUIToScreenPoint(Event.current.mousePosition) - Host.position.position;
 
-		if (type == EventType.MouseDown)
-		{
-			m_bIsMouseDown = true;
-			e.Use();
-		}
 
-		if (type == EventType.MouseUp)
-		{
-			m_bIsMouseDown = false;
-			e.Use();
-		}
+		if (!rect.Contains(screenMousePoint, true) || type != EventType.MouseDrag)
+			return;
 
-		if (rect.Contains(screenMousePoint, true))
-		{
-			Vector2 pixelPositionClickPoint = (screenMousePoint - rect.position) / RectPixelsPerTexPixel;
-			pixelPositionClickPoint.y = height - pixelPositionClickPoint.y;
+		Vector2 pixelPositionClickPoint = (screenMousePoint - rect.position) / RectPixelsPerTexPixel;
+		pixelPositionClickPoint.y = height - pixelPositionClickPoint.y;
 
-			if (m_bIsMouseDown)
+
+		Vector2 lowerBrushBound = pixelPositionClickPoint - new Vector2(halfBrushSize_PixelSpace, halfBrushSize_PixelSpace);
+		Vector2 upperBrushBound = pixelPositionClickPoint + new Vector2(halfBrushSize_PixelSpace, halfBrushSize_PixelSpace);
+
+		lowerBrushBound.x = Mathf.Clamp(lowerBrushBound.x, 0, width);
+		upperBrushBound.x = Mathf.Clamp(upperBrushBound.x, 0, width);
+
+		lowerBrushBound.y = Mathf.Clamp(lowerBrushBound.y, 0, height);
+		upperBrushBound.y = Mathf.Clamp(upperBrushBound.y, 0, height);
+		Debug.Log(e.type);
+
+		float multiplier = brushType == BrushType.Add ? 1 : -1;
+		Color[] gridColors = grassPatchComponent.GrassMap.GetPixels();
+
+		// tex is row by row, so x first, then y
+		// and the ID should be pixelHeight * rowWidth + pixelWidth
+		for (int i = (int)lowerBrushBound.x; i < (int)upperBrushBound.x; i++)
+		{
+			for (int j = (int)lowerBrushBound.y; j < (int)upperBrushBound.y; j++)
 			{
-				Vector2 lowerBrushBound = pixelPositionClickPoint - new Vector2(halfBrushSize_PixelSpace, halfBrushSize_PixelSpace);
-				Vector2 upperBrushBound = pixelPositionClickPoint + new Vector2(halfBrushSize_PixelSpace, halfBrushSize_PixelSpace);
+				Vector2 centreOffset = new Vector2(i, j) - pixelPositionClickPoint;
 
-				lowerBrushBound.x = Mathf.Clamp(lowerBrushBound.x, 0, width);
-				upperBrushBound.x = Mathf.Clamp(upperBrushBound.x, 0, width);
+				float sqDistFromCentre = centreOffset.sqrMagnitude;
 
-				lowerBrushBound.y = Mathf.Clamp(lowerBrushBound.y, 0, height);
-				upperBrushBound.y = Mathf.Clamp(upperBrushBound.y, 0, height);
+				if (sqDistFromCentre > halfBrushSize_PixelSpace * halfBrushSize_PixelSpace)
+					continue;
 
+				float brushInfluence = multiplier * Mathf.Clamp01(brushStrength * (1 - Mathf.Sqrt(sqDistFromCentre) / halfBrushSize_PixelSpace));
+				int colorId = i + j * (int)width;
 
-				float multiplier = brushType == BrushType.Add ? 1 : -1;
-				Color[] gridColors = grassPatchComponent.GrassMap.GetPixels();
-
-				// tex is row by row, so x first, then y
-				// and the ID should be pixelHeight * rowWidth + pixelWidth
-				for (int i = (int)lowerBrushBound.x; i < (int)upperBrushBound.x; i++)
+				switch (brushChannel)
 				{
-					for (int j = (int)lowerBrushBound.y; j < (int)upperBrushBound.y; j++)
-					{
-						Vector2 centreOffset = new Vector2(i, j) - pixelPositionClickPoint;
-
-						float sqDistFromCentre = centreOffset.sqrMagnitude;
-
-						if (sqDistFromCentre <= halfBrushSize_PixelSpace * halfBrushSize_PixelSpace)
-						{
-							float brushInfluence = multiplier * Mathf.Clamp01(brushStrength * (1 - Mathf.Sqrt(sqDistFromCentre) / halfBrushSize_PixelSpace));
-							int colorId = i + j * (int)width;
-
-							switch (brushChannel)
-							{
-								case (Channel.Density):
-									gridColors[colorId].r = Mathf.Clamp01(gridColors[colorId].r + brushInfluence);
-									break;
-								case (Channel.Height):
-									gridColors[colorId].g = Mathf.Clamp01(gridColors[colorId].g + brushInfluence);
-									break;
-							}
-
-						}
-					}
+					case (Channel.Density):
+						gridColors[colorId].r = Mathf.Clamp01(gridColors[colorId].r + brushInfluence);
+						break;
+					case (Channel.Height):
+						gridColors[colorId].g = Mathf.Clamp01(gridColors[colorId].g + brushInfluence);
+						break;
 				}
-				grassPatchComponent.GrassMap.SetPixels(gridColors);
-				grassPatchComponent.GrassMap.Apply();
-
-				grassPatchComponent.UpdateGrassPaintVisualizer(m_SpriteRenderer);
 			}
 		}
+		grassPatchComponent.GrassMap.SetPixels(gridColors);
+		grassPatchComponent.GrassMap.Apply();
+
+		grassPatchComponent.UpdateGrassPaintVisualizer(m_SpriteRenderer);
 	}
 }
