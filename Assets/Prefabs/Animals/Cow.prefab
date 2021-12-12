@@ -124,6 +124,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 37546620}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &5006512734840635750 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: b02831c87fc7ae94cacb84f4e407520e,
+    type: 3}
+  m_PrefabInstance: {fileID: 37546620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3538294645752755178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,6 +137,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_AnimalBodyTransform
+      value: 
+      objectReference: {fileID: 5006512734840635750}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_AnimalBodyCollider
+      value: 
+      objectReference: {fileID: 139225694}
     - target: {fileID: 2166936211642043899, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_LocalPosition.y
