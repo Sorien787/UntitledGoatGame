@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ff0617050e79842a1706cc658e4c09, type: 3}
   m_Name: Pig
   m_EditorClassIdentifier: 
-  m_Hunts: []
-  m_HuntedBy: []
+  m_Hunts:
+  - {fileID: 11400000, guid: 10b3caf4907e2ed489962a30d6814dbe, type: 2}
+  - {fileID: 11400000, guid: d9e25a63718a72a4e89f694e43b5e4b5, type: 2}
+  m_ScaredOf:
+  - {fileID: 11400000, guid: 9e627bc964d516541b64748c2164aac7, type: 2}
+  m_Attacks: []

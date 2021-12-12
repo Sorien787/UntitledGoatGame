@@ -16,4 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a9892376905e0c846b2a98219a844745, type: 2}
   m_ScaredOf:
   - {fileID: 11400000, guid: a171ef1ac7ad69046af761265214b3fd, type: 2}
+  - {fileID: 11400000, guid: 9e627bc964d516541b64748c2164aac7, type: 2}
   m_Attacks: []

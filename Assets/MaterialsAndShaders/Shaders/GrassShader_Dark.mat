@@ -63,11 +63,11 @@ Material:
     - _BendRotationRandom: 0.18
     - _BladeCurve: 2
     - _BladeForward: 0.38
-    - _BladeHeight: 1
+    - _BladeHeight: 0.56
     - _BladeHeightMinimum: 0.2
     - _BladeHeightMultiplier: 1
     - _BladeHeightRandom: 0.1
-    - _BladeWidth: 0.07
+    - _BladeWidth: 0.2
     - _BladeWidthRandom: 0.01
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -85,8 +85,8 @@ Material:
     - _SrcBlend: 1
     - _TranslucentGain: 1
     - _UVSec: 0
-    - _WindGustSize: 232
-    - _WindStrength: 1
+    - _WindGustSize: 315.46
+    - _WindStrength: 1.2
     - _ZWrite: 1
     m_Colors:
     - _BottomColor: {r: 0, g: 0.084905684, b: 0.024029907, a: 1}

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Hunts:
   - {fileID: 11400000, guid: c34ad58007ce1e1428b3907ffa6562ba, type: 2}
-  m_HuntedBy:
+  - {fileID: 11400000, guid: 9424e7e6e5d655b42a538fabdbb7ba37, type: 2}
+  m_ScaredOf:
   - {fileID: 11400000, guid: a171ef1ac7ad69046af761265214b3fd, type: 2}
-  - {fileID: 11400000, guid: c896e4e354b6ea94c9559dce14220b45, type: 2}
+  - {fileID: 11400000, guid: 9e627bc964d516541b64748c2164aac7, type: 2}
+  m_Attacks: []
