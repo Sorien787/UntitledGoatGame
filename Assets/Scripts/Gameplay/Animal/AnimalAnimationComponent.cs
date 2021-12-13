@@ -61,6 +61,7 @@ public class AnimalAnimationComponent : MonoBehaviour
     [Header("Breeding References")]
     [SerializeField] private float m_BreedHopDuration;
     [SerializeField] private AnimationCurve m_BreedHopProbability;
+    [SerializeField] private float m_BornEffectsSize;
 
     [Header("Audio Identifiers")]
     [SerializeField] private string m_AnimalCallSoundIdentifier;
@@ -239,7 +240,8 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void OnBorn() 
     {
-        Instantiate(m_BornEffectsPrefab, MainTransform.position, Quaternion.identity, null);
+        GameObject go = Instantiate(m_BornEffectsPrefab, MainTransform.position, Quaternion.identity, null);
+        go.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(Mathf.Clamp01(m_BornEffectsSize));
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalBornAnimationState));
     }
 
