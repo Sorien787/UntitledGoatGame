@@ -11,6 +11,7 @@ public class AnimalMovementComponent : MonoBehaviour
     [SerializeField] private float m_RotationSpeed;
     [SerializeField] private float m_IdleAcceleration;
     [SerializeField] private float m_RunAcceleration;
+    [SerializeField] [Range(0f, 1f)] private float m_fChaseBufferSize = 0.5f;
 
     [SerializeField] private Rigidbody m_AnimalRigidBody;
     [SerializeField] private AnimationCurve m_UprightAccelerationScalar;
@@ -227,7 +228,7 @@ public class AnimalMovementComponent : MonoBehaviour
         Vector3 target_localSpace = tRunTowardTransform.position - m_tObjectTransform.position;
         float targetDistance_localSpace = target_localSpace.magnitude;
         target_localSpace.Normalize();
-        float desiredDistance_localSpace = Mathf.Max(targetDistance_localSpace - distanceFrom, 0);
+        float desiredDistance_localSpace = Mathf.Max(targetDistance_localSpace - distanceFrom - m_fChaseBufferSize, 0);
         target_localSpace *= desiredDistance_localSpace;
 
         if(NavMesh.SamplePosition(m_tObjectTransform.position + target_localSpace, out NavMeshHit hit, runDistance, m_iLayerMask)) 
