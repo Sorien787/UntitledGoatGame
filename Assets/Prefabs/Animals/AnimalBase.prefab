@@ -14924,6 +14924,7 @@ MonoBehaviour:
   m_RotationSpeed: 3.34
   m_IdleAcceleration: 1
   m_RunAcceleration: 5.14
+  m_fChaseBufferSize: 0.5
   m_AnimalRigidBody: {fileID: 6261768213309388412}
   m_UprightAccelerationScalar:
     serializedVersion: 2
@@ -15398,6 +15399,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_BornEffectsSize: 0
   m_AnimalCallSoundIdentifier: 
   m_AnimalStepSoundIdentifier: 
   m_AnimalImpactSoundIdentifier: 
@@ -15566,6 +15568,9 @@ MonoBehaviour:
   - {fileID: 6261768213309388409}
   - {fileID: 0}
   m_ThrownLayer: 14
+  m_GroundImpactLayermask:
+    serializedVersion: 2
+    m_Bits: 3165440
 --- !u!114 &5028166405719411816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15684,8 +15689,8 @@ MonoBehaviour:
   m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
   m_DelayBetweenImpacts: 0.3
-  m_CausesDragging: 0
-  m_CausesImpacts: 0
+  m_CausesDragging: 1
+  m_CausesImpacts: 1
   m_GravityMultiplier: 2
   m_ThrowingBody: {fileID: 6261768213309388412}
   m_CameraFocusTransform: {fileID: 7107208444515908565}
@@ -21152,7 +21157,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8599510745493820658}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.4, y: 13.626, z: -0.73}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
   m_Children: []
   m_Father: {fileID: 6261768213309388384}

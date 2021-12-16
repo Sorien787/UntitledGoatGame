@@ -12,12 +12,13 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
     [Header("Settings")]
     [SerializeField] private List<GameObject> m_listOfObjsToChangeLayer = new List<GameObject>();
     [SerializeField] private int m_ThrownLayer = 0;
+    [SerializeField] private LayerMask m_GroundImpactLayermask;
 
     private bool m_bIsFalling = false;
     private ProjectileParams projectile;
     private float m_fCurrentTime = 0.0f;
 
-    public event Action<Collision> OnObjectHitGround;
+    public event Action<Vector3, Vector3, GameObject> OnObjectHitGround;
     public event Action OnObjectNotInFreeFall;
 
 	private void Awake()
@@ -74,24 +75,39 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
 	private void OnCollisionStay(Collision collision)
     {
+        return;
+        OnCollide(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
+    }
+
+	private void OnCollide(Vector3 pos, Vector3 norm, GameObject go)
+	{
         if (m_bIsFalling)
         {
-            OnObjectHitGround?.Invoke(collision);
+            OnObjectHitGround?.Invoke(pos, norm, go);
             OnObjectNotInFreeFall?.Invoke();
             m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
             m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
             StopThrowingInternal();
         }
-
     }
 
-    void Update()
+	void Update()
     {
 		if (m_bIsFalling)
 		{
 			m_fCurrentTime += Time.deltaTime;
-			m_rMovingBody.MovePosition(projectile.EvaluatePosAtTime(m_fCurrentTime));
-			m_rMovingBody.MoveRotation(projectile.EvaluateRotAtTime(m_fCurrentTime));
+            Vector3 desiredPos = projectile.EvaluatePosAtTime(m_fCurrentTime);
+            Vector3 offset = desiredPos - m_rMovingBody.position;
+            if (Physics.Raycast(m_rMovingBody.position, offset.normalized, out RaycastHit hit, offset.magnitude, m_GroundImpactLayermask, QueryTriggerInteraction.Ignore)) 
+            {
+                OnCollide(hit.point, hit.normal, hit.collider.gameObject);
+            }
+			else 
+            {
+                m_rMovingBody.MovePosition(projectile.EvaluatePosAtTime(m_fCurrentTime));
+                m_rMovingBody.MoveRotation(projectile.EvaluateRotAtTime(m_fCurrentTime));
+            }
+
 		}
 		if (m_debugTextComponent)
 			m_debugTextComponent.AddLine(string.Format("Free fall: {0} \n Time free falling: {1}", m_bIsFalling ? "active" : "inactive", m_fCurrentTime.ToString()));

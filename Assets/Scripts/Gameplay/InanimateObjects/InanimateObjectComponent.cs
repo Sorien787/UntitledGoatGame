@@ -42,16 +42,16 @@ public class InanimateObjectComponent : MonoBehaviour
     }
 
 
-    private void OnHitObject(Collision collision) 
+    private void OnHitObject(Vector3 pos, Vector3 norm, GameObject go) 
     {
-        AnimalComponent animal = collision.gameObject.GetComponentInParent<AnimalComponent>();
+        AnimalComponent animal = go.GetComponentInParent<AnimalComponent>();
         if (animal) 
         {
             animal.OnStruckByObject(m_objectRigidBody.velocity, m_objectRigidBody.mass);
         }
 		else 
         {
-            Instantiate(m_ImpactEffectsPrefab, collision.GetContact(0).point, Quaternion.LookRotation(Vector3.forward, collision.GetContact(0).normal));
+            Instantiate(m_ImpactEffectsPrefab, pos, Quaternion.LookRotation(Vector3.forward, norm));
         }
         m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
     }

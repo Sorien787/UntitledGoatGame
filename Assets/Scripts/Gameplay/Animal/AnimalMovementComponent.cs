@@ -188,7 +188,7 @@ public class AnimalMovementComponent : MonoBehaviour
         float distance = displacement.magnitude;
         Vector3 direction = displacement / distance;
 
-        float distanceToRun = runDistance - distance;
+        float distanceToRun = m_fChaseBufferSize + runDistance - distance;
         Vector3 runTo = direction * distanceToRun + m_tObjectTransform.position;
 
         if (NavMesh.SamplePosition(runTo, out NavMeshHit hit, distanceToRun, m_iLayerMask))
@@ -212,7 +212,7 @@ public class AnimalMovementComponent : MonoBehaviour
         }
         return false;
     }
-
+    Transform targetTransform;
     //////////////////////////////////////////////////////////////////////////////////////////////
     // function chooses a destination within range m_fMaximumRunDistance directly away from objectTransform on the navmesh
     public bool RunTowardsObject(Transform tRunTowardTransform, float runDistance, float distanceFrom = 0f) 
@@ -224,11 +224,11 @@ public class AnimalMovementComponent : MonoBehaviour
             return true;
 		}
         m_NavMeshAgent.isStopped = false;
-
+        targetTransform = tRunTowardTransform;
         Vector3 target_localSpace = tRunTowardTransform.position - m_tObjectTransform.position;
         float targetDistance_localSpace = target_localSpace.magnitude;
         target_localSpace.Normalize();
-        float desiredDistance_localSpace = Mathf.Max(targetDistance_localSpace - distanceFrom - m_fChaseBufferSize, 0);
+        float desiredDistance_localSpace = Mathf.Max(targetDistance_localSpace - distanceFrom + m_fChaseBufferSize, 0);
         target_localSpace *= desiredDistance_localSpace;
 
         if(NavMesh.SamplePosition(m_tObjectTransform.position + target_localSpace, out NavMeshHit hit, runDistance, m_iLayerMask)) 
@@ -241,4 +241,12 @@ public class AnimalMovementComponent : MonoBehaviour
         }
         return false;
     }
+
+	private void OnDrawGizmos()
+	{
+        if (!targetTransform)
+            return;
+
+        Gizmos.DrawLine(m_tObjectTransform.position, targetTransform.position);
+	}
 }

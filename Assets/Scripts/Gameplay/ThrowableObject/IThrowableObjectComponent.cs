@@ -110,16 +110,15 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     
 	private void OnCollisionEnter(Collision collision)
 	{
-        CollisionEvent(collision);
+        CollisionEvent(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
     }
 
-    protected void CollisionEvent(Collision collision) 
+    protected void CollisionEvent(Vector3 pos, Vector3 norm, GameObject go) 
     {
         if (!m_CausesImpacts || m_bImpactsDisabled)
             return;
-        Vector3 normal = collision.GetContact(0).normal;
-        Quaternion rotation = Quaternion.LookRotation(Vector3.Cross(Vector3.up, normal), normal);
-        OnObjectHitOtherWithMomentum(m_Entity.GetVelocity.magnitude * m_Entity.GetMass, collision.GetContact(0).point, rotation);
+        Quaternion rotation = Quaternion.LookRotation(Vector3.Cross(Vector3.up, norm), norm);
+        OnObjectHitOtherWithMomentum(m_Entity.GetVelocity.magnitude * m_Entity.GetMass, pos, rotation);
     }
 
     private void OnObjectHitOtherWithMomentum(float momentum, Vector3 position, Quaternion rotation) 

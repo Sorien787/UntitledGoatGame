@@ -54,7 +54,7 @@ public class BombComponent : MonoBehaviour
         m_ParticleFXController.TurnOnAllSystems();
     }
 
-	void OnHitGround(Collision @object)
+	void OnHitGround(Vector3 pos, Vector3 norm, GameObject go)
     {
         if (!m_bBombPrimed)
             return;
@@ -89,13 +89,12 @@ public class BombComponent : MonoBehaviour
         }
         EZCameraShake.CameraShaker.Instance.Shake(EZCameraShake.CameraShakePresets.Explosion);
         Instantiate(m_HazardRef, m_Transform.position, m_Transform.rotation);
-        Vector3 contactNormal = @object.GetContact(0).normal;
         Vector3 forward = Vector3.forward;
-        if (Vector3.Dot(contactNormal, Vector3.up ) != 1.0f) 
+        if (Vector3.Dot(norm, Vector3.up ) != 1.0f) 
         {
-            forward = Vector3.Cross(contactNormal, Vector3.up);
+            forward = Vector3.Cross(norm, Vector3.up);
         }
-        Quaternion upRot = Quaternion.LookRotation(forward, contactNormal);
+        Quaternion upRot = Quaternion.LookRotation(forward, norm);
         Instantiate(m_ExplosionRef, m_Transform.position, upRot);
         Destroy(gameObject);
     }

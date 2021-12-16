@@ -164,16 +164,16 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.RequestTransition(typeof(AnimalThrowingState));
     }
 
-    private void OnHitGroundFromThrown(Collision collision)
+    private void OnHitGroundFromThrown(Vector3 pos, Vector3 norm, GameObject go)
     {
-        OnHitGround(collision);
+        OnHitGround(pos, norm);
         m_StateMachine.RequestTransition(typeof(AnimalFreeFallState));
     }
 
-    private void OnHitGround(Collision collision) 
+    private void OnHitGround(Vector3 pos, Vector3 norm) 
     {
         Vector3 momentum = m_AnimalRigidBody.mass * m_AnimalRigidBody.velocity;
-        float momentumInNormalDirection = -Vector3.Dot(collision.contacts[0].normal, momentum);
+        float momentumInNormalDirection = -Vector3.Dot(norm, momentum);
         OnHitByMomentum(momentumInNormalDirection);
     }
 
