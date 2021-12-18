@@ -1,7 +1,7 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!136 &2506537066990875117
-CapsuleCollider:
+--- !u!65 &625153593
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10,10 +10,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.57
-  m_Height: 10.84
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.47, z: 9.24}
+  serializedVersion: 2
+  m_Size: {x: 2.23, y: 6.8, z: 6.86}
+  m_Center: {x: 0, y: 0, z: 9.5}
 --- !u!1001 &2506537066424923743
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151,7 +150,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnimalBodyCollider
       value: 
-      objectReference: {fileID: 2506537066990875117}
+      objectReference: {fileID: 625153593}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_AnimalGroundCollider
+      value: 
+      objectReference: {fileID: 6150337891687466958}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_ScaredDistance
@@ -191,16 +195,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
-        type: 3}
-      propertyPath: m_CausesDragging
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
-        type: 3}
-      propertyPath: m_CausesImpacts
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388384, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -259,8 +253,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388385, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
+      propertyPath: m_Acceleration
+      value: 1.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388385, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
       propertyPath: m_StoppingDistance
-      value: 0.24
+      value: 0.49
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388385, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -287,6 +286,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wolf (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_RunSpeed
+      value: 4.06
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -349,6 +353,12 @@ Transform:
 --- !u!1 &85807043091234271 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2592344007748624432, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2506537068358131183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &6150337891687466958 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 8616337804491610657, guid: aea3e7101c8ae3a47bf7574c15d5310d,
     type: 3}
   m_PrefabInstance: {fileID: 2506537068358131183}
   m_PrefabAsset: {fileID: 0}

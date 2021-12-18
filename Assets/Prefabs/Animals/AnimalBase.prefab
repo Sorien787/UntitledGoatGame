@@ -14843,6 +14843,7 @@ MonoBehaviour:
   m_AnimalLeashTransform: {fileID: 2166936210622738242}
   m_AnimalBodyTransform: {fileID: 0}
   m_AnimalBodyCollider: {fileID: 0}
+  m_AnimalGroundCollider: {fileID: 0}
   m_StaggerTimeByImpactMomentum:
     serializedVersion: 2
     m_Curve:
@@ -14888,6 +14889,30 @@ MonoBehaviour:
   m_fMaximumFullness: 6
   m_LowIdleTimer: 2
   m_HighIdleTimer: 5
+  m_HungerLossPerSecond:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0021413276
+      value: -0.0023584906
+      inSlope: 0.14156537
+      outSlope: 0.14156537
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.120386876
+    - serializedVersion: 3
+      time: 1.0083705
+      value: 0.06512037
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_ScaredDistance: 7
   m_EvadedDistance: 9
   m_FleeCheckInterval: 1
@@ -14899,9 +14924,6 @@ MonoBehaviour:
   m_BornTime: 1.5
   m_DamageAttackType: {fileID: 1787946008773503618}
   m_EatAttackType: {fileID: -7029774317778207611}
-  m_GroundLayerMask:
-    serializedVersion: 2
-    m_Bits: 2304
   m_DamagedDuration: 0
   m_debugTextComponent: {fileID: 3268333415586914426}
 --- !u!114 &6261768213309388414
@@ -15570,7 +15592,7 @@ MonoBehaviour:
   m_ThrownLayer: 14
   m_GroundImpactLayermask:
     serializedVersion: 2
-    m_Bits: 3165440
+    m_Bits: 2100480
 --- !u!114 &5028166405719411816
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -272,6 +272,12 @@ public class AnimalAnimationComponent : MonoBehaviour
         return false;
     }
 
+    public void RemoveHorny() 
+    {
+        m_ActiveController.TurnOffAllSystems();
+        m_LastMood = AnimalMood.UnSet;
+    }
+
     public void IsScared() 
     {
         if (TrySetAnimalMood(AnimalMood.Fleeing, true)) 

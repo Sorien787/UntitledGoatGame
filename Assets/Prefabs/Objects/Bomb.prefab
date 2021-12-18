@@ -9861,6 +9861,9 @@ MonoBehaviour:
   m_listOfObjsToChangeLayer:
   - {fileID: 4929366444259242028}
   m_ThrownLayer: 14
+  m_GroundImpactLayermask:
+    serializedVersion: 2
+    m_Bits: 1068288
 --- !u!114 &1076372699
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -147,7 +147,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.006598546, y: 0.013269522, z: 0.01242815}
+  m_Size: {x: 0.006, y: 0.01, z: 0.01}
   m_Center: {x: -0.00010432636, y: -0.00001, z: 0.00042098}
 --- !u!135 &1444594708651495011
 SphereCollider:
@@ -160,7 +160,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.0068557193
+  m_Radius: 0.0045
   m_Center: {x: -0.00019147762, y: 0.00032065174, z: -0.0004329177}
 --- !u!114 &1444594708651495039
 MonoBehaviour:
@@ -324,6 +324,9 @@ MonoBehaviour:
   m_listOfObjsToChangeLayer:
   - {fileID: 4649538071932314871}
   m_ThrownLayer: 14
+  m_GroundImpactLayermask:
+    serializedVersion: 2
+    m_Bits: 1068288
 --- !u!114 &653192708
 MonoBehaviour:
   m_ObjectHideFlags: 0
