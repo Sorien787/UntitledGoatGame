@@ -30,7 +30,7 @@ public class CustomAnimation : MonoBehaviour
 
 	public void ManualSetAnim(in AnimationClip clip, in float currentTime) 
 	{
-		SetAnimViaClipTime(clip, currentTime * clip.animationTime);
+		SetAnimViaClipTime(clip, currentTime);
 	}
 
 	public void AddOnTransitionOutCallbackToClip(in int clipNum, in Action<AnimationClip> callback) 

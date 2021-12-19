@@ -8,7 +8,7 @@ public class ObjectColorChanger : MonoBehaviour
     [SerializeField] private string m_DefaultShaderId = "_Color";
     [SerializeField] [HideInInspector] public int m_MaterialColourSettingReference = 0;
     [SerializeField] [HideInInspector] private List<ObjectColorChangeMaterialSetting> m_ColourSettings = new List<ObjectColorChangeMaterialSetting>();
-    [SerializeField] [HideInInspector] private bool m_bRandomizeOnStart = false;
+    [SerializeField] private bool m_bRandomizeOnStart = false;
     private MeshRenderer m_MeshRenderer = default;
     public ref List<ObjectColorChangeMaterialSetting> GetMaterialColourSettings() 
     {

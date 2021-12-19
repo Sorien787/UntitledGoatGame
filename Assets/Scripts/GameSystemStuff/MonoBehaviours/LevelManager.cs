@@ -117,7 +117,7 @@ public class LevelManager : MonoBehaviour
 
 	private void OnFirstIntroAnimationPortionShown(CustomAnimation.AnimationClip clip)
 	{
-		m_LevelIntroTextLeft.text = "Level " + (m_Manager.GetCurrentLevelIndex + 1).ToString();
+		m_LevelIntroTextLeft.text = "Level " + (m_Manager.GetCurrentLevelIndex).ToString();
 		m_LevelIntroTextRight.text = m_LevelData.GetLevelName;
 		ShowIntroText(clip);
 	}

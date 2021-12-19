@@ -75,7 +75,6 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
 	private void OnCollisionStay(Collision collision)
     {
-        return;
         OnCollide(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
     }
 

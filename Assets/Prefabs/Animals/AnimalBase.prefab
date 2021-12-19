@@ -14841,15 +14841,15 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_AnimalMainTransform: {fileID: 6261768213309388384}
   m_AnimalLeashTransform: {fileID: 2166936210622738242}
-  m_AnimalBodyTransform: {fileID: 0}
+  m_AnimalBodyTransform: {fileID: 6261768213309388384}
   m_AnimalBodyCollider: {fileID: 0}
-  m_AnimalGroundCollider: {fileID: 0}
+  m_AnimalGroundCollider: {fileID: 8616337804491610657}
   m_StaggerTimeByImpactMomentum:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 29.929712
-      value: 0.504717
+      time: 27.018534
+      value: 3.1358814
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -14857,17 +14857,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 72.08849
-      value: 0.6501817
-      inSlope: 0.00640453
-      outSlope: 0.00640453
+      time: 99.05271
+      value: 4.9734645
+      inSlope: 0.04057921
+      outSlope: 0.04057921
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.25821415
-      outWeight: 0.14023381
+      outWeight: 0.52386856
     - serializedVersion: 3
-      time: 110.07948
-      value: 3.0047169
+      time: 129.47449
+      value: 7.143768
       inSlope: 0.10941847
       outSlope: 0.10941847
       tangentMode: 0
@@ -14878,15 +14878,16 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_StaggerCooldown: 0.2
-  m_fBreedingHungerCooldownTime: 3
+  m_fMaximumFullness: 6
+  m_fBreedingHungerCooldownTime: 6
+  m_fBreedingHungerUsage: 3
+  m_fHungerStartFullness: 2
   m_fBreedingChaseStartRange: 20
   m_fBreedingChaseEndRange: 22
   m_fBreedingStartRange: 2
   m_fBreedingCooldownTime: 10
-  m_fBreedingHungerUsage: 3
   m_fBreedingDuration: 3
   m_fBreedCheckInterval: 0.1
-  m_fMaximumFullness: 6
   m_LowIdleTimer: 2
   m_HighIdleTimer: 5
   m_HungerLossPerSecond:

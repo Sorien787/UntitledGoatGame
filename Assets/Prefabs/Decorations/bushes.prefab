@@ -137,11 +137,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_RegenerationRateScalar: 1
   m_fHealthThresholdForEaten: 0.1
   m_fHealthThresholdForReadyForEating: 5
   m_fFoodSizeChangeTime: 1
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_EntityInformation: {fileID: 8193576897066533465}
+  m_DebugText: {fileID: 0}
 --- !u!114 &4764156418921188620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +244,7 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    m_RolledColor: {r: 0.05002073, g: 0.28737053, b: 0.0028252802, a: 1}
+    m_RolledColor: {r: 0.061927434, g: 0.31984502, b: 0.0017013047, a: 1}
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
   m_bRandomizeOnStart: 1
@@ -273,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 5877979536090986298}
   m_LocalRotation: {x: 0.5991764, y: -0.3483255, z: -0.058602534, w: 0.7184865}
   m_LocalPosition: {x: -0.0126, y: -0.0085, z: -0.006}
-  m_LocalScale: {x: 0.028955966, y: 0.013400667, z: 0.033957876}
+  m_LocalScale: {x: 0.020261064, y: 0.010395141, z: 0.025419513}
   m_Children: []
   m_Father: {fileID: 3869623104819378497}
   m_RootOrder: 1

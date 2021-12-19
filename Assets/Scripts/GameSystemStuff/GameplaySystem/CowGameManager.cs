@@ -399,7 +399,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 					{
 						foreach (EntityState data in validEntities)
 						{
-							if (token.GetEntityState == data)
+							if (token.GetEntityState == data && token.IsTrackable)
 							{
 								float sqDist = Vector3.SqrMagnitude(token.GetEntityType.GetTrackingTransform.position - currentPos);
 								if (sqDist < cachedSqDist)

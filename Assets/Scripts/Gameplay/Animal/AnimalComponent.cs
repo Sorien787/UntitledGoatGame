@@ -25,16 +25,20 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     [SerializeField] AnimationCurve m_StaggerTimeByImpactMomentum = default;
     [SerializeField] [Range(0f, 1f)] float m_StaggerCooldown = 0.2f;
 
-    [Header("Breeding Parameters")]
+    [Header("Hunger Parameters")]
+    [SerializeField] [Range(0f, 20f)] private float m_fMaximumFullness = default;
     [SerializeField] [Range(0f, 20f)] private float m_fBreedingHungerCooldownTime = default;
+    [SerializeField] [Range(0f, 20f)] private float m_fBreedingHungerUsage = default;
+    [SerializeField] [Range(0f, 20f)] private float m_fHungerStartFullness = default;
+
+    [Header("Breeding Parameters")]
     [SerializeField] [Range(0f, 30f)] private float m_fBreedingChaseStartRange = default;
     [SerializeField] [Range(0f, 30f)] private float m_fBreedingChaseEndRange = default;
     [SerializeField] [Range(0f, 2f)]  private float m_fBreedingStartRange = default;
     [SerializeField] [Range(0f, 20f)] private float m_fBreedingCooldownTime = default;
-    [SerializeField] [Range(0f, 20f)] private float m_fBreedingHungerUsage = default;
+
     [SerializeField] [Range(0f, 10f)] private float m_fBreedingDuration = default;
     [SerializeField] [Range(0f, 1f)]  private float m_fBreedCheckInterval = default;
-    [SerializeField] [Range(0f, 20f)] private float m_fMaximumFullness = default;
 
     [Header("Idle parameters")]
     [SerializeField] [Range(0f, 10f)] protected float m_LowIdleTimer = default;
@@ -67,6 +71,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     [SerializeField] private DebugTextComponent m_debugTextComponent;
 
     private AttackBase m_CurrentAttackComponent;
+    private bool  m_bIsHungryAfterBreeding = false;
     private bool  m_bIsHungry = false;
     private bool  m_bShouldStagger = false;
     private float m_fFullness = 0.0f;
@@ -116,6 +121,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	{
         m_AnimalGroundCollider = GetComponentInChildren<Collider>();
 	}
+
+    public bool IsTargetStatic => GetTargetEntity ? false : GetTargetEntity.GetEntityInformation.IsStatic;
 
 	public void OnPulledByLasso()
     {
@@ -191,6 +198,12 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         OnHitGround(pos, norm);
         m_StateMachine.RequestTransition(typeof(AnimalFreeFallState));
+    }
+
+    public void OnStaggerComplete() 
+    {
+        m_bShouldStagger = false;
+        m_TotalStaggerTime = 0.0f;
     }
 
     private void OnHitGround(Vector3 pos, Vector3 norm) 
@@ -385,7 +398,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
             return true;
         }
 
-        if (!IsFull && m_bIsHungry && m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objToken, null, m_EntityInformation.GetEntityInformation.GetHunts) && TryHuntObject(objToken))
+        if (!IsFull && m_bIsHungry && m_bIsHungryAfterBreeding && m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objToken, null, m_EntityInformation.GetEntityInformation.GetHunts) && TryHuntObject(objToken))
         { 
 		    SetCurrentAttack(m_EatAttackType);
 		    m_AnimalAnimator.HasSeenFood();
@@ -541,9 +554,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private IEnumerator WaitForHunger() 
     {
-        m_bIsHungry = false;
+        m_bIsHungryAfterBreeding = false;
         yield return new WaitForSecondsRealtime(m_fBreedingHungerCooldownTime);
-        m_bIsHungry = true;
+        m_bIsHungryAfterBreeding = true;
     }
 
     // TODO:
@@ -672,7 +685,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	public AttackBase GetAttack => m_CurrentAttackComponent;
 	protected void Start()
     {
-        m_bIsHungry = m_fFullness == m_fMaximumFullness ? false : true;
+        m_bIsHungryAfterBreeding = m_fFullness == m_fMaximumFullness ? false : true;
 
         m_AbductableComponent = GetComponent<AbductableComponent>();
         m_AnimalMovement = GetComponent<AnimalMovementComponent>();
@@ -749,8 +762,10 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddTransition(typeof(AnimalIdleState), typeof(AnimalDeathState), () => m_bIsDead, Dead);
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
+        m_StateMachine.AddAnyTransition(typeof(AnimalFreeFallState), ShouldStartStaggering);
         m_StateMachine.AddTransition(typeof(AnimalThrowingState), typeof(AnimalFreeFallState), () => !m_bIsWrangled);
         m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalStaggeredState), () => m_bShouldStagger);
+        m_StateMachine.AddTransition(typeof(AnimalStaggeredState), typeof(AnimalIdleState), () => !m_bShouldStagger);
         m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalAbductedAndWrangledState), () => m_bIsInTractorBeam);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalAbductedAndWrangledState), () => m_bIsWrangled);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalFreeFallState), () => !m_bIsInTractorBeam);
@@ -836,6 +851,11 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         return false;
     }
 
+    private bool ShouldStartStaggering() 
+    {
+        return m_bShouldStagger && !IsStaggered();
+    }
+
     private bool ShouldEnterAbducted() 
     {
         if (!m_bIsWrangled && m_bIsInTractorBeam && !IsStaggered()) 
@@ -847,6 +867,12 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     public void FixedUpdate()
     {
+        if (m_fFullness > m_fMaximumFullness && m_bIsHungry)
+            m_bIsHungry = false;
+
+        if (m_fFullness < m_fHungerStartFullness && !m_bIsHungry)
+            m_bIsHungry = true;
+
         m_fFullness = Mathf.Max(0f, m_fFullness - m_HungerLossPerSecond.Evaluate(Mathf.Clamp01(m_fFullness / m_fMaximumFullness)) * Time.fixedDeltaTime);
 		m_StateMachine.Tick(Time.fixedDeltaTime);
     }
@@ -1093,6 +1119,7 @@ public class AnimalStaggeredState : AStateBase<AnimalComponent>
 
     public override void OnEnter()
     {
+        StartTimer(0);
         animalAnimator.SetIdleAnimation();
         animalAnimator.SetStaggeredAnimation();
 
@@ -1103,7 +1130,7 @@ public class AnimalStaggeredState : AStateBase<AnimalComponent>
     {
         if (GetTimerVal(0) > Host.GetTotalStaggerTime) 
         {
-			RequestTransition<AnimalIdleState>();
+            Host.OnStaggerComplete();
         }
     }
 }
@@ -1318,7 +1345,10 @@ public class AnimalPredatorChaseState : AStateBase<AnimalComponent>
     {
         m_animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius - 0.5f);
         m_animalAnimator.SetRunAnimation();
-        m_animalMovement.SetRunning();
+        if (Host.IsTargetStatic)
+            m_animalMovement.SetWalking();
+        else
+            m_animalMovement.SetRunning();
 
 		Host.SetManagedByAgent(true);
 		Host.DisablePhysics();

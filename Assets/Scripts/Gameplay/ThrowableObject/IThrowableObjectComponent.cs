@@ -143,8 +143,8 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
         GameObject hazardObject = Instantiate(m_HazardRef, transform.position, transform.rotation, null);
         HazardComponent hazard = hazardObject.GetComponent<HazardComponent>();
-        hazard.SetLifetime(m_HazardRadiusByImpactMomentum.Evaluate(momentum));
-        hazard.SetRadius(m_HazardLifetimeByImpactMomentum.Evaluate(momentum));
+        hazard.SetRadius(m_HazardRadiusByImpactMomentum.Evaluate(momentum));
+        hazard.SetLifetime(m_HazardLifetimeByImpactMomentum.Evaluate(momentum));
     }
 
     protected void OnObjectLanded()
