@@ -19,7 +19,7 @@ TagManager:
   - Decorations
   - CreatureEffects
   - Player
-  - 
+  - ThrownObjects
   - DeathLayer
   - AbductionLayer
   - UfoLayer
@@ -29,7 +29,7 @@ TagManager:
   - LassoColliderThrowable
   - PlayerBlocking
   - Explosions
-  - 
+  - PostProcessing
   - 
   - 
   - 
