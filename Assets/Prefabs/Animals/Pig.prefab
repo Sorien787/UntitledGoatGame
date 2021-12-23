@@ -312,6 +312,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pig
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_fMaximumWanderDistance
@@ -325,7 +330,7 @@ PrefabInstance:
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RunSpeed
-      value: 2.76
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

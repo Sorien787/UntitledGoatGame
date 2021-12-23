@@ -11,7 +11,7 @@ public class AnimalMovementComponent : MonoBehaviour
     [SerializeField] private float m_RotationSpeed;
     [SerializeField] private float m_IdleAcceleration;
     [SerializeField] private float m_RunAcceleration;
-    [SerializeField] [Range(0f, 1f)] private float m_fChaseBufferSize = 0.5f;
+    [SerializeField] [Range(0f, 2f)] private float m_fChaseBufferSize = 0.5f;
 
     [SerializeField] private Rigidbody m_AnimalRigidBody;
     [SerializeField] private AnimationCurve m_UprightAccelerationScalar;
@@ -72,7 +72,7 @@ public class AnimalMovementComponent : MonoBehaviour
 
         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 30, m_iLayerMask)) 
         {
-            if (m_NavMeshAgent.SetDestination(hit.position)) 
+            if (m_NavMeshAgent.isOnNavMesh && m_NavMeshAgent.SetDestination(hit.position)) 
             {
                 m_vDestination = hit.position;
                 return true;

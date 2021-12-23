@@ -17,6 +17,12 @@ public class HealthComponent : MonoBehaviour
 
     [SerializeField] private GameObject m_DamagedParticleType = default;
 
+    [SerializeField] private bool m_bPassiveHealthReplenishment = false;
+
+    [SerializeField] private AnimationCurve m_PassiveHealthReplenishmentPerSecond = default;
+
+    [SerializeField] private DebugTextComponent m_DebugText = default;
+
     private bool m_bIsKilled = false;
 
     private bool m_IsInvulnerable = false;
@@ -48,8 +54,16 @@ public class HealthComponent : MonoBehaviour
         m_bIsKilled = false;
     }
 
+    public void SetInvulnerabilityTime(float time) 
+    {
+        if (Time.time - m_TimeInvulnerabilityCoroutineStart >= time)
+            m_IsInvulnerable = false;
+        m_InvulnerabilityTime = time;
+    }
+
     public void ReplenishHealth(in float healthAmount) 
     {
+        float previousHealth = m_CurrentHealth;
         if (GetCurrentHealthPercentage == 0) 
         {
             Revive(healthAmount);
@@ -57,6 +71,10 @@ public class HealthComponent : MonoBehaviour
 		else
         {
             m_CurrentHealth = Mathf.Min(m_CurrentHealth + healthAmount, m_MaxHealth);
+        }
+        if (m_CurrentHealth != previousHealth)
+        {
+            m_HealthListeners.ForEachListener((IHealthListener healthListener) => healthListener.OnEntityHealthPercentageChange(m_CurrentHealth / m_MaxHealth));
         }
     }
 
@@ -82,8 +100,33 @@ public class HealthComponent : MonoBehaviour
         }
     }
 
-    public float GetCurrentHealthPercentage => m_CurrentHealth / m_MaxHealth;
+	private void Update()
+	{
+        if (m_DebugText) 
+        {
+            m_DebugText.AddLine(string.Format("Current Health: {0} / {1}", m_CurrentHealth, m_MaxHealth));
+        }
 
+        if (m_bIsKilled || !m_bPassiveHealthReplenishment)
+            return;
+
+
+        float healthReplenishmentThisFrame = m_PassiveHealthReplenishmentPerSecond.Evaluate(m_CurrentHealth / m_MaxHealth) * Time.deltaTime;
+        ReplenishHealth(healthReplenishmentThisFrame);
+
+        if (m_DebugText)
+        {
+            m_DebugText.AddLine(string.Format("Health regeneration this frame: {0}", healthReplenishmentThisFrame));
+        }
+    }
+
+	public float GetCurrentHealthPercentage => m_CurrentHealth / m_MaxHealth;
+
+    public void DisableHealthRegeneration() 
+    {
+        m_bPassiveHealthReplenishment = false;
+    }
+    float m_TimeInvulnerabilityCoroutineStart = 0.0f;
     public bool TakeDamageInstance(GameObject damagedBy, DamageType damageType, float damageAmount = 1f) 
     {
         if (!m_IsInvulnerable)
@@ -95,9 +138,13 @@ public class HealthComponent : MonoBehaviour
             }
             else
             {
+                m_TimeInvulnerabilityCoroutineStart = Time.time;
                 m_HealthListeners.ForEachListener((IHealthListener listener) => listener.OnEntityTakeDamage(gameObject, damagedBy, damageType));
                 StartCoroutine(SetInvulnerability());
             }
+
+            m_HealthListeners.ForEachListener((IHealthListener healthListener) => healthListener.OnEntityHealthPercentageChange(m_CurrentHealth / m_MaxHealth));
+
             return true;
         }
         return false;
@@ -112,6 +159,7 @@ public class HealthComponent : MonoBehaviour
 public interface IHealthListener 
 {
     void OnEntityTakeDamage(GameObject go1, GameObject go2, DamageType type);
+    void OnEntityHealthPercentageChange(float currentHealthPercentage);
     void OnEntityDied(GameObject go1, GameObject go2, DamageType type);
 }
 

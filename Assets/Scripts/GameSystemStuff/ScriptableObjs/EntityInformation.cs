@@ -12,4 +12,14 @@ public class EntityInformation : ScriptableObject
     public ref EntityInformation[] GetScaredOf => ref m_ScaredOf;
     public ref EntityInformation[] GetAttacks => ref m_Attacks;
     public bool IsStatic => m_bIsStatic;
+
+    public bool IsScaredOf(EntityInformation other) 
+    {
+        for (int i = 0; i < m_ScaredOf.Length; i++)
+		{
+            if (m_ScaredOf[i] == other)
+                return true;
+		}
+        return false;
+    }
 }

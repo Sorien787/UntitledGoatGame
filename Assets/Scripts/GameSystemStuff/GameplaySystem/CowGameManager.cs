@@ -70,6 +70,28 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		return m_bHasStarted;
 	}
 
+	public void OnHazardSpawn(HazardComponent hazard) 
+	{
+		foreach(KeyValuePair<EntityInformation, List<EntityToken>> thing in m_EntityCache) 
+		{
+			if (!hazard.Affects(thing.Key))
+				continue;
+
+			foreach(EntityToken token in thing.Value) 
+			{
+				if ((token.GetEntityTransform.position - hazard.GetPosition).sqrMagnitude > hazard.GetHazardRadius)
+					continue;
+
+				AnimalComponent animalComponent = token.GetEntityTransform.GetComponent<AnimalComponent>();
+
+				if (!animalComponent)
+					return;
+
+				animalComponent.OnScaredByHazard(hazard);
+			}
+		}
+	}
+
 	public void MoveToLevelWithSceneId(in int levelIndex)
 	{
 		GetCurrentLevelIndex = levelIndex;
@@ -379,7 +401,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		outEntityToken = m_EntityCache[entity];
 	}
 
-	public bool GetClosestTransformMatchingList(in Vector3 currentPos, out EntityToken outEntityToken, List<EntityState> validEntities, params EntityInformation[] entities)
+	public bool GetClosestTransformMatchingList(in Vector3 currentPos, out EntityToken outEntityToken, List<EntityState> validEntities, bool allowDeadEntities = false, params EntityInformation[] entities)
 	{
 		if (validEntities == null)
 		{
@@ -399,7 +421,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 					{
 						foreach (EntityState data in validEntities)
 						{
-							if (token.GetEntityState == data && token.IsTrackable)
+							if (token.GetEntityState == data && token.IsTrackable && (allowDeadEntities || !token.IsDead))
 							{
 								float sqDist = Vector3.SqrMagnitude(token.GetEntityType.GetTrackingTransform.position - currentPos);
 								if (sqDist < cachedSqDist)
@@ -490,6 +512,8 @@ public class EntityToken
 	public Transform GetEntityTransform { get; private set; }
 
 	public EntityTypeComponent GetEntityType { get; private set; }
+
+	public bool IsDead => GetEntityType.IsDead;
 
 	public bool IsTrackable => m_bTrackable;
 }

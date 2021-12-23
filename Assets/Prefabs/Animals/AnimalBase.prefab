@@ -14894,8 +14894,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0021413276
-      value: -0.0023584906
+      time: -0.0042851875
+      value: 0.044333406
       inSlope: 0.14156537
       outSlope: 0.14156537
       tangentMode: 0
@@ -14903,8 +14903,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.120386876
     - serializedVersion: 3
-      time: 1.0083705
-      value: 0.06512037
+      time: 0.99550414
+      value: 0.0896561
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -14925,7 +14925,9 @@ MonoBehaviour:
   m_BornTime: 1.5
   m_DamageAttackType: {fileID: 1787946008773503618}
   m_EatAttackType: {fileID: -7029774317778207611}
-  m_DamagedDuration: 0
+  m_DamagedDuration: 0.5
+  m_DeathHealthRatio: 0.4
+  m_DeadDuration: 1
   m_debugTextComponent: {fileID: 3268333415586914426}
 --- !u!114 &6261768213309388414
 MonoBehaviour:
@@ -14942,7 +14944,7 @@ MonoBehaviour:
   m_fMaximumWanderDistance: 8
   m_fStuckTime: 1
   m_fStuckSpeed: 0.2
-  m_RunSpeed: 8.43
+  m_RunSpeed: 4
   m_IdleSpeed: 1.5
   m_RotationSpeed: 3.34
   m_IdleAcceleration: 1
@@ -15333,53 +15335,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_BornSizeAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.0064171255
-      value: -0.0023475438
-      inSlope: 1.8051156
-      outSlope: 1.8051156
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.08469898
-    - serializedVersion: 3
-      time: 0.9995133
-      value: 1.0003167
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 136
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_RunAnimationTime: 0.745
-  m_WalkAnimationTime: 0.895
-  m_EscapingAnimationTime: 1.7
-  m_WalkWindupTime: 1
-  m_Phase: 0.15
-  m_AnimRotationSpeed: 234.7
-  m_AnimMoveSpeed: 30
-  m_TiltSizeMultiplier: 4
-  m_HopHeightMultiplier: 0.5
-  m_YawSizeMultiplier: 7.73
-  m_HorizontalMovementMultiplier: 0
-  m_ForwardBackwardMovementMultiplier: 0.15
-  m_MaximumRunAnimationSpeed: 0.01
-  m_AttackAnimationDuration: 0.66
-  m_DamagedAnimationDuration: 0.55
-  m_AnimationSpeedRandom: 0.209
-  m_fAnimationSizeScalar: 1.21
-  m_fPullTime: 0.16
-  m_SizeVariation: 0.169
-  m_ConfusionAnimWindupTime: 0.5
-  m_ConfusionRotationSpeed: -661.8
-  m_DamagedColor: {r: 4.594794, g: 0, b: 0, a: 0.54509807}
-  m_BreedHopDuration: 0.7
   m_BreedHopProbability:
     serializedVersion: 2
     m_Curve:
@@ -15422,6 +15377,75 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_BornSizeAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0064171255
+      value: -0.0023475438
+      inSlope: 1.8051156
+      outSlope: 1.8051156
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.08469898
+    - serializedVersion: 3
+      time: 0.9995133
+      value: 1.0003167
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_DeathSizeAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0084925685
+      value: 0.9976415
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0042462
+      value: 0.009433962
+      inSlope: -2.1869864
+      outSlope: -2.1869864
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06708588
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_RunAnimationTime: 0.745
+  m_WalkAnimationTime: 0.895
+  m_EscapingAnimationTime: 1.7
+  m_WalkWindupTime: 1
+  m_Phase: 0.15
+  m_AnimRotationSpeed: 234.7
+  m_AnimMoveSpeed: 30
+  m_TiltSizeMultiplier: 4
+  m_HopHeightMultiplier: 0.5
+  m_YawSizeMultiplier: 7.73
+  m_HorizontalMovementMultiplier: 0
+  m_ForwardBackwardMovementMultiplier: 0.15
+  m_MaximumRunAnimationSpeed: 0.01
+  m_AnimationSpeedRandom: 0.209
+  m_fAnimationSizeScalar: 1.21
+  m_fPullTime: 0.16
+  m_SizeVariation: 0.169
+  m_ConfusionAnimWindupTime: 0.5
+  m_ConfusionRotationSpeed: -661.8
+  m_DamagedColor: {r: 4.594794, g: 0, b: 0, a: 0.54509807}
+  m_BreedHopDuration: 0.7
   m_BornEffectsSize: 0
   m_AnimalCallSoundIdentifier: 
   m_AnimalStepSoundIdentifier: 
@@ -15457,8 +15481,8 @@ Rigidbody:
   m_GameObject: {fileID: 6261768213309388409}
   serializedVersion: 2
   m_Mass: 13
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_Drag: 2
+  m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 1
@@ -15497,6 +15521,32 @@ MonoBehaviour:
   m_CurrentHealth: 0
   m_DamagedParticleType: {fileID: 3351905364494537606, guid: 677c87b940741d142b8b505e8e1f7902,
     type: 3}
+  m_bPassiveHealthReplenishment: 1
+  m_PassiveHealthReplenishmentPerSecond:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.004716981
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0007018
+      value: 0.026392344
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_DebugText: {fileID: 0}
 --- !u!114 &6261768213309388391
 MonoBehaviour:
   m_ObjectHideFlags: 0

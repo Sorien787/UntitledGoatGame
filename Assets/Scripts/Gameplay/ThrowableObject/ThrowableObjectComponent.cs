@@ -56,4 +56,9 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 			healthComponent.AddListener(this);
 		}
 	}
+
+	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
+	{
+
+	}
 }

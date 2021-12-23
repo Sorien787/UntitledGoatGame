@@ -17,14 +17,22 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] public AnimationCurve m_ForwardBackwardAnimationCurve;
     [SerializeField] public AnimationCurve m_WalkHorizontalAnimationCurve;
     [SerializeField] public AnimationCurve m_StepSoundCurve;
+
     [Header("Damaged Animation Curves")]
     [SerializeField] public AnimationCurve m_DamagedHopAnimationCurve;
     [SerializeField] private AnimationCurve m_DamagedVisualsAnimationCurve;
+
     [Header("Breeding Animation Curves")]
     [SerializeField] private AnimationCurve m_BreedingHopAnimationCurve;
     [SerializeField] private AnimationCurve m_BreedingPitchAnimationCurve;
+    [SerializeField] private AnimationCurve m_BreedHopProbability;
+
     [Header("Born Animation Curves")]
     [SerializeField] private AnimationCurve m_BornSizeAnimationCurve;
+
+    [Header("Death Animation Curve")]
+    [SerializeField] private AnimationCurve m_DeathSizeAnimationCurve;
+
     [Header("Movement Animation Durations")]
     [Range(0f, 2f)] [SerializeField] private float m_RunAnimationTime;
     [Range(0f, 2f)] [SerializeField] private float m_WalkAnimationTime;
@@ -44,8 +52,6 @@ public class AnimalAnimationComponent : MonoBehaviour
 
 
     [Header("Miscellaneous Params")]
-    [SerializeField] private float m_AttackAnimationDuration = 1.0f;
-    [SerializeField] private float m_DamagedAnimationDuration = 1.0f;
     [Range(0f, 0.5f)][SerializeField] private float m_AnimationSpeedRandom;
     [SerializeField] private float m_fAnimationSizeScalar;
     [SerializeField] private float m_fPullTime;
@@ -60,7 +66,6 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     [Header("Breeding References")]
     [SerializeField] private float m_BreedHopDuration;
-    [SerializeField] private AnimationCurve m_BreedHopProbability;
     [SerializeField] private float m_BornEffectsSize;
 
     [Header("Audio Identifiers")]
@@ -129,6 +134,7 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public float GetBreedingDuration => m_AnimalComponent.GetBreedingDuration;
     public float GetBornDuration => m_AnimalComponent.GetBornDuration;
+    public float GetDeadDuration => m_AnimalComponent.GetDeadDuration;
     public float GetBreedHopDuration => m_BreedHopDuration;
     public AnimationCurve GetBreedHopProbabilityCurve => m_BreedHopProbability;
     public float GetSizeMult => m_fSizeVariationActual;
@@ -185,6 +191,10 @@ public class AnimalAnimationComponent : MonoBehaviour
 		m_CurrentAttack = m_NewAttack;
     }
 
+    public void OnKilledByPredator() 
+    {
+        StartCoroutine(PredatorEatCoroutine());
+    }
     public Quaternion GetOrientation(Vector3 forward) 
     {
         if (forward.sqrMagnitude < Mathf.Epsilon) 
@@ -316,7 +326,6 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void SetWalkAnimation() 
     {
-		enabled = true;
         m_TotalAnimationTime = m_WalkAnimationTime;
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalWalkingAnimationState));
     }
@@ -328,7 +337,6 @@ public class AnimalAnimationComponent : MonoBehaviour
 
     public void SetRunAnimation() 
     {
-		enabled = true;
 		m_TotalAnimationTime = m_RunAnimationTime;
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalWalkingAnimationState));
     }
@@ -397,10 +405,23 @@ public class AnimalAnimationComponent : MonoBehaviour
     {
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalCapturedPulledState));
     }
+    private float m_DeathAnimTime = 0.0f;
+    IEnumerator PredatorEatCoroutine() 
+    {
+        while (m_DeathAnimTime < GetDeadDuration) 
+        {
+            m_DeathAnimTime += Time.deltaTime;
+            float deathSize = m_DeathSizeAnimationCurve.Evaluate(m_DeathAnimTime / GetDeadDuration) * GetSizeMult;
+            ScaleTransform.localScale = Vector3.one * deathSize;
+            yield return null;
+        }
 
+
+    }
     public void OnDead() 
     {
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalIdleAnimationState));
+        enabled = false;
     }
 
     private IEnumerator ConfusionRotationCoroutine() 

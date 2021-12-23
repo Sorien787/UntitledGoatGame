@@ -62,5 +62,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EntityTypeComponent: {fileID: 6886230701027873543}
+  m_GameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_HazardLifetime: 4
   m_HazardRadius: 21.01

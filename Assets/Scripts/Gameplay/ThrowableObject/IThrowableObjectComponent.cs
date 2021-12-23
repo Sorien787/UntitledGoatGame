@@ -118,17 +118,17 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         if (!m_CausesImpacts || m_bImpactsDisabled)
             return;
         Quaternion rotation = Quaternion.LookRotation(Vector3.Cross(Vector3.up, norm), norm);
-        OnObjectHitOtherWithMomentum(m_Entity.GetVelocity.magnitude * m_Entity.GetMass, pos, rotation);
+        OnObjectHitOtherWithMomentum(m_Entity.GetVelocity.magnitude * m_Entity.GetMass, pos, rotation, go);
     }
 
-    private void OnObjectHitOtherWithMomentum(float momentum, Vector3 position, Quaternion rotation) 
+    private void OnObjectHitOtherWithMomentum(float momentum, Vector3 position, Quaternion rotation, GameObject other) 
     {
         if (!m_CausesImpacts || momentum < m_MomentumForImpactFX || m_bIsWrangled || m_bImpactsDisabled)
             return;
-        CreateImpactAtPosition(momentum, position, rotation);
+        CreateImpactAtPosition(momentum, position, rotation, other);
     }
 
-    private void CreateImpactAtPosition(float momentum, Vector3 position, Quaternion rotation) 
+    private void CreateImpactAtPosition(float momentum, Vector3 position, Quaternion rotation, GameObject other) 
     {
         if (m_fImpactFXCooldown > Mathf.Epsilon)
             return;
@@ -141,10 +141,22 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         GameObject impactObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
         impactObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));
 
+        // if we've hit an animal, dont create a hazard (otherwise, do)
+        if (other.GetComponent<AnimalComponent>())
+            return;
+
         GameObject hazardObject = Instantiate(m_HazardRef, transform.position, transform.rotation, null);
+
         HazardComponent hazard = hazardObject.GetComponent<HazardComponent>();
         hazard.SetRadius(m_HazardRadiusByImpactMomentum.Evaluate(momentum));
         hazard.SetLifetime(m_HazardLifetimeByImpactMomentum.Evaluate(momentum));
+
+        // set the hazard type so that animals know whether they should run away from this or not
+        // I.E, if this is a thrown chicken, wolves and foxes should see this as an opportunity and go eat
+        EntityTypeComponent entityType = GetComponent<EntityTypeComponent>();
+        if (!entityType)
+            return;
+        hazard.SetHazardSubtype(entityType.GetEntityInformation);
     }
 
     protected void OnObjectLanded()

@@ -103,7 +103,7 @@ public class CustomAnimationEditor : Editor
 
             using (var check = new EditorGUI.ChangeCheckScope()) 
             {
-                m_testAnimationPosition = EditorGUILayout.Slider("Animation position", m_testAnimationPosition, 0.0f, 1.0f);
+                m_testAnimationPosition = EditorGUILayout.Slider("Animation position", m_testAnimationPosition, 0.0f, clip.animationTime);
                 if (check.changed) 
                 {
                     animation.ManualSetAnim(clip, m_testAnimationPosition);

@@ -83,4 +83,9 @@ public class PlayerComponent : MonoBehaviour, IPauseListener, IHealthListener
 	{
 		m_GameManager.OnPlayerKilled();
 	}
+
+	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
+	{
+
+	}
 }

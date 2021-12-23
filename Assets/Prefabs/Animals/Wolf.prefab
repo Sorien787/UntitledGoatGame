@@ -189,7 +189,7 @@ PrefabInstance:
     - target: {fileID: 3268333415586914426, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3847187933735988313, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -285,17 +285,62 @@ PrefabInstance:
     - target: {fileID: 6261768213309388409, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_Name
-      value: Wolf (2)
+      value: Wolf
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RunSpeed
-      value: 4.06
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_fChaseBufferSize
+      value: 1.508
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_BornEffectsSize
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[0].value
+      value: -0.0016287714
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[2].value
+      value: 0.0101855695
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[4].value
+      value: 0.003088221
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[0].time
+      value: -0.005941022
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[2].time
+      value: 0.5070008
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[4].time
+      value: 1.009126
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_TiltSizeMultiplier
+      value: 4.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_YawSizeMultiplier
+      value: 8.93
       objectReference: {fileID: 0}
     - target: {fileID: 8017869404291731759, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

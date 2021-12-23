@@ -10,6 +10,14 @@ public class EntityTypeComponent : MonoBehaviour
     [SerializeField] private Transform m_TrackingTransform;
     [SerializeField] private float m_TrackableRadius = 0f;
 
+    private bool m_bIsDead = false;
+    public void MarkAsDead() 
+    {
+        m_bIsDead = true;
+    }
+
+    public bool IsDead => m_bIsDead;
+
     private UnityUtils.ListenerSet<IEntityTrackingListener> m_Listeners = new UnityUtils.ListenerSet<IEntityTrackingListener>();
 
     public EntityInformation GetEntityInformation => m_EntityInformation;

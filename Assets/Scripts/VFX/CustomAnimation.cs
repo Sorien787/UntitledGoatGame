@@ -82,7 +82,7 @@ public class CustomAnimation : MonoBehaviour
 
 		if (currentClip.hasMovementAnimation)
 		{
-			float timeToPositionalTime = currentClip.movementCurve.Evaluate(currentTime / currentClip.animationTime);
+			float timeToPositionalTime = currentClip.movementCurve.Evaluate(currentTime / currentClip.animationTime) * currentClip.animationTime;
 			m_AnimatingObject.position = currentClip.GetCurrentPosition(timeToPositionalTime);
 			m_AnimatingObject.rotation = currentClip.GetCurrentRotation(timeToPositionalTime);
 		}

@@ -76,12 +76,20 @@ public class ObjectColourChangerEditor : Editor
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             EditorGUILayout.LabelField("Material Setting Information", EditorStyles.boldLabel);
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+
             ObjectColorChangeMaterialSetting clip = materialColourSettings[chosenIndex];
 
 
             clip.m_ColourGradient = EditorGUILayout.GradientField(clip.m_ColourGradient);
             clip.m_MaterialIndex = EditorGUILayout.IntField("Material Num", clip.m_MaterialIndex);
             clip.m_MaterialColourId = EditorGUILayout.TextField(clip.m_MaterialColourId);
+            using (var h = new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.Label("Use child objs");
+                clip.m_changeChildObjects = EditorGUILayout.Toggle(clip.m_changeChildObjects);
+            }
+
 
             if (!colorChanger.RandomizeOnStart)
             {

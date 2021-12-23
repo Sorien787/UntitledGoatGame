@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52bcf59d6003374baf968310ba8618e, type: 3}
+  m_Name: Level5
+  m_EditorClassIdentifier: 
+  m_sLevelName: Bunny Flats
+  m_nTargetTime: 0
+  m_ReferenceClip: {fileID: 0}
+  m_LevelObjectives:
+  - {fileID: 11400000, guid: 659ff7809d27224439ae3c5728adfaed, type: 2}
+  - {fileID: 11400000, guid: 467b1645aca66e645b41b21a8bd7eed8, type: 2}
+  - {fileID: 11400000, guid: d8314ad698dbc0546b9c5174f4b39508, type: 2}
+  m_Checkpoints:
+  - 0
+  - 0
+  m_nAchievedTime: 0
+  m_LevelCompleteTime: 60
+  m_StarRating: 0
+  m_AchievedScore: 0

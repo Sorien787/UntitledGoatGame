@@ -16,6 +16,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c34ad58007ce1e1428b3907ffa6562ba, type: 2}
   - {fileID: 11400000, guid: 9424e7e6e5d655b42a538fabdbb7ba37, type: 2}
   - {fileID: 11400000, guid: 15ffdb0cfafc23547ab22da3acc9f124, type: 2}
+  - {fileID: 11400000, guid: cca81a070d91c3a41b1eafa0fca42585, type: 2}
+  - {fileID: 11400000, guid: 538889f6a37d11b488810d22295f360c, type: 2}
+  - {fileID: 11400000, guid: 8eae090e881f2f74db9e406ac541bdbb, type: 2}
   m_ScaredOf:
   - {fileID: 11400000, guid: a171ef1ac7ad69046af761265214b3fd, type: 2}
   m_Attacks: []
+  m_bIsStatic: 0

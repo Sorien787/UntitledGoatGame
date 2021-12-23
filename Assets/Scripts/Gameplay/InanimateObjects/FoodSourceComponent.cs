@@ -7,10 +7,6 @@ using System;
 [RequireComponent(typeof(HealthComponent))]
 public class FoodSourceComponent : MonoBehaviour, IPauseListener
 {
-    [SerializeField] private AnimationCurve m_RegenerationRateByCurrentHealth = default;
-
-    [SerializeField] private float m_RegenerationRateScalar = 1.0f;
-
     [SerializeField] private float m_fHealthThresholdForEaten = default;
 
     [SerializeField] private float m_fHealthThresholdForReadyForEating = default;
@@ -59,8 +55,7 @@ public class FoodSourceComponent : MonoBehaviour, IPauseListener
     {
         if (!m_HealthComponent)
             m_HealthComponent = GetComponent<HealthComponent>();
-        float regenerationRatePerSecond = m_RegenerationRateByCurrentHealth.Evaluate(m_HealthComponent.GetCurrentHealthPercentage) * m_RegenerationRateScalar;
-        m_HealthComponent.ReplenishHealth(regenerationRatePerSecond * Time.deltaTime);
+
         m_fCurrentFoodSize = Mathf.SmoothDamp(m_fCurrentFoodSize, m_HealthComponent.GetCurrentHealthPercentage, ref m_fFoodSizeChangeVelocity, m_fFoodSizeChangeTime);
         m_Listeners.ForEachListener((IFoodSourceSizeListener listener) => listener.OnSetFoodSize(m_fCurrentFoodSize));
 
@@ -80,7 +75,6 @@ public class FoodSourceComponent : MonoBehaviour, IPauseListener
             m_DebugText.AddLine(string.Format("Food Name: {0}", gameObject.name));
             m_DebugText.AddLine(string.Format("Current Food Health: {0}", m_HealthComponent.GetCurrentHealthPercentage));
             m_DebugText.AddLine(string.Format("Food Status: {0}", m_CurrentFoodStatus.Equals(FoodStatus.Growing) ? "Growing" : "Ready To Eat"));
-            m_DebugText.AddLine(string.Format("Current Food Growth Rate per Second: {0}", regenerationRatePerSecond));
         }
 #endif
 	}

@@ -328,7 +328,7 @@ public class LevelManager : MonoBehaviour
 
 	public void OnLevelFailed()
 	{
-		OnLevelFinished();
+		OnLevelFinished?.Invoke();
 		//m_CameraTransform.GetComponent<CameraStartEndAnimator>().AnimateOut();
 		m_LevelState.RequestTransition(typeof(EndFailureState));
 	}

@@ -127,4 +127,4 @@ MonoBehaviour:
   m_DefaultShaderId: _Color
   m_MaterialColourSettingReference: 0
   m_ColourSettings: []
-  m_bRandomizeOnStart: 0
+  m_bRandomizeOnStart: 1

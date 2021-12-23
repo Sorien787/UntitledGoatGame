@@ -21,6 +21,8 @@ public class DebugTextComponent : MonoBehaviour
 
 	public void AddLine(string line)
 	{
+		if (!enabled)
+			return;
 		if (Time.renderedFrameCount != m_CurrentFrameCount) 
 		{
 			m_CurrentFrameCount = Time.renderedFrameCount;

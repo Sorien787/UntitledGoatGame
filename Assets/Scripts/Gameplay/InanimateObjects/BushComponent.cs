@@ -124,19 +124,22 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
 
         AddMeshAndTransformDataForUse(meshes, transforms, gameObject);
 
-        float validArea = 0.0f;
-        int triNum = 0;
+        float totalValidArea = 0.0f;
+        int numberOfTris = 0;
 
         for (int i = 0; i < meshes.Count; i++) 
         {
             ForEachValidTriInMesh(meshes[i], transforms[i], (Triangle tri) =>
             {
-                triNum++;
-                validArea += tri.CalculateArea();
+                numberOfTris++;
+                totalValidArea += tri.CalculateArea();
             });
         }
 
-        float areaPerTri = validArea / triNum;
+        float areaPerTri = totalValidArea / numberOfTris;
+
+        float areaPerBerry = totalValidArea / m_TargetNumOfFlowers;
+
         float currentArea = 0;
 
         for (int i = 0; i < meshes.Count; i++) 
@@ -144,9 +147,9 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
             ForEachValidTriInMesh(meshes[i], transforms[i], (Triangle tri) =>
             {
                 currentArea += tri.CalculateArea();
-                while (currentArea > areaPerTri) 
+                while (currentArea > areaPerBerry) 
                 {
-                    currentArea -= areaPerTri;
+                    currentArea -= areaPerBerry;
 
                     Vector3 spawnPos = tri.GetRandomPosOnTri();
                     Quaternion spawnQuat = Quaternion.LookRotation(tri.GetNorm(), Vector3.up);
@@ -184,7 +187,19 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
 
     private bool m_bUpdateSizes = true;
 
-    void Update()
+	private void Start()
+	{
+        for (int i = 0; i < m_Flowers.Count; i++)
+        {
+            Flower currentFlower = m_Flowers[i];
+            float target = (float)i / m_Flowers.Count < m_CurrentFoodSize ? 1.0f : 0.0f;
+
+            currentFlower.m_CurrentSize = target;
+            m_Matrices[i] = Matrix4x4.TRS(currentFlower.m_flowerPos, currentFlower.m_flowerRotation, currentFlower.m_CurrentSize * m_FlowerScalar * Vector3.one * currentFlower.m_SizeScalar);
+        }
+    }
+
+	void Update()
     {
 
 

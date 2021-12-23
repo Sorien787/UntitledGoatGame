@@ -205,7 +205,7 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 
 	public bool FindCowToAbduct() 
 	{
-		if (m_Manager.GetClosestTransformMatchingList(m_UfoTransform.position, out EntityToken outEntityToken, validEntitiesToFind, m_EntityInformation.GetHunts)) 
+		if (m_Manager.GetClosestTransformMatchingList(m_UfoTransform.position, out EntityToken outEntityToken, validEntitiesToFind, true, m_EntityInformation.GetHunts)) 
 		{
 			// in case it dies before we get to it
 			outEntityToken.GetEntityType.GetComponent<HealthComponent>().AddListener(this);
@@ -232,6 +232,11 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 
 
 		m_UfoStateMachine.RequestTransition(typeof(UFOSwoopUpState));
+	}
+
+	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
+	{
+
 	}
 }
 

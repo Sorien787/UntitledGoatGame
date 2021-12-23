@@ -66,6 +66,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     [Header("Damaged parameters")]
     [SerializeField] [Range(0f, 2f)]  private float m_DamagedDuration = default;
+    [SerializeField] [Range(0f, 1f)] private float m_DeathHealthRatio = default;
+    [SerializeField] [Range(0f, 1f)] private float m_DeadDuration = default;
 
     [Header("Debug Stuff")]
     [SerializeField] private DebugTextComponent m_debugTextComponent;
@@ -113,6 +115,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	private ThrowableObjectComponent m_ThrowableComponent = default;
 
     public float GetBornDuration => m_BornTime;
+
+    public float GetDeadDuration => m_DeadDuration;
     public float GetDamagedDuration => m_DamagedDuration;
 
     #region Component Event Handlers
@@ -143,6 +147,30 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         m_bIsInTractorBeam = false;
     }
+
+    public void OnScaredByHazard(HazardComponent hazard)
+	{
+        EntityTypeComponent hazardTypeComponent = hazard.GetTypeComponent;
+        Type currentState = m_StateMachine.GetCurrentState();
+
+        if (currentState != typeof(AnimalFreeFallState) || 
+            currentState != typeof(AnimalStaggeredState) || 
+            currentState != typeof(AnimalLassoThrownState) || 
+            currentState != typeof(AnimalFreeFallState) || 
+            currentState != typeof(AnimalGrowingState) ||
+            currentState != typeof(AnimalWrangledAttackState) ||
+            currentState != typeof(AnimalWrangledRunState)) 
+        {
+            m_StateMachine.RequestTransition(typeof(AnimalIdleState));
+
+            m_AnimalAnimator.IsScared();
+            SetRelevantTargetAnimal(hazardTypeComponent);
+            
+            m_StateMachine.RequestTransition(typeof(AnimalEvadingState));
+        }
+        
+	}
+
 
     private void OnWrangledByLasso() 
     {
@@ -178,9 +206,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.RequestTransition(typeof(AnimalLassoThrownState));
     }
 
-    private IEnumerator DelayedDeathDestroy() 
+    private IEnumerator DelayedDeathDestroy(float delayedTime) 
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(delayedTime);
         Destroy(gameObject);
     }
 
@@ -305,25 +333,13 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private bool GetEntityTokenToEscapeFrom(out EntityToken token) 
     {
-        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out token, null, m_EntityInformation.GetEntityInformation.GetScaredOf))
+        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out token, null, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
         {
             if (Vector3.SqrMagnitude(token.GetEntityTransform.position - m_AnimalMainTransform.position) < m_ScaredDistance * m_ScaredDistance)
             {
                 return true;
             }
         }
-
-
-        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out token, null, m_Manager.GetHazardType))
-		{
-            if (token.GetEntityTransform.TryGetComponent(out HazardComponent hazard)) 
-            {
-                if (Vector3.SqrMagnitude(token.GetEntityTransform.position - m_AnimalMainTransform.position) < hazard.GetHazardRadius * hazard.GetHazardRadius) 
-                {
-                    return true;
-                }         
-            }
-		}
         return false;
     }
 
@@ -352,6 +368,12 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 		else 
         {
             distToEscSq = m_EvadedDistance * m_EvadedDistance * 1.0f;
+        }
+
+        // if the player is closer, we should run from that instead (if we run from the player)
+        if (m_EntityInformation.GetEntityInformation.IsScaredOf(m_Manager.GetPlayer.GetEntityInformation) && (m_Manager.GetPlayer.GetTrackingTransform.position - m_AnimalMainTransform.position).sqrMagnitude < distSq)
+        {
+            return true;
         }
 
         return distSq > distToEscSq;
@@ -391,14 +413,14 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private bool CanHuntEnemy()
     {
-        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objAtkToken, null, m_EntityInformation.GetEntityInformation.GetAttacks) && TryHuntObject(objAtkToken))
+        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objAtkToken, null, false, m_EntityInformation.GetEntityInformation.GetAttacks) && TryHuntObject(objAtkToken))
         {
 			SetCurrentAttack(m_DamageAttackType);
 			m_AnimalAnimator.HasSeenEnemy();
             return true;
         }
 
-        if (!IsFull && m_bIsHungry && m_bIsHungryAfterBreeding && m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objToken, null, m_EntityInformation.GetEntityInformation.GetHunts) && TryHuntObject(objToken))
+        if (!IsFull && m_bIsHungry && m_bIsHungryAfterBreeding && m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objToken, null, true, m_EntityInformation.GetEntityInformation.GetHunts) && TryHuntObject(objToken))
         { 
 		    SetCurrentAttack(m_EatAttackType);
 		    m_AnimalAnimator.HasSeenFood();
@@ -744,7 +766,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddState(new AnimalStaggeredState(m_AnimalAnimator));
         m_StateMachine.AddState(new AnimalDamagedState(m_AnimalAnimator));
         m_StateMachine.AddState(new AnimalLassoThrownState(m_AnimalAnimator));
-        m_StateMachine.AddState(new AnimalDeathState(m_AnimalAnimator));
         m_StateMachine.AddState(new AnimalPredatorChaseState(m_AnimalMovement, m_AnimalAnimator));
         m_StateMachine.AddState(new AnimalAttackState(m_AnimalAnimator));
         m_StateMachine.AddState(new AnimalBreedingChaseState(m_AnimalMovement, m_AnimalAnimator));
@@ -759,7 +780,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallState), typeof(AnimalStaggeredState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
 
-        m_StateMachine.AddTransition(typeof(AnimalIdleState), typeof(AnimalDeathState), () => m_bIsDead, Dead);
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
         m_StateMachine.AddAnyTransition(typeof(AnimalFreeFallState), ShouldStartStaggering);
@@ -821,10 +841,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 
 
-    public void Dead() 
-    {
-        m_AnimalAnimator.enabled = false;
-    }
 
     private void EnableImpactFX() 
     {
@@ -886,7 +902,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 	public void OnEntityTakeDamage(GameObject go1, GameObject go2, DamageType type)
 	{
-        if (type == DamageType.PredatorDamage)
+        if (type == DamageType.PredatorDamage && !m_bIsDead)
         {
             m_StateMachine.RequestTransition(typeof(AnimalDamagedState));
         }
@@ -894,23 +910,24 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 	public void OnEntityDied(GameObject go1, GameObject go2, DamageType type)
 	{
+        m_EntityInformation.OnKilled();
+
         switch (type)
         {
             case (DamageType.UFODamage):
                 Destroy(gameObject);
                 return;
             case (DamageType.PredatorDamage):
+                m_AnimalAnimator.OnKilledByPredator();
+                StartCoroutine(DelayedDeathDestroy(GetDeadDuration));
                 break;
             case (DamageType.FallDamage):
-                StartCoroutine(DelayedDeathDestroy());
+                StartCoroutine(DelayedDeathDestroy(2.0f));
                 break;
             default:
                 Destroy(gameObject);
                 break;
         }
-        m_StateMachine.RequestTransition(typeof(AnimalDamagedState));
-        m_bIsDead = true;
-        m_EntityInformation.OnKilled();
     }
 
 	public void LevelStarted()
@@ -922,7 +939,29 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	{
 		throw new NotImplementedException();
 	}
-    #endregion
+
+	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
+	{
+        if (m_bIsDead)
+            return;
+
+        if (currentHealthPercentage > m_DeathHealthRatio)
+            return;
+
+        m_bIsDead = true;
+        m_EntityInformation.MarkAsDead();
+        m_AnimalHealthComponent.DisableHealthRegeneration();
+        m_AnimalHealthComponent.SetInvulnerabilityTime(0.0f);
+
+        enabled = false;
+
+        SetManagedByAgent(false);
+        SetGeneralPhysics();
+        DisableGroundCollider();
+
+        m_AnimalAnimator.OnDead();
+    }
+	#endregion
 }
 
 
@@ -1235,24 +1274,6 @@ public class AnimalFreeFallState : AStateBase<AnimalComponent>
     }
 }
 
-public class AnimalDeathState : AStateBase<AnimalComponent>
-{
-        private readonly AnimalAnimationComponent animalAnimator;
-    public AnimalDeathState(AnimalAnimationComponent animalAnimator) 
-    {
-        this.animalAnimator = animalAnimator;
-    }
-
-    public override void OnEnter()
-    {
-		Host.SetManagedByAgent(false);
-		Host.SetGeneralPhysics();
-        Host.DisableGroundCollider();
-
-        animalAnimator.SetIdleAnimation();
-    }
-}
-    
 public class AnimalAbductedState : AStateBase<AnimalComponent>
 {
     private readonly AnimalMovementComponent animalMovement;
@@ -1343,7 +1364,7 @@ public class AnimalPredatorChaseState : AStateBase<AnimalComponent>
 
     public override void OnEnter()
     {
-        m_animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius - 0.5f);
+        m_animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius);
         m_animalAnimator.SetRunAnimation();
         if (Host.IsTargetStatic)
             m_animalMovement.SetWalking();

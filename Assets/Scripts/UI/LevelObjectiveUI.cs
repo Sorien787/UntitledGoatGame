@@ -148,7 +148,7 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 		m_MinValue = objective.GetLowestValue;
 		m_MaxValue = objective.GetHighestValue;
 
-		m_InitialText = objective.GetObjectiveType == ObjectiveType.Capturing ? "Capture " : "Population of " + objective.GetEntityInformation.name + "s : ";
+		m_InitialText = objective.GetEntityInformation.name + (objective.GetObjectiveType == ObjectiveType.Capturing ? " Capture" : " Population");
 
 		m_fDesiredCounterVal = 0;
 		m_TopText.text = GenerateTopText(0);

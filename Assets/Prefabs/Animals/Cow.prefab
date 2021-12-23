@@ -47,6 +47,7 @@ MonoBehaviour:
     m_RolledColor: {r: 0.20769833, g: 0.1856433, b: 0.1856433, a: 1}
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
+    m_changeChildObjects: 0
   m_bRandomizeOnStart: 1
 --- !u!136 &139225694
 CapsuleCollider:
@@ -380,6 +381,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_Mass
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

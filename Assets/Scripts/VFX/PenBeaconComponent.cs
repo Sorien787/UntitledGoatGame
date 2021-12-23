@@ -155,6 +155,11 @@ public class PenBeaconComponent : MonoBehaviour, IPauseListener, IHealthListener
 	{
         OnLevelFinished();
     }
+
+	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
+	{
+
+	}
 }
 
 

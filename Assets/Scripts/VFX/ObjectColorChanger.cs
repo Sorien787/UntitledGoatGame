@@ -14,8 +14,7 @@ public class ObjectColorChanger : MonoBehaviour
     {
         return ref m_ColourSettings;
     }
-
-    public bool RandomizeOnStart { get => m_bRandomizeOnStart; set { m_bRandomizeOnStart = value;} }
+    [HideInInspector] public bool RandomizeOnStart { get => m_bRandomizeOnStart; set { m_bRandomizeOnStart = value;} }
 
 
     public string GetDefaultShaderId { get => m_DefaultShaderId; }
@@ -39,11 +38,33 @@ public class ObjectColorChanger : MonoBehaviour
         MaterialPropertyBlock matPropertyBlock = new MaterialPropertyBlock();
         foreach(ObjectColorChangeMaterialSetting setting in m_ColourSettings) 
         {
-            m_MeshRenderer.GetPropertyBlock(matPropertyBlock, setting.m_MaterialIndex);
-            matPropertyBlock.SetColor(setting.m_MaterialColourId, setting.m_RolledColor);
-            m_MeshRenderer.SetPropertyBlock(matPropertyBlock, setting.m_MaterialIndex);
+            if (setting.m_changeChildObjects) 
+            {
+                Transform thisTransform = transform;
+                int childCount = transform.childCount;
+                for(int i = 0; i < childCount; i++) 
+                {
+                    Transform childTransform = thisTransform.GetChild(i);
+                    MeshRenderer meshRenderer = childTransform.GetComponent<MeshRenderer>();
+                    if (!meshRenderer && ! childTransform.GetComponent<ObjectColorChanger>())
+                        continue;
+                    ChangeMaterialForRenderer(matPropertyBlock, setting, meshRenderer);
+                }
+            }
+			else 
+            {
+                ChangeMaterialForRenderer(matPropertyBlock, setting, m_MeshRenderer);
+            }
+
         }
 
+    }
+
+    private void ChangeMaterialForRenderer(in MaterialPropertyBlock matPropertyBlock, in ObjectColorChangeMaterialSetting setting, in MeshRenderer meshRenderer) 
+    {
+        meshRenderer.GetPropertyBlock(matPropertyBlock, setting.m_MaterialIndex);
+        matPropertyBlock.SetColor(setting.m_MaterialColourId, setting.m_RolledColor);
+        meshRenderer.SetPropertyBlock(matPropertyBlock, setting.m_MaterialIndex);
     }
 }
 
@@ -54,6 +75,7 @@ public class ObjectColorChangeMaterialSetting
     public Color m_RolledColor;
     public int m_MaterialIndex;
     public string m_MaterialColourId;
+    public bool m_changeChildObjects;
     public void RollColour() 
     {
         float rand = Random.Range(0.0f, 1.0f);
