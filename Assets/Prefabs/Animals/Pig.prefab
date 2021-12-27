@@ -330,12 +330,12 @@ PrefabInstance:
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RunSpeed
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_IdleSpeed
-      value: 1.97
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -386,6 +386,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_BreedHopDuration
       value: 1.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[0].time
+      value: -0.01562925
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[0].value
+      value: -0.0092477
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[2].time
+      value: 0.49731258
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[2].value
+      value: 0.0025666412
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[4].time
+      value: 0.9994377
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_HopAnimationCurve.m_Curve.Array.data[4].value
+      value: -0.0045307074
       objectReference: {fileID: 0}
     - target: {fileID: 8017869404291731759, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

@@ -768,7 +768,7 @@ PrefabInstance:
     - target: {fileID: 2191496813081671577, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3268333415586914426, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -865,6 +865,11 @@ PrefabInstance:
       propertyPath: m_Height
       value: 0.48
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388388, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_MaxHealth
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388390, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_EntityInformation
@@ -879,7 +884,7 @@ PrefabInstance:
     - target: {fileID: 6261768213309388409, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_Name
-      value: Chicken (2)
+      value: Chicken
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -894,7 +899,12 @@ PrefabInstance:
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RunSpeed
-      value: 2.88
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_IdleSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -984,7 +994,7 @@ PrefabInstance:
     - target: {fileID: 7651879451718294537, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8017869404291731759, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

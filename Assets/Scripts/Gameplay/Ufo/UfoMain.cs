@@ -118,7 +118,7 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 
 	private Vector3 GetStartingDestination() 
 	{
-		float mapRadius = m_Manager.GetMapRadius;
+		float mapRadius = 20f; //m_Manager.GetMapRadius;
 		float radiusOut = Mathf.Sqrt(UnityEngine.Random.Range(0f, 1f)) * mapRadius;
 		float angle = UnityEngine.Random.Range(0f, 1f) * Mathf.Deg2Rad * 360;
 		return new Vector3( Mathf.Cos(angle) * radiusOut, m_PatrolHeight, Mathf.Sin(angle));
@@ -150,7 +150,7 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 		float randomDirection = UnityEngine.Random.Range(0, Mathf.Deg2Rad * 360);
 		Vector2 currentPlanarPosition = new Vector2(m_UfoTransform.position.x, m_UfoTransform.position.z);
 		Vector2 newPlanarPosition = new Vector3(Mathf.Sin(randomDirection) * dst + currentPlanarPosition.x, -Mathf.Cos(randomDirection) * dst + currentPlanarPosition.y);
-		Vector2 limitedPlanarPosition = Mathf.Min(m_Manager.GetMapRadius, newPlanarPosition.magnitude) * newPlanarPosition.normalized;
+		Vector2 limitedPlanarPosition = Vector3.zero; // Mathf.Min(m_Manager.GetMapRadius, newPlanarPosition.magnitude) * newPlanarPosition.normalized;
 		Vector3 newWorldPosition = new Vector3(limitedPlanarPosition.x, m_PatrolHeight, limitedPlanarPosition.y);
 		return newWorldPosition;
 	}

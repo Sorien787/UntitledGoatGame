@@ -67,7 +67,7 @@ Transform:
   m_GameObject: {fileID: 4649538071932314871}
   m_LocalRotation: {x: 0.25694108, y: -0.523488, z: 0.15480447, w: 0.79748183}
   m_LocalPosition: {x: -16.748, y: 12.97, z: -16.848}
-  m_LocalScale: {x: 42.448883, y: 42.448883, z: 42.448883}
+  m_LocalScale: {x: 34.431988, y: 34.431988, z: 34.431988}
   m_Children:
   - {fileID: 1174731008845948310}
   m_Father: {fileID: 0}
@@ -177,8 +177,6 @@ MonoBehaviour:
   m_throwableObjectComponent: {fileID: 1444594708651495008}
   m_freeFallTrajectoryComponent: {fileID: 1444594708651495009}
   m_objectRigidBody: {fileID: 1444594708651495038}
-  m_ImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
-    type: 3}
 --- !u!114 &1444594708651495008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +294,7 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
+  m_bIgnoredFirstCollisionEvent: 1
   m_DelayBetweenImpacts: 0.3
   m_CausesDragging: 1
   m_CausesImpacts: 1
@@ -326,7 +325,7 @@ MonoBehaviour:
   m_ThrownLayer: 14
   m_GroundImpactLayermask:
     serializedVersion: 2
-    m_Bits: 1068288
+    m_Bits: 1051904
 --- !u!114 &653192708
 MonoBehaviour:
   m_ObjectHideFlags: 0

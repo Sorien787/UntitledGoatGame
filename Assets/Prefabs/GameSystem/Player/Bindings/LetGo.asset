@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169d0a5c03b80aa48ad2fb231a172dd2, type: 3}
   m_Name: LetGo
   m_EditorClassIdentifier: 
-  m_DefaultKeycode: 325
-  m_KeyCode: 325
+  m_DefaultKeycode: 326
+  m_KeyCode: 324

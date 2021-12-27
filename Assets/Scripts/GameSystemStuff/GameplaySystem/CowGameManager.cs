@@ -47,8 +47,6 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	public RestartState GetRestartState { get => m_RestartState; }
 
-	public float GetMapRadius => GetCurrentLevel.GetMapRadius;
-
 	public EntityTypeComponent GetPlayer => m_EntityCache[m_PlayerEntityInformation][0].GetEntityType;
 
 	public LevelManager GetCurrentLevel { get; private set; } = null;
@@ -114,6 +112,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	public void NewLevelLoaded(LevelManager newLevel)
 	{
 		m_bHasStarted = false;
+		m_bIsInPlayerPerspective = false;
 		GetCurrentLevel = newLevel;
 		GetCurrentLevelIndex = newLevel.GetLevelNumber;
 
@@ -176,9 +175,9 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	{
 		m_LevelListeners.Add(listener);
 		if (m_bHasStarted) 
-		{
 			listener.LevelStarted();
-		}
+		if (m_bIsInPlayerPerspective)
+			listener.PlayerPerspectiveBegin();
 	}
 
 	public void SetPausedState(bool pauseState)
@@ -217,6 +216,12 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	{
 		GetCurrentLevel.RestartLevel();
 		m_RestartState = RestartState.Quick;
+	}
+	private bool m_bIsInPlayerPerspective = false;
+	public void EnterPlayerPerspective()
+	{
+		m_bIsInPlayerPerspective = true;
+		m_LevelListeners.ForEachListener((ILevelListener listener) => listener.PlayerPerspectiveBegin());
 	}
 
 	public void StartLevel() 
@@ -457,16 +462,6 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		return m_UICache[refe];
 	}
 
-	public void ConstrainPointToPlayArea(ref Vector3 point)
-	{
-		float yPoint = point.y;
-		Vector3 projectedDistance = Vector3.ProjectOnPlane(point - GetCurrentLevel.GetMapCentre, Vector3.up);
-
-		float vectorLength = Mathf.Min(projectedDistance.magnitude, GetCurrentLevel.GetMapRadius);
-		point = vectorLength * projectedDistance.normalized + GetCurrentLevel.GetMapCentre;
-		point.y = yPoint;
-	}
-
 	public void OnObjectiveValidated(){}
 
 	#endregion
@@ -485,6 +480,7 @@ public interface ILevelListener
 {
 	void LevelStarted();
 	void LevelFinished();
+	void PlayerPerspectiveBegin();
 }
 #endregion
 

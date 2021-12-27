@@ -134,7 +134,9 @@ public class HealthComponent : MonoBehaviour
             m_CurrentHealth -= damageAmount;
             if (m_CurrentHealth <= 0)
             {
-                OnKilled(gameObject, damagedBy, damageType);
+
+				if (m_bCanDie)
+					OnKilled(gameObject, damagedBy, damageType);
             }
             else
             {

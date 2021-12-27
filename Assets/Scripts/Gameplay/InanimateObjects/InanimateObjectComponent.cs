@@ -11,7 +11,6 @@ public class InanimateObjectComponent : MonoBehaviour
     [SerializeField] private ThrowableObjectComponent m_throwableObjectComponent;
     [SerializeField] private FreeFallTrajectoryComponent m_freeFallTrajectoryComponent;
     [SerializeField] private Rigidbody m_objectRigidBody;
-    [SerializeField] private GameObject m_ImpactEffectsPrefab;
 
 
     private void Awake()
@@ -48,10 +47,6 @@ public class InanimateObjectComponent : MonoBehaviour
         if (animal) 
         {
             animal.OnStruckByObject(m_objectRigidBody.velocity, m_objectRigidBody.mass);
-        }
-		else 
-        {
-            Instantiate(m_ImpactEffectsPrefab, pos, Quaternion.LookRotation(Vector3.forward, norm));
         }
         m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
     }

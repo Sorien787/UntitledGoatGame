@@ -394,7 +394,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3338445512843362043}
   - component: {fileID: 3338445512843362041}
-  - component: {fileID: 3338445512843362040}
   - component: {fileID: 3338445512843362046}
   - component: {fileID: 3338445512843362047}
   m_Layer: 13
@@ -436,19 +435,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &3338445512843362040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3338445512843361988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e5a952657cb06241a51478cb030f66c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigidBody: {fileID: 3338445512843362041}
 --- !u!114 &3338445512843362046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +452,9 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_listOfObjsToChangeLayer: []
   m_ThrownLayer: 0
+  m_GroundImpactLayermask:
+    serializedVersion: 2
+    m_Bits: 3328
 --- !u!114 &3338445512843362047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,7 +501,7 @@ MonoBehaviour:
   m_DelayBetweenImpacts: 0.3
   m_CausesDragging: 0
   m_CausesImpacts: 0
-  m_GravityMultiplier: 1
+  m_GravityMultiplier: 1.33
   m_ThrowingBody: {fileID: 3338445512843362041}
   m_CameraFocusTransform: {fileID: 3338445512843362043}
   m_AttachmentTransform: {fileID: 3338445512843362043}
@@ -809,17 +798,13 @@ MonoBehaviour:
   m_HandRopeLineRenderer: {fileID: 3338445514006639550}
   m_LassoSpinningLoopLineRenderer: {fileID: 3338445512809281111}
   m_TrajectoryLineRenderer: {fileID: 3338445513774158918}
-  m_ThrowableComponent: {fileID: 3338445514369759828}
-  m_FreeFallComponent: {fileID: 3338445512843362046}
-  m_LassoLoop: {fileID: 3338445512843362040}
-  m_Player: {fileID: 3338445514369759837}
+  m_LassoEndPoint: {fileID: 0}
+  m_PlayerObject: {fileID: 0}
   m_PlayerCam: {fileID: 2735400669585439901}
   m_AudioManager: {fileID: 3338445513214232710}
   m_PowerBarObjectReference: {fileID: 11400000, guid: 1f04cc9f8fbd0fd46a3062e9214a4dac,
     type: 2}
-  m_CanGrabCanvasGroup: {fileID: 0}
-  playerComponent: {fileID: 3338445514369759818}
-  m_LassoEndRigidBody: {fileID: 3338445512843362041}
+  m_CanGrabUIReference: {fileID: 0}
   m_TriggerBinding: {fileID: 11400000, guid: aef47ab2110d0414284da26bba151f06, type: 2}
   m_CancelBinding: {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
@@ -1440,7 +1425,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3338445514369759839}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1679,6 +1664,14 @@ MonoBehaviour:
   m_bCanDie: 1
   m_CurrentHealth: 0
   m_DamagedParticleType: {fileID: 0}
+  m_bPassiveHealthReplenishment: 0
+  m_PassiveHealthReplenishmentPerSecond:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_DebugText: {fileID: 0}
 --- !u!114 &3338445514369759828
 MonoBehaviour:
   m_ObjectHideFlags: 0

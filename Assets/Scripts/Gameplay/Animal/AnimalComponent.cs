@@ -371,7 +371,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         }
 
         // if the player is closer, we should run from that instead (if we run from the player)
-        if (m_EntityInformation.GetEntityInformation.IsScaredOf(m_Manager.GetPlayer.GetEntityInformation) && (m_Manager.GetPlayer.GetTrackingTransform.position - m_AnimalMainTransform.position).sqrMagnitude < distSq)
+        if ((GetTargetEntity.GetEntityInformation != m_Manager.GetPlayer.GetEntityInformation) &&
+			(m_EntityInformation.GetEntityInformation.IsScaredOf(m_Manager.GetPlayer.GetEntityInformation)) &&
+			(m_Manager.GetPlayer.GetTrackingTransform.position - m_AnimalMainTransform.position).sqrMagnitude < distSq)
         {
             return true;
         }
@@ -961,6 +963,10 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
         m_AnimalAnimator.OnDead();
     }
+
+	public void PlayerPerspectiveBegin()
+	{
+	}
 	#endregion
 }
 

@@ -22,7 +22,8 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [SerializeField] private GameObject m_GroundImpactEffectsPrefab;
 
     [Header("Settings Parameters")]
-    [SerializeField] private float m_DelayBetweenImpacts = 0.3f;
+	[SerializeField] private bool m_bIgnoredFirstCollisionEvent = false;
+	[SerializeField] private float m_DelayBetweenImpacts = 0.3f;
     [SerializeField] private bool m_CausesDragging = false;
     [SerializeField] private bool m_CausesImpacts = false;
     [SerializeField] [Range(0.1f, 5f)] private float m_GravityMultiplier = 1.0f;
@@ -37,7 +38,8 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     private bool m_bIsWrangled = false;
     private float m_SpeedForDragFX;
     private float m_MomentumForImpactFX;
-    private Transform m_DragFXTransform;
+
+	private Transform m_DragFXTransform;
 
     virtual protected void Awake()
 	{
@@ -110,8 +112,15 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     
 	private void OnCollisionEnter(Collision collision)
 	{
-        CollisionEvent(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
-    }
+		if (m_bIgnoredFirstCollisionEvent)
+		{
+			CollisionEvent(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
+		}
+		else
+		{
+			m_bIgnoredFirstCollisionEvent = false;
+		}
+	}
 
     protected void CollisionEvent(Vector3 pos, Vector3 norm, GameObject go) 
     {

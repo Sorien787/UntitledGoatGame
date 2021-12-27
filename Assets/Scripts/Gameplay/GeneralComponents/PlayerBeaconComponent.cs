@@ -1,26 +1,30 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBeaconComponent : MonoBehaviour
+public class PlayerBeaconComponent : MonoBehaviour, ILevelListener
 {
     [SerializeField] private List<MeshRendererColorChanger> m_BeaconColourChangers;
     [SerializeField] private CowGameManager m_Manager;
     [SerializeField] private float m_InitialOpacity;
-    // Start is called before the first frame update
-    void Start()
+
+	void Start()
     {
-        m_Manager.GetCurrentLevel.OnLevelStarted += OnLevelStarted;
-        for (int i = 0; i < m_BeaconColourChangers.Count; i++)
-        {
-            m_BeaconColourChangers[i].SetDesiredOpacity(m_InitialOpacity);
-        }
+		for (int i = 0; i < m_BeaconColourChangers.Count; i++)
+		{
+			m_BeaconColourChangers[i].SetDesiredOpacity(m_InitialOpacity);
+		}
+		m_Manager.AddToLevelStarted(this);
     }
 
-    void OnLevelStarted() 
+    public void PlayerPerspectiveBegin() 
     {
         for (int i = 0; i< m_BeaconColourChangers.Count; i++) 
         {
             m_BeaconColourChangers[i].SetDesiredOpacity(0f);
         }
     }
+
+	public void LevelStarted() { }
+
+	public void LevelFinished() { }
 }

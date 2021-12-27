@@ -26,11 +26,9 @@ public class MeshRendererColorChanger : MonoBehaviour
 
     void Start()
     {
+		m_CurrentOpacity = m_BaseColor.a;
         m_CurrentColor = new Vector3(m_BaseColor.r, m_BaseColor.g, m_BaseColor.b);
         m_DesiredColor = m_CurrentColor;
-
-        m_DesiredOpacity = m_BaseColor.a;
-        m_DesiredOpacity = m_CurrentOpacity;
 
         m_ColourId = Shader.PropertyToID("_Color");
         m_EmissionColourId = Shader.PropertyToID("_EmissionColor");

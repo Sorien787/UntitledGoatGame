@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [CustomEditor(typeof(CustomAnimation))]
 public class CustomAnimationEditor : Editor
@@ -65,6 +66,8 @@ public class CustomAnimationEditor : Editor
         {
             CustomAnimation.AnimationClip clip = animationClips[chosenIndex];
 
+			EditorGUI.BeginChangeCheck();
+
             clip.name = EditorGUILayout.TextField("Clip Name", clip.name);
             clip.animationTime = EditorGUILayout.FloatField("Animation Time", clip.animationTime);
             clip.movementCurve = EditorGUILayout.CurveField("Animation Curve" ,clip.movementCurve, GUILayout.MinHeight(40.0f), GUILayout.Height(40.0f));
@@ -101,7 +104,13 @@ public class CustomAnimationEditor : Editor
                 }
             }
 
-            using (var check = new EditorGUI.ChangeCheckScope()) 
+			if (EditorGUI.EndChangeCheck())
+			{
+				EditorUtility.SetDirty(animation);
+				PrefabUtility.RecordPrefabInstancePropertyModifications(animation);
+			}
+
+			using (var check = new EditorGUI.ChangeCheckScope()) 
             {
                 m_testAnimationPosition = EditorGUILayout.Slider("Animation position", m_testAnimationPosition, 0.0f, clip.animationTime);
                 if (check.changed) 

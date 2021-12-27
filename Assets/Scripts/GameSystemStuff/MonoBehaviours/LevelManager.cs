@@ -15,7 +15,6 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private float m_DebugCountdownTimerTime;
 	[SerializeField] private float m_DefaultCountdownTimerTime;
 	[Header("Level parameters")]
-	[SerializeField] private float m_MapSize;
 	[SerializeField] private int m_LevelNumber;
 
 	[Header("Object references")]
@@ -23,16 +22,13 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private CustomAnimation m_LevelEnterAnimation;
 	[SerializeField] private TextMeshProUGUI m_LevelIntroTextLeft;
 	[SerializeField] private TextMeshProUGUI m_LevelIntroTextRight;
-	[SerializeField] private Transform m_Transform;
-	[SerializeField] private Transform m_CameraTransform;
-	[SerializeField] private Transform m_PlayerCameraContainerTransform;
 	[SerializeField] private GameObject m_ObjectiveObjectPrefab;
 
 	[Header("Canvas references")]
-	[SerializeField] private CanvasGroup m_MainCanvas;
 	[SerializeField] private Transform m_ObjectiveCanvasTransform;
 	[SerializeField] private CountdownTimerUI m_FinalCountdownTimer;
 	[SerializeField] private CountdownTimerUI m_StartCountdownTimer;
+	[SerializeField] private CanvasGroup m_MainCanvas;
 	[SerializeField] private CanvasGroup m_StartCountdownCanvas;
 	[SerializeField] private CanvasGroup m_PauseCanvas;
 	[SerializeField] private CanvasGroup m_EndSuccessCanvas;
@@ -57,11 +53,8 @@ public class LevelManager : MonoBehaviour
 	#region Properties
 	public int GetLevelNumber => m_LevelNumber;
 
-	public float GetMapRadius => m_MapSize;
 
-	public Vector3 GetMapCentre => m_Transform.position;
-
-	public Transform GetCamTransform => m_CameraTransform;
+	public Transform GetCamTransform { get; private set; }
 
 	public Transform GetObjectiveCanvasTransform => m_ObjectiveCanvasTransform;
 
@@ -82,9 +75,10 @@ public class LevelManager : MonoBehaviour
 		switch (m_Manager.GetRestartState)
 		{
 			case (CowGameManager.RestartState.Debug):
-				m_CameraTransform.SetParent(m_Manager.GetPlayerCameraContainerTransform);
-				m_CameraTransform.localPosition = Vector3.zero;
-				m_CameraTransform.localRotation = Quaternion.identity;
+				GetCamTransform.SetParent(m_Manager.GetPlayerCameraContainerTransform);
+				GetCamTransform.localPosition = Vector3.zero;
+				GetCamTransform.localRotation = Quaternion.identity;
+				m_Manager.EnterPlayerPerspective();
 				OnLevelStarted?.Invoke();
 				m_LevelState.RequestTransition(typeof(PlayingState));
 				break;
@@ -140,10 +134,10 @@ public class LevelManager : MonoBehaviour
 	{
 		m_StartCountdownTimer.StartTimerFromTime(3.9f);
 
-		m_CameraTransform.SetParent(m_Manager.GetPlayerCameraContainerTransform);
-		m_CameraTransform.localPosition = Vector3.zero;
-		m_CameraTransform.localRotation = Quaternion.identity;
-
+		GetCamTransform.SetParent(m_Manager.GetPlayerCameraContainerTransform);
+		GetCamTransform.localPosition = Vector3.zero;
+		GetCamTransform.localRotation = Quaternion.identity;
+		m_Manager.EnterPlayerPerspective();
 		m_StartCountdownTimer.OnTimerComplete += () =>
 		{
 			OnLevelStarted?.Invoke();
@@ -160,6 +154,7 @@ public class LevelManager : MonoBehaviour
 	private IEnumerator StartLevelWithoutCountdown(float time)
 	{
 		yield return new WaitForSeconds(time);
+		m_Manager.EnterPlayerPerspective();
 		OnLevelStarted?.Invoke();
 		m_LevelState.RequestTransition(typeof(PlayingState));
 
@@ -273,7 +268,7 @@ public class LevelManager : MonoBehaviour
 	public void PlayerStartedLevel()
 	{
 		SetCurrentCanvas(m_StartCountdownCanvas, () => { });
-		m_CameraTransform.GetComponent<CameraStartEndAnimator>().AnimateIn(m_DefaultCountdownTimerTime);
+		GetCamTransform.GetComponent<CameraStartEndAnimator>().AnimateIn(m_DefaultCountdownTimerTime);
 		m_StartCountdownTimer.StartTimerFromTime(m_DefaultCountdownTimerTime);
 		m_StartCountdownTimer.ShowTimer();
 		m_StartCountdownTimer.OnTimerComplete += () =>
@@ -306,7 +301,7 @@ public class LevelManager : MonoBehaviour
 
 	public void InitializeLevel(LevelData levelData, Transform camTransform)
 	{
-		m_CameraTransform = camTransform;
+		GetCamTransform = camTransform;
 		m_LevelData = levelData;
 		levelData.ForEachObjective((LevelObjective objective) =>
 		{

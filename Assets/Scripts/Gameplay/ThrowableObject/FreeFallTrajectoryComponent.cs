@@ -49,7 +49,9 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 		m_bIsFalling = true;
         m_rMovingBody.position = projectile.EvaluatePosAtTime(0.0f);
         m_rMovingBody.rotation = projectile.EvaluateRotAtTime(0.0f);
-        foreach(GameObject go in m_listOfObjsToChangeLayer) 
+		m_positionLastFrame = m_rMovingBody.position;
+
+		foreach (GameObject go in m_listOfObjsToChangeLayer) 
         {
             m_ObjectsToChangeBack.Add(new Tuple<GameObject, int>(go, go.layer));
             go.layer = m_ThrownLayer;
@@ -73,31 +75,36 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
         }
     }
 
+	private void OnTriggerStay(Collider other)
+	{
+		OnCollide(other.transform.position, Vector3.zero, other.gameObject);
+	}
+
 	private void OnCollisionStay(Collision collision)
     {
         OnCollide(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
     }
 
 	private void OnCollide(Vector3 pos, Vector3 norm, GameObject go)
-	{
-        if (m_bIsFalling)
+	{   
+		if (m_bIsFalling)
         {
-            OnObjectHitGround?.Invoke(pos, norm, go);
+			OnObjectHitGround?.Invoke(pos, norm, go);
             OnObjectNotInFreeFall?.Invoke();
             m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
             m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
             StopThrowingInternal();
         }
     }
-
+	private Vector3 m_positionLastFrame = Vector3.zero;
 	void Update()
     {
 		if (m_bIsFalling)
 		{
 			m_fCurrentTime += Time.deltaTime;
             Vector3 desiredPos = projectile.EvaluatePosAtTime(m_fCurrentTime);
-            Vector3 offset = desiredPos - m_rMovingBody.position;
-            if (Physics.Raycast(m_rMovingBody.position, offset.normalized, out RaycastHit hit, offset.magnitude, m_GroundImpactLayermask, QueryTriggerInteraction.Ignore)) 
+            Vector3 offset = m_rMovingBody.position - m_positionLastFrame;
+            if (Physics.Raycast(m_positionLastFrame, offset.normalized, out RaycastHit hit, offset.magnitude, m_GroundImpactLayermask, QueryTriggerInteraction.Ignore)) 
             {
                 OnCollide(hit.point, hit.normal, hit.collider.gameObject);
             }
@@ -106,6 +113,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
                 m_rMovingBody.MovePosition(projectile.EvaluatePosAtTime(m_fCurrentTime));
                 m_rMovingBody.MoveRotation(projectile.EvaluateRotAtTime(m_fCurrentTime));
             }
+			m_positionLastFrame = m_rMovingBody.position;
 
 		}
 		if (m_debugTextComponent)

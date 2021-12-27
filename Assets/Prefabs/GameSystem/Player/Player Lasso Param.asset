@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a70ddf5251721468313a3d95844ad4, type: 3}
   m_Name: Player Lasso Param
   m_EditorClassIdentifier: 
-  m_LassoReturnAcceleration: 0.928
-  m_MaxLassoReturnSpeed: 10
+  m_LassoReturnAcceleration: 2.52
+  m_MaxLassoReturnSpeed: 12.5
   m_LassoLength: 19.74
   m_GrabDistance: 2.015
   m_ThrowForceCurve:

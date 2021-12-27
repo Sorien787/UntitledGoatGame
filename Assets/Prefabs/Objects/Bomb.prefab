@@ -9680,8 +9680,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929366444259242028}
   serializedVersion: 2
-  m_Mass: 12.3
-  m_Drag: 0
+  m_Mass: 10.4
+  m_Drag: 4.23
   m_AngularDrag: 9.64
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -9833,8 +9833,9 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_GroundImpactEffectsPrefab: {fileID: -2476408915829456873, guid: 689f5a59205d25a458c991c686c60fa2,
     type: 3}
+  m_bIgnoredFirstCollisionEvent: 1
   m_DelayBetweenImpacts: 0.3
-  m_CausesDragging: 0
+  m_CausesDragging: 1
   m_CausesImpacts: 0
   m_GravityMultiplier: 1
   m_ThrowingBody: {fileID: 3983800817042991400}
@@ -9863,7 +9864,7 @@ MonoBehaviour:
   m_ThrownLayer: 14
   m_GroundImpactLayermask:
     serializedVersion: 2
-    m_Bits: 1068288
+    m_Bits: 1051904
 --- !u!114 &1076372699
 MonoBehaviour:
   m_ObjectHideFlags: 0
