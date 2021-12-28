@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 [RequireComponent(typeof(ThrowableObjectComponent))]
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
-public class BombComponent : MonoBehaviour
+public class BombComponent : MonoBehaviour, IFreeFallListener
 {
     [Header("External References")]
     [SerializeField] private GameObject m_HazardRef;
@@ -35,7 +35,7 @@ public class BombComponent : MonoBehaviour
         m_Transform = transform;
         m_FreeFallComponent = GetComponent<FreeFallTrajectoryComponent>();
         m_ThrowableObject = GetComponent<ThrowableObjectComponent>();
-        m_FreeFallComponent.OnObjectHitGround += OnHitGround;
+		m_FreeFallComponent.AddListener(this);
         m_ThrowableObject.OnThrown += OnThrown;
     }
 
@@ -54,7 +54,7 @@ public class BombComponent : MonoBehaviour
         m_ParticleFXController.TurnOnAllSystems();
     }
 
-	void OnHitGround(Vector3 pos, Vector3 norm, GameObject go)
+	public void OnCollide(Vector3 pos, Vector3 norm, GameObject go)
     {
         if (!m_bBombPrimed)
             return;
@@ -98,4 +98,6 @@ public class BombComponent : MonoBehaviour
         Instantiate(m_ExplosionRef, m_Transform.position, upRot);
         Destroy(gameObject);
     }
+
+	public void OnStopFalling() {}
 }

@@ -18,8 +18,17 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
     private ProjectileParams projectile;
     private float m_fCurrentTime = 0.0f;
 
-    public event Action<Vector3, Vector3, GameObject> OnObjectHitGround;
-    public event Action OnObjectNotInFreeFall;
+	private UnityUtils.ListenerSet<IFreeFallListener> m_Listeners = new UnityUtils.ListenerSet<IFreeFallListener>();
+
+	public void AddListener(IFreeFallListener listener)
+	{
+		m_Listeners.Add(listener);
+	}
+
+	public void RemoveListener(IFreeFallListener listener)
+	{
+		m_Listeners.Remove(listener);
+	}
 
 	private void Awake()
 	{
@@ -62,8 +71,11 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
     public void StopThrowingObject() 
     {
-        OnObjectNotInFreeFall?.Invoke();
-        StopThrowingInternal();
+		m_Listeners.ForEachListener((IFreeFallListener listener) =>
+		{
+			listener.OnStopFalling();
+		});
+		StopThrowingInternal();
     }
 
     private void StopThrowingInternal() 
@@ -89,8 +101,11 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 	{   
 		if (m_bIsFalling)
         {
-			OnObjectHitGround?.Invoke(pos, norm, go);
-            OnObjectNotInFreeFall?.Invoke();
+			m_Listeners.ForEachListener((IFreeFallListener listener) => 
+			{
+				listener.OnCollide(pos, norm, go);
+				listener.OnStopFalling();
+			});
             m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
             m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
             StopThrowingInternal();
@@ -174,4 +189,11 @@ public struct ProjectileParams
     {
         return Quaternion.AngleAxis(time * m_fAngVel, time * m_vRotAxis);
     }
+}
+
+public interface IFreeFallListener
+{
+	void OnCollide(Vector3 position, Vector3 rotation, GameObject go);
+
+	void OnStopFalling();
 }

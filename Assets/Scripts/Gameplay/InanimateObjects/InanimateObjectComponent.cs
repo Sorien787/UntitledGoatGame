@@ -3,7 +3,7 @@
 [RequireComponent(typeof(ThrowableObjectComponent))]
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
 [RequireComponent(typeof(PhysicalEntity))]
-public class InanimateObjectComponent : MonoBehaviour
+public class InanimateObjectComponent : MonoBehaviour, IFreeFallListener
 {
     private StateMachine<InanimateObjectComponent> m_StateMachine;
 
@@ -20,8 +20,8 @@ public class InanimateObjectComponent : MonoBehaviour
         m_throwableObjectComponent.OnReleased += () => m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
         m_throwableObjectComponent.OnThrown += (ProjectileParams) => m_StateMachine.RequestTransition(typeof(IObjectControlledState));
 
- 
-        m_freeFallTrajectoryComponent.OnObjectHitGround += OnHitObject;
+
+		m_freeFallTrajectoryComponent.AddListener(this);
 
         m_StateMachine = new StateMachine<InanimateObjectComponent>(new IObjectPhysicalizedState(), this);
 
@@ -41,7 +41,7 @@ public class InanimateObjectComponent : MonoBehaviour
     }
 
 
-    private void OnHitObject(Vector3 pos, Vector3 norm, GameObject go) 
+    public void OnCollide(Vector3 pos, Vector3 norm, GameObject go) 
     {
         AnimalComponent animal = go.GetComponentInParent<AnimalComponent>();
         if (animal) 
@@ -50,6 +50,8 @@ public class InanimateObjectComponent : MonoBehaviour
         }
         m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
     }
+
+	public void OnStopFalling(){}
 }
 
 public class IObjectControlledState : AStateBase<InanimateObjectComponent>

@@ -17,6 +17,9 @@ public class LevelData : ScriptableObject
 	[SerializeField] private int m_LevelCompleteTime = 0;
 	[SerializeField] private StarRating m_StarRating = StarRating.Zero;
 	[SerializeField] private int m_AchievedScore = 0;
+	[SerializeField] private bool m_bHasEnteredLevel = false;
+
+
 
 	public enum StarRating
 	{
@@ -29,6 +32,8 @@ public class LevelData : ScriptableObject
 	#region Properties
 
 	public bool IsCompleted => !m_StarRating.Equals(StarRating.Zero);
+
+	public bool HasEnteredLevelBefore => m_bHasEnteredLevel;
 
 	public int GetObjectiveCount => m_LevelObjectives.Count;
 
@@ -53,6 +58,11 @@ public class LevelData : ScriptableObject
 	#endregion
 
 	#region PublicFunctions
+
+	public void OnEnterLevel()
+	{
+		m_bHasEnteredLevel = true;
+	}
 
 	public void ForEachObjective(Action<LevelObjective> objectiveFunc)
 	{

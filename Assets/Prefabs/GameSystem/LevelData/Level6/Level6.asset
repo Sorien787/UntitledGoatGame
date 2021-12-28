@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_sLevelName: The Reacharound
   m_nTargetTime: 1000
-  m_ReferenceClip: {fileID: 0}
+  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: 95a056a81245df24aa161d60356ab022, type: 2}
   - {fileID: 11400000, guid: 8a2788c219e7c1c4c97e39bb85c09bc1, type: 2}
@@ -22,5 +22,5 @@ MonoBehaviour:
   m_Checkpoints: []
   m_nAchievedTime: 0
   m_LevelCompleteTime: 30
-  m_StarRating: 0
+  m_StarRating: 2
   m_AchievedScore: 0

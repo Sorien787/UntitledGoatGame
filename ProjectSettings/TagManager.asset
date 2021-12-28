@@ -24,7 +24,7 @@ TagManager:
   - AbductionLayer
   - UfoLayer
   - CreatureGroundCollider
-  - 
+  - NoCollisions
   - ThrowableObjectLayer
   - LassoColliderThrowable
   - PlayerBlocking

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_sLevelName: You've Got To Be Kidding Me
   m_nTargetTime: 40
-  m_ReferenceClip: {fileID: 0}
+  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: 9d0f1dbd61ca1034bbc76517aa7a1fd1, type: 2}
   - {fileID: 11400000, guid: abd3d61ffcf50394886bd988fa7d859c, type: 2}
@@ -26,5 +26,5 @@ MonoBehaviour:
   - 0
   m_nAchievedTime: 0
   m_LevelCompleteTime: 40
-  m_StarRating: 0
+  m_StarRating: 2
   m_AchievedScore: 0

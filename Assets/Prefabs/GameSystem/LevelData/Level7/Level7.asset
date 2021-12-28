@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_sLevelName: Fractured Butt Whole
   m_nTargetTime: 10
-  m_ReferenceClip: {fileID: 0}
+  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: 00c556008ee6e0445b6095b84bd22f96, type: 2}
   - {fileID: 11400000, guid: 7e3884f14aecc334e981c7cf8d3f9c5f, type: 2}
@@ -25,5 +25,5 @@ MonoBehaviour:
   - 0
   m_nAchievedTime: 0
   m_LevelCompleteTime: 0
-  m_StarRating: 0
+  m_StarRating: 2
   m_AchievedScore: 0

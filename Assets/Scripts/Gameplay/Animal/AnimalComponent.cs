@@ -9,7 +9,7 @@ using System.Collections;
 [RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(ThrowableObjectComponent))]
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
-public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingListener, IHealthListener, ILevelListener
+public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingListener, IHealthListener, ILevelListener, IFreeFallListener
 {
     [Header("Object references")]
     [SerializeField] protected CowGameManager m_Manager = default;
@@ -222,7 +222,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.RequestTransition(typeof(AnimalThrowingState));
     }
 
-    private void OnHitGroundFromThrown(Vector3 pos, Vector3 norm, GameObject go)
+    public void OnCollide(Vector3 pos, Vector3 norm, GameObject go)
     {
         OnHitGround(pos, norm);
         m_StateMachine.RequestTransition(typeof(AnimalFreeFallState));
@@ -730,7 +730,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
         m_EatAttackType.OnDamagedTarget += OnDamageObject;
 
-        m_FreeFallComponent.OnObjectHitGround += OnHitGroundFromThrown;
+		m_FreeFallComponent.AddListener(this);
 
         m_AbductableComponent.OnStartedAbducting += (UfoMain ufo, AbductableComponent abductable) => OnBeginAbducted();
         m_AbductableComponent.OnEndedAbducting += (UfoMain ufo, AbductableComponent abductable) => OnFinishedAbducted();
@@ -937,10 +937,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.RequestTransition(typeof(AnimalIdleState));
 	}
 
-	public void LevelFinished()
-	{
-		throw new NotImplementedException();
-	}
+	public void LevelFinished(){}
 
 	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
 	{
@@ -964,9 +961,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_AnimalAnimator.OnDead();
     }
 
-	public void PlayerPerspectiveBegin()
-	{
-	}
+	public void PlayerPerspectiveBegin(){}
+
+	public void OnStopFalling(){}
 	#endregion
 }
 

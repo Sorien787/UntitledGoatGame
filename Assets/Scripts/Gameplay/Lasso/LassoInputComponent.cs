@@ -4,7 +4,7 @@ using LassoStates;
 using EZCameraShake;
 using System.Collections.Generic;
 
-public class LassoInputComponent : MonoBehaviour, IPauseListener
+public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListener
 {
 	#region SerializedMemberVars
 
@@ -127,6 +127,11 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener
 		m_CanGrabCanvasGroup = m_Manager.GetUIElementFromReference(m_CanGrabUIReference).GetComponent<CanvasGroup>();
 	}
 
+	private void OnDestroy()
+	{
+		m_LassoFreeFallComponent.RemoveListener(this);
+	}
+
 	private void LateUpdate()
     {
         m_StateMachine.Tick(Time.deltaTime);
@@ -144,8 +149,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener
 		GetLassoBody = m_LassoEndPoint.GetComponent<Rigidbody>();
 		
 		m_PlayerThrowableComponent.OnThrown += (ProjectileParams pparams) => OnThrown();
-		m_LassoFreeFallComponent.OnObjectNotInFreeFall += OnNotThrown;
-		m_LassoFreeFallComponent.OnObjectHitGround += OnHitGround;
+		m_LassoFreeFallComponent.AddListener(this);
 
         GetThrowableObject = m_LassoEndTransform.GetComponent<ThrowableObjectComponent>();
 
@@ -250,14 +254,16 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener
         m_bPlayerThrown = true;
     }
 
-    public void OnNotThrown() 
+    public void OnStopFalling() 
     {
         m_bPlayerThrown = false;
     }
 
-	private void OnHitGround(Vector3 position, Vector3 rotation, GameObject hitObject)
+	public void OnCollide(Vector3 position, Vector3 rotation, GameObject hitObject)
 	{
-		if (hitObject.TryGetComponent(out ThrowableObjectComponent component))
+		ThrowableObjectComponent component = hitObject.GetComponentInParent<ThrowableObjectComponent>();
+
+		if (component)
 		{
 			GetThrowableObject = component;
 			GetThrowableObject.Wrangled();
@@ -474,7 +480,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener
 
     }
 
-	#endregion 
+	#endregion
 }
 
 #region LassoStates

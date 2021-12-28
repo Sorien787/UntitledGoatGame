@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_sLevelName: There Are More Of Them?
   m_nTargetTime: 69
-  m_ReferenceClip: {fileID: 0}
+  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: d0303c953f3c2b64fa217cf341c8041d, type: 2}
   - {fileID: 11400000, guid: df98269c42bef8a45ba9b71fcfe89965, type: 2}
@@ -23,5 +23,5 @@ MonoBehaviour:
   - 0
   m_nAchievedTime: 0
   m_LevelCompleteTime: 40
-  m_StarRating: 0
+  m_StarRating: 2
   m_AchievedScore: 0

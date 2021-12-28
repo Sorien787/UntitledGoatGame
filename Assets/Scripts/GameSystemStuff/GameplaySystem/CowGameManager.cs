@@ -16,7 +16,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	private readonly Dictionary<EntityInformation, List<EntityToken>> m_EntityCache = new Dictionary<EntityInformation, List<EntityToken>>();
 	private readonly List<LevelObjective> m_ObjectiveDict = new List<LevelObjective>();
 	private readonly Dictionary<UIObjectReference, GameObject> m_UICache = new Dictionary<UIObjectReference, GameObject>();
-	
+
 	private Transform m_PlayerCameraTransform;
 	private Transform m_PlayerCameraContainerTransform;
 
@@ -63,9 +63,21 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		SceneManager.LoadScene(GetCurrentLevelIndex++);
 	}
 
-	public bool HasLevelStarted() 
+	public bool HasLevelStarted()
 	{
 		return m_bHasStarted;
+	}
+
+	public void SetDefaultEntry()
+	{
+		if (m_RestartState != RestartState.Debug)
+			m_RestartState = RestartState.Default;
+	}
+
+	public void SetQuickEntry()
+	{
+		if (m_RestartState != RestartState.Debug)
+			m_RestartState = RestartState.Quick;
 	}
 
 	public void OnHazardSpawn(HazardComponent hazard) 

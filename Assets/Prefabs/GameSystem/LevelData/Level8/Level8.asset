@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_sLevelName: The Runaround
   m_nTargetTime: 300
-  m_ReferenceClip: {fileID: 0}
+  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: f55dc2799e4c99e4194abf84b66f6ed4, type: 2}
   - {fileID: 11400000, guid: 040223b9748a5ea479ea5b460194f554, type: 2}
@@ -24,5 +24,5 @@ MonoBehaviour:
   - 0
   m_nAchievedTime: 0
   m_LevelCompleteTime: 40
-  m_StarRating: 0
+  m_StarRating: 2
   m_AchievedScore: 0

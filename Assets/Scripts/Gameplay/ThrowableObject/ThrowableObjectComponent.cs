@@ -2,7 +2,7 @@
 using System;
 
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
-public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListener
+public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListener, IFreeFallListener
 {
 	[Header("Internal References")]
     [SerializeField] private Rigidbody m_ThrowingBody;
@@ -49,8 +49,7 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 	protected override void Awake()
 	{
 		base.Awake();
-		m_FreeFallComponent.OnObjectNotInFreeFall += OnObjectLanded;
-		m_FreeFallComponent.OnObjectHitGround += CollisionEvent;
+		m_FreeFallComponent.AddListener(this);
 		if (TryGetComponent(out HealthComponent healthComponent))
 		{
 			healthComponent.AddListener(this);
@@ -60,5 +59,15 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
 	{
 
+	}
+
+	public void OnCollide(Vector3 position, Vector3 rotation, GameObject go)
+	{
+		CollisionEvent(position, rotation, go);
+	}
+
+	public void OnStopFalling()
+	{
+		OnObjectLanded();
 	}
 }
