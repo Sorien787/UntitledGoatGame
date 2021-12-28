@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32254537a617ea04899db5f9eec96f93, type: 3}
+  m_Name: WolfObjective
+  m_EditorClassIdentifier: 
+  m_HasMinimumFailure: 1
+  m_MinimumValue: 2
+  m_HasMaximumFailure: 1
+  m_MaximumValue: 10
+  m_MinimumGoal: 4
+  m_MaximumGoal: 8
+  m_TimerMaximum: 30
+  m_ObjectiveType: 0
+  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+  m_CounterAnimalType: {fileID: 11400000, guid: 9e627bc964d516541b64748c2164aac7,
+    type: 2}

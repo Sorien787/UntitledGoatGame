@@ -18,7 +18,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2304
   m_HazardType: {fileID: 11400000, guid: 62dcc3e3ffe72a742b4d8b2ef73b276d, type: 2}
-  m_RestartState: 0
+  m_RestartState: 1
   m_LevelData:
   - {fileID: 11400000, guid: 1a9db3b737d523c41b571353f9a15e3f, type: 2}
   - {fileID: 11400000, guid: 6e1bd68fe35168f40b87e87564f4c5de, type: 2}
@@ -28,3 +28,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a3cf3caa78210ea458579f2faebb896b, type: 2}
   - {fileID: 11400000, guid: 98b991f0d626fe94d835fbe94cf092a2, type: 2}
   - {fileID: 11400000, guid: ecf354fc04b4fe64ca6b89978b482b6a, type: 2}
+  - {fileID: 11400000, guid: 9862537eaf13ac94eb6747a2b90d9921, type: 2}
+  - {fileID: 11400000, guid: 11576ba6476e6b24d98681682d25dd15, type: 2}

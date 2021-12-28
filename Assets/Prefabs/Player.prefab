@@ -498,6 +498,7 @@ MonoBehaviour:
   m_HazardRef: {fileID: 0}
   m_Manager: {fileID: 0}
   m_GroundImpactEffectsPrefab: {fileID: 0}
+  m_bIgnoredFirstCollisionEvent: 0
   m_DelayBetweenImpacts: 0.3
   m_CausesDragging: 0
   m_CausesImpacts: 0
@@ -1396,7 +1397,7 @@ Transform:
   m_GameObject: {fileID: 3338445514369759839}
   m_LocalRotation: {x: -0, y: -0.23458841, z: -0, w: 0.97209483}
   m_LocalPosition: {x: -10.19, y: 14.33, z: -20.33}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.2, z: 1}
   m_Children:
   - {fileID: 3338445514129021241}
   - {fileID: 2735400669585439897}
@@ -1715,6 +1716,7 @@ MonoBehaviour:
   m_HazardRef: {fileID: 0}
   m_Manager: {fileID: 0}
   m_GroundImpactEffectsPrefab: {fileID: 0}
+  m_bIgnoredFirstCollisionEvent: 0
   m_DelayBetweenImpacts: 0.3
   m_CausesDragging: 0
   m_CausesImpacts: 0

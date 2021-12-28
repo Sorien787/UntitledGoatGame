@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52bcf59d6003374baf968310ba8618e, type: 3}
+  m_Name: Level10
+  m_EditorClassIdentifier: 
+  m_sLevelName: You've Got To Be Kidding Me
+  m_nTargetTime: 40
+  m_ReferenceClip: {fileID: 0}
+  m_LevelObjectives:
+  - {fileID: 11400000, guid: 9d0f1dbd61ca1034bbc76517aa7a1fd1, type: 2}
+  - {fileID: 11400000, guid: abd3d61ffcf50394886bd988fa7d859c, type: 2}
+  - {fileID: 11400000, guid: af5a5c00f4febb14b8ccb3be06474d06, type: 2}
+  - {fileID: 11400000, guid: 2f4f5427b9a79e747a6b7f94aa9ad27e, type: 2}
+  - {fileID: 11400000, guid: 8bb21cc8d050f3f44a87c23a68ba26bb, type: 2}
+  m_Checkpoints:
+  - 0
+  - 0
+  m_nAchievedTime: 0
+  m_LevelCompleteTime: 40
+  m_StarRating: 0
+  m_AchievedScore: 0
