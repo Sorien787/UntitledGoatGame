@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3869623104819378497}
   - component: {fileID: 5253641419182572407}
   - component: {fileID: 2005269938237079438}
-  - component: {fileID: 7484978705336041480}
   - component: {fileID: -4942778832109879461}
   - component: {fileID: 4764156418921188620}
   - component: {fileID: 8193576897066533465}
@@ -88,20 +87,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &7484978705336041480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 281739335688112978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 331824b1842836340ba04011e373c302, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InitOffset: {x: 0, y: 0}
-  m_TextSpacing: 0
 --- !u!114 &-4942778832109879461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +231,7 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    m_RolledColor: {r: 0.009653103, g: 0.17727138, b: 0.0066359243, a: 1}
+    m_RolledColor: {r: 0.024759734, g: 0.21847339, b: 0.005209881, a: 1}
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
     m_changeChildObjects: 0

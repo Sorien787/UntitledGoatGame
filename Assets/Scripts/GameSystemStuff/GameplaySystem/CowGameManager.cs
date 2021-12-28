@@ -102,7 +102,15 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		}
 	}
 
-	public void MoveToLevelWithSceneId(in int levelIndex)
+	public void ResetAllLevels()
+	{
+		foreach(LevelData levelData in m_LevelData)
+		{
+			levelData.Reset();
+		}
+	}
+
+	public void MoveToSceneWithSceneId(in int levelIndex)
 	{
 		GetCurrentLevelIndex = levelIndex;
 		SceneManager.LoadScene(GetCurrentLevelIndex);
@@ -202,7 +210,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		}
 		else
 		{
-			Cursor.lockState = CursorLockMode.None;
+			Cursor.lockState = CursorLockMode.Locked;
 			m_PauseListeners.ForEachListener((IPauseListener listener) => listener.Unpause());
 		}
 	}

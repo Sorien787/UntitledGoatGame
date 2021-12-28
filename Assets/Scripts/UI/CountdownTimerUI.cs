@@ -4,12 +4,13 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 
-public class CountdownTimerUI : MonoBehaviour
+public class CountdownTimerUI : MonoBehaviour, IPauseListener
 {
 	[Header("Internal References")]
 	[SerializeField] private TextMeshProUGUI m_TimerText;
 	[SerializeField] private RectTransform m_TimerRect;
 	[SerializeField] private CanvasGroup m_TextCanvasGroup;
+	[SerializeField] private CowGameManager m_Manager;
 	[SerializeField] private AudioManager m_AudioManager;
 
 	[Header("Animation and Audio references")]
@@ -26,10 +27,10 @@ public class CountdownTimerUI : MonoBehaviour
 	public event Action OnTimerComplete;
 	public event Action<float> OnTimerTick;
 
-	//private void Awake()
-	//{
-	//	m_InitialTextSize = m_TimerRect.sizeDelta;
-	//}
+	private void Awake()
+	{
+		m_Manager.AddToPauseUnpause(this);
+	}
 
 	public void ShowTimer()
 	{
@@ -70,14 +71,15 @@ public class CountdownTimerUI : MonoBehaviour
 
 	public void ContinueTimer() 
 	{
-		if (m_bIsTimerPaused) 
-		{
-			m_TimerCoroutine = StartTimer(m_TimeRemainingWhenTimerPaused);
-			StartCoroutine(m_TimerCoroutine);
-			m_bIsTimerPaused = false;
-			m_TimeTimerStarted = Time.time;
-			m_TimeRemainingWhenTimerPaused = 0;
-		}
+		if (!m_bIsTimerPaused)
+			return;
+
+		m_TimerCoroutine = StartTimer(m_TimeRemainingWhenTimerPaused);
+		StartCoroutine(m_TimerCoroutine);
+		m_bIsTimerPaused = false;
+		m_TimeTimerStarted = Time.time;
+		m_TimeRemainingWhenTimerPaused = 0;
+		
 	}
 
 	private IEnumerator StartTimer(float time)
@@ -114,5 +116,20 @@ public class CountdownTimerUI : MonoBehaviour
 		LeanTween.alphaCanvas(m_TextCanvasGroup, m_TextPulseOpacityByTimer.Evaluate(m_CurrentTime), 1.0f).setEaseInOutCubic();
 		m_TimerText.text = timerText;
 		m_CurrentTime--;
+	}
+
+	public void Pause()
+	{
+		PauseTimer();
+	}
+
+	public void Unpause()
+	{
+		ContinueTimer();
+	}
+
+	void OnDestroy()
+	{
+		m_Manager.RemoveFromPauseUnpause(this);
 	}
 }

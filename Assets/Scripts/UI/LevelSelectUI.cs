@@ -73,7 +73,7 @@ public class LevelSelectUI : MonoBehaviour
 
 		int currentPoint = 0;
 
-		EditField(() => { m_LevelNameLeft.text = "Level " + UnityUtils.UnityUtils.NumberToWords(levelData.GetLevelNumber); m_LevelNameRight.text = levelData.GetLevelName; },
+		EditField(() => { m_LevelNameLeft.text = "Level " + UnityUtils.UnityUtils.NumberToWords(levelData.GetLevelNumber+1); m_LevelNameRight.text = levelData.GetLevelName; },
 			m_LevelNameCanvasGroup,
 			currentPoint * m_TextFadeNextDelay,
 			m_TextFadeInOutTime,

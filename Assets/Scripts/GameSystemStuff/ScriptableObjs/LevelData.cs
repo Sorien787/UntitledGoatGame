@@ -64,6 +64,15 @@ public class LevelData : ScriptableObject
 		m_bHasEnteredLevel = true;
 	}
 
+	public void Reset()
+	{
+		m_nAchievedTime = 0.0f;
+		m_LevelCompleteTime = 0;
+		m_StarRating = StarRating.Zero;
+		m_AchievedScore = 0;
+		m_bHasEnteredLevel = false;
+	}
+
 	public void ForEachObjective(Action<LevelObjective> objectiveFunc)
 	{
 		foreach(LevelObjective objective in m_LevelObjectives)

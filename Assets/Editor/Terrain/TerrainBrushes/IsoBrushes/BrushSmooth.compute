@@ -1,0 +1,57 @@
+﻿#pragma kernel ApplyBrush
+
+RWStructuredBuffer<float> dataBuffer;
+
+uint extent;
+uint chunkSize;
+
+float brushPosX;
+float brushPosY;
+float brushPosZ;
+
+float strength;
+float smooth;
+float size;
+
+uint indexFromCoord(int x, int y, int z)
+{
+    return z * (extent) * (extent) + y * (extent) + x;
+}
+
+float isoValue(int x, int y, int z)
+{
+    int offset = (3 + (floor((float) x / extent) * 3 + floor((float) y / extent) * 2 + floor((float) z / extent))) * chunkSize;
+    return dataBuffer[offset + indexFromCoord(x % extent, y % extent, z % extent)];
+}
+
+float addBrushFunc(float dist)
+{
+    return smooth + (1 - dist) * (1 - smooth);
+}
+
+[numthreads(8, 8, 8)]
+void ApplyBrush(uint3 id : SV_DispatchThreadID)
+{
+    float3 currentPos = float3(id.x, id.y, id.z);
+    float brushDistance = distance(currentPos, float3(brushPosX, brushPosY, brushPosZ));
+    
+    if (brushDistance < size)
+    {
+        float brushTime = brushDistance / size;
+        float brushFunc = strength * addBrushFunc(brushTime);
+        float index = 3 * chunkSize + indexFromCoord(id.x, id.y, id.z);
+        
+        float initialValue = dataBuffer[index];
+        float total = initialValue;
+        total += isoValue(id.x + 1, id.y, id.z);
+        total += isoValue(id.x - 1, id.y, id.z);
+        total += isoValue(id.x, id.y + 1, id.z);
+        total += isoValue(id.x, id.y - 1, id.z);
+        total += isoValue(id.x, id.y, id.z + 1);
+        total += isoValue(id.x, id.y, id.z - 1);
+        total /= 7;
+        
+        
+        dataBuffer[index] = lerp(initialValue, total, brushFunc);
+    }
+}

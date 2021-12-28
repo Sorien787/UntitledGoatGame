@@ -112,11 +112,11 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
         }
     }
 	private Vector3 m_positionLastFrame = Vector3.zero;
-	void Update()
+	void FixedUpdate()
     {
 		if (m_bIsFalling)
 		{
-			m_fCurrentTime += Time.deltaTime;
+			m_fCurrentTime += Time.fixedDeltaTime;
             Vector3 desiredPos = projectile.EvaluatePosAtTime(m_fCurrentTime);
             Vector3 offset = m_rMovingBody.position - m_positionLastFrame;
             if (Physics.Raycast(m_positionLastFrame, offset.normalized, out RaycastHit hit, offset.magnitude, m_GroundImpactLayermask, QueryTriggerInteraction.Ignore)) 
@@ -125,9 +125,10 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
             }
 			else 
             {
-                m_rMovingBody.MovePosition(projectile.EvaluatePosAtTime(m_fCurrentTime));
-                m_rMovingBody.MoveRotation(projectile.EvaluateRotAtTime(m_fCurrentTime));
-            }
+				m_rMovingBody.MovePosition(projectile.EvaluatePosAtTime(m_fCurrentTime));
+				m_rMovingBody.MoveRotation(projectile.EvaluateRotAtTime(m_fCurrentTime));
+			}
+
 			m_positionLastFrame = m_rMovingBody.position;
 
 		}

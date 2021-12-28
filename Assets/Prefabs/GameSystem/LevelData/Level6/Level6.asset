@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 50240417575f0a04fa926e650434501c, type: 2}
   m_Checkpoints: []
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 30
-  m_StarRating: 2
+  m_LevelCompleteTime: 0
+  m_StarRating: 1
   m_AchievedScore: 0
+  m_bHasEnteredLevel: 0

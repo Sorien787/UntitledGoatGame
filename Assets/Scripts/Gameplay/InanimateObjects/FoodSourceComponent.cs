@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[RequireComponent(typeof(LocalDebugData))]
 [RequireComponent(typeof(HealthComponent))]
 public class FoodSourceComponent : MonoBehaviour, IPauseListener
 {
