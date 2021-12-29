@@ -48,6 +48,12 @@ public class CustomAnimation : MonoBehaviour
 		m_AnimationsList[clipNum].onClipStarted += callback;
 	}
 
+
+	public void SetFocusedTransform(Transform focusedTransform)
+	{
+		m_AnimatingObject = focusedTransform;
+	}
+
 	private void SetAnimViaClipTime(in AnimationClip currentClip, in float currentTime) 
 	{
 	

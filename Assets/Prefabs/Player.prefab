@@ -648,26 +648,26 @@ MonoBehaviour:
   numStepsLight: 8
   rayOffsetStrength: 0.1
   blueNoise: {fileID: 2800000, guid: 6d82457f96ba8449597922c106f17caa, type: 3}
-  cloudScale: 1
-  densityMultiplier: 9.39
-  densityOffset: 3.16
+  cloudScale: 1.14
+  densityMultiplier: 21.58
+  densityOffset: 2.3
   shapeOffset: {x: 30, y: 47, z: 1}
   heightOffset: {x: 0, y: 0}
-  shapeNoiseWeights: {x: 4.95, y: 11.36, z: 17.38, w: 33.63}
-  detailNoiseScale: 2.91
-  detailNoiseWeight: 2.82
-  detailNoiseWeights: {x: 5.02, y: -0.39, z: 1.38}
-  detailOffset: {x: 192.03, y: 0, z: 0}
-  lightAbsorptionThroughCloud: 1.06
-  lightAbsorptionTowardSun: 1.26
-  darknessThreshold: 0.573
-  forwardScattering: 1
-  backScattering: 0.644
-  baseBrightness: 0.834
+  shapeNoiseWeights: {x: 17.1, y: 26.17, z: 18.7, w: 26.6}
+  detailNoiseScale: 2.14
+  detailNoiseWeight: 1.18
+  detailNoiseWeights: {x: 2.97, y: 1.85, z: 2}
+  detailOffset: {x: 0, y: 0, z: 0}
+  lightAbsorptionThroughCloud: 1.32
+  lightAbsorptionTowardSun: 1.8
+  darknessThreshold: 0.936
+  forwardScattering: 0
+  backScattering: 0.466
+  baseBrightness: 1
   phaseFactor: 1
-  timeScale: 0.53
-  baseSpeed: 0.4
-  detailSpeed: 0.2
+  timeScale: -0.27
+  baseSpeed: 1
+  detailSpeed: 1
   colA: {r: 1, g: 0, b: 0, a: 0}
   colB: {r: 1, g: 0.89550054, b: 0, a: 0}
   material: {fileID: 0}
@@ -799,13 +799,14 @@ MonoBehaviour:
   m_HandRopeLineRenderer: {fileID: 3338445514006639550}
   m_LassoSpinningLoopLineRenderer: {fileID: 3338445512809281111}
   m_TrajectoryLineRenderer: {fileID: 3338445513774158918}
-  m_LassoEndPoint: {fileID: 0}
-  m_PlayerObject: {fileID: 0}
+  m_LassoEndPoint: {fileID: 3338445512843361988}
+  m_PlayerObject: {fileID: 3338445514369759839}
   m_PlayerCam: {fileID: 2735400669585439901}
   m_AudioManager: {fileID: 3338445513214232710}
   m_PowerBarObjectReference: {fileID: 11400000, guid: 1f04cc9f8fbd0fd46a3062e9214a4dac,
     type: 2}
-  m_CanGrabUIReference: {fileID: 0}
+  m_CanGrabUIReference: {fileID: 11400000, guid: 210d376d709f9444b8c9b29edd2670e1,
+    type: 2}
   m_TriggerBinding: {fileID: 11400000, guid: aef47ab2110d0414284da26bba151f06, type: 2}
   m_CancelBinding: {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}

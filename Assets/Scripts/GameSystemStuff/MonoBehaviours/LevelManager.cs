@@ -301,6 +301,7 @@ public class LevelManager : MonoBehaviour
 
 	public void InitializeLevel(LevelData levelData, Transform camTransform)
 	{
+		m_LevelEnterAnimation.SetFocusedTransform(camTransform);
 		GetCamTransform = camTransform;
 		m_LevelData = levelData;
 		levelData.ForEachObjective((LevelObjective objective) =>
