@@ -19,6 +19,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     [SerializeField] protected Transform m_AnimalLeashTransform = default;
     [SerializeField] protected Transform m_AnimalBodyTransform = default;
     [SerializeField] protected Collider m_AnimalBodyCollider = default;
+	[SerializeField] private OverlaySelectable m_Overlay = default;
     [SerializeField] private Collider m_AnimalGroundCollider = default;
 
     [Header("Stagger parameters")]
@@ -211,6 +212,45 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         yield return new WaitForSeconds(delayedTime);
         Destroy(gameObject);
     }
+
+	public void ShowFullness(bool show)
+	{
+		if (show)
+		{
+			SetOutlineToShowData(Color.Lerp(Color.red, Color.green, Mathf.Clamp01(m_fFullness / m_fBreedingHungerUsage)));
+		}
+		else
+		{
+			ResetOutline();
+		}
+
+	}
+
+	private void SetOutlineToShowData(Color data)
+	{
+		m_Overlay.SetOutlineColour(data);
+		m_Overlay.ZTestAll();
+	}
+
+	private void ResetOutline()
+	{
+		m_Overlay.SetOutlineColour(Color.white);
+		m_Overlay.ZTestBehindTerrain();
+	}
+
+	public void ShowHealth(bool show)
+	{
+		if (show)
+		{
+			float effectiveHealthBar = 1 - m_DeathHealthRatio;
+			float currentHealthBar = m_AnimalHealthComponent.GetCurrentHealthPercentage - m_DeathHealthRatio;
+			SetOutlineToShowData(Color.Lerp(Color.red, Color.green, Mathf.Clamp01(currentHealthBar / effectiveHealthBar)));
+		}
+		else
+		{
+			ResetOutline();
+		}
+	}
 
 	private void OnStartedLassoSpinning()
     {
@@ -935,6 +975,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	public void LevelStarted()
 	{
         m_StateMachine.RequestTransition(typeof(AnimalIdleState));
+		m_Manager.AddAnimal(this);
+		m_Overlay.EnableOutline(true);
 	}
 
 	public void LevelFinished(){}
@@ -944,10 +986,14 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         if (m_bIsDead)
             return;
 
-        if (currentHealthPercentage > m_DeathHealthRatio)
-            return;
 
-        m_bIsDead = true;
+
+		if (currentHealthPercentage > m_DeathHealthRatio)
+            return;
+		m_Overlay.EnableOutline(false);
+		m_Manager.RemoveAnimal(this);
+
+		m_bIsDead = true;
         m_EntityInformation.MarkAsDead();
         m_AnimalHealthComponent.DisableHealthRegeneration();
         m_AnimalHealthComponent.SetInvulnerabilityTime(0.0f);
@@ -1399,3 +1445,4 @@ public class AnimalPredatorChaseState : AStateBase<AnimalComponent>
         }
     }
 }
+

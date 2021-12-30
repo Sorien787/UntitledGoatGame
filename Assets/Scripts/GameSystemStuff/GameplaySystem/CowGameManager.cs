@@ -116,6 +116,33 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		SceneManager.LoadScene(GetCurrentLevelIndex);
 	}
 
+	private readonly HashSet<AnimalComponent> m_Animals = new HashSet<AnimalComponent>();
+	public void RemoveAnimal(AnimalComponent animal)
+	{
+		m_Animals.Remove(animal);
+	}
+
+	public void AddAnimal(AnimalComponent animal)
+	{
+		m_Animals.Add(animal);
+	}
+
+	public void RevealAnimalHealth(bool reveal)
+	{
+		foreach(AnimalComponent animal in m_Animals)
+		{
+			animal.ShowHealth(reveal);
+		}
+	}
+
+	public void RevealAnimalFullness(bool reveal)
+	{
+		foreach (AnimalComponent animal in m_Animals)
+		{
+			animal.ShowFullness(reveal);
+		}
+	}
+
 	public void RestartCurrentLevel() 
 	{
 		m_RestartState = RestartState.Quick;
@@ -160,6 +187,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		{
 			objective.ClearListeners();
 		});
+		m_Animals.Clear();
 		m_NumObjectivesToComplete = 0;
 		m_NumObjectivesCompleted = 0;
 		m_EntityCache.Clear();
