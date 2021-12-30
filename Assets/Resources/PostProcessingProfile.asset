@@ -56,16 +56,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
   focusDistance:
     overrideState: 1
-    value: 21.8
+    value: 56.8
   aperture:
     overrideState: 1
-    value: 8.31
+    value: 7.01
   focalLength:
     overrideState: 1
     value: 1
@@ -90,7 +90,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.99
+    value: 0.81
   threshold:
     overrideState: 1
     value: 0.95
@@ -223,14 +223,14 @@ MonoBehaviour:
     overrideState: 1
     value: 5.2
   brightness:
-    overrideState: 0
-    value: -1.2
+    overrideState: 1
+    value: -2.6558018
   postExposure:
     overrideState: 0
     value: 0
   contrast:
     overrideState: 1
-    value: 2.5
+    value: 5.1072454
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -1551,10 +1551,10 @@ MonoBehaviour:
   active: 0
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   shutterAngle:
     overrideState: 1
-    value: 3.5
+    value: 0
   sampleCount:
     overrideState: 1
     value: 5

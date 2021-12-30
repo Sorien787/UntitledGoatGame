@@ -414,10 +414,14 @@ namespace LevelManagerStates
 				Host.GetManager.UpdateHealthColourAnimalOutline();
 			if (isHungerBindingPressed)
 				Host.GetManager.UpdateFullnessColourAnimalOutline();
-			if ((isHealthBindingPressed || isHungerBindingPressed) != m_bZTestAlways)
+			if ((isHealthBindingPressed | isHungerBindingPressed) != m_bZTestAlways)
 			{ 
-				m_bZTestAlways = isHealthBindingPressed || isHungerBindingPressed;
+				m_bZTestAlways = isHealthBindingPressed | isHungerBindingPressed;
 				Host.SetOverlayRendererDepthTestMode(m_bZTestAlways ? DepthTests.Always : DepthTests.LEqual);
+				if (!isHealthBindingPressed && !isHungerBindingPressed)
+				{
+					Host.GetManager.SetAnimalOutlineDefaultColour(Color.white);
+				}
 			}
 
 		}

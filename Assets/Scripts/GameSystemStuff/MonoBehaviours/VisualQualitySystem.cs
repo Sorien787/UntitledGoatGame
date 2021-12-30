@@ -5,7 +5,7 @@ using System;
 
 public class VisualQualitySystem : MonoBehaviour
 {
-	[SerializeField] private PostProcessVolume m_Volume;
+	[SerializeField] private PostProcessProfile m_VolumeProfile;
 	[SerializeField] private SettingsManager m_Settings;
 
 	private Bloom m_Bloom;
@@ -14,19 +14,21 @@ public class VisualQualitySystem : MonoBehaviour
 	private DepthOfField m_DepthOfField;
 	private AmbientOcclusion m_AmbientOcclusion;
 
-	private Dictionary<string, Action> m_PropertyChangeDict = new Dictionary<string, Action>(); 
-
+	private Dictionary<string, Action> m_PropertyChangeDict = new Dictionary<string, Action>();
+	private void Awake()
+	{
+		OnGameInitialized();
+	}
 	public void OnGameInitialized()
 	{
 		bool hasSettings = false;
 		m_Settings.PropertyChanged += OnPropertyChanged;
-		PostProcessProfile volumeProfile = m_Volume?.profile;
-		if (!volumeProfile) throw new System.NullReferenceException(nameof(PostProcessProfile));
-		hasSettings = volumeProfile.TryGetSettings(out m_Bloom);
-		hasSettings = volumeProfile.TryGetSettings(out m_MotionBlur);
-		hasSettings = volumeProfile.TryGetSettings(out m_ColourGrading);
-		hasSettings = volumeProfile.TryGetSettings(out m_AmbientOcclusion);
-		hasSettings = volumeProfile.TryGetSettings(out m_DepthOfField);
+		if (!m_VolumeProfile) throw new System.NullReferenceException(nameof(PostProcessProfile));
+		hasSettings = m_VolumeProfile.TryGetSettings(out m_Bloom);
+		hasSettings = m_VolumeProfile.TryGetSettings(out m_MotionBlur);
+		hasSettings = m_VolumeProfile.TryGetSettings(out m_ColourGrading);
+		hasSettings = m_VolumeProfile.TryGetSettings(out m_AmbientOcclusion);
+		hasSettings = m_VolumeProfile.TryGetSettings(out m_DepthOfField);
 
 		string bloomParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.Bloom);
 		string brightnessParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.Brightness);
@@ -34,11 +36,11 @@ public class VisualQualitySystem : MonoBehaviour
 		string screenModeParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.DisplayMode);
 		string motionBlurParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.MotionBlur);
 		string depthOfFieldParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.DepthOfField);
-		string ambientOcclusionParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.MotionBlur);
+		string ambientOcclusionParam = UnityUtils.UnityUtils.GetPropertyName(() => m_Settings.AmbientOcclusion);
 
 		List<Tuple<string, ParameterOverride>> paramAssociation = new List<Tuple<string, ParameterOverride>>
 		{
-			new Tuple<string, ParameterOverride>(bloomParam , m_Bloom.intensity),
+			new Tuple<string, ParameterOverride>(bloomParam , m_Bloom.enabled),
 			new Tuple<string, ParameterOverride>(brightnessParam , m_ColourGrading.brightness),
 			new Tuple<string, ParameterOverride>(contrastParam , m_ColourGrading.contrast),
 			new Tuple<string, ParameterOverride>(ambientOcclusionParam , m_AmbientOcclusion.enabled),
@@ -50,7 +52,7 @@ public class VisualQualitySystem : MonoBehaviour
 		if (hasSettings)
 		{
 			m_PropertyChangeDict.Add(bloomParam, () => {
-				OverrideParamWithPropertyInSettings(m_Bloom.intensity, bloomParam);
+				OverrideParamWithPropertyInSettings(m_Bloom.enabled, bloomParam);
 			});
 
 			m_PropertyChangeDict.Add(brightnessParam, () => {
@@ -87,6 +89,7 @@ public class VisualQualitySystem : MonoBehaviour
 		{
 			Debug.LogError("Cannot find a required graphics setting in postprocessing!");
 		}
+		m_Settings.PropertyChanged += OnPropertyChanged;
 	}
 
 	public void OnGameUninitialized()
@@ -111,5 +114,10 @@ public class VisualQualitySystem : MonoBehaviour
 		{
 			val.Invoke();
 		}
+	}
+
+	private void OnDestroy()
+	{
+		OnGameUninitialized();
 	}
 }

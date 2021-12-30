@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 3622673474123184150}
   - component: {fileID: 4532346970193033580}
   - component: {fileID: 3019164518813233963}
+  - component: {fileID: 5192925073431044122}
   m_Layer: 0
   m_Name: LevelLoader
   m_TagString: Untagged
@@ -297,6 +298,7 @@ MonoBehaviour:
   m_LevelIntroTextRight: {fileID: 3622673474361509380}
   m_ObjectiveObjectPrefab: {fileID: 8000029109370356668, guid: 4a73fb79f8ba26f4ba291ab35e77f227,
     type: 3}
+  m_OverlayRenderer: {fileID: 5192925073431044122}
   m_ObjectiveCanvasTransform: {fileID: 3622673474668695247}
   m_FinalCountdownTimer: {fileID: 1202231026925102367}
   m_StartCountdownTimer: {fileID: 7402815415580992521}
@@ -309,6 +311,10 @@ MonoBehaviour:
   m_TextCanvas: {fileID: 3622673473697573585}
   m_LevelTransitionAnimator: {fileID: 6696330779654626155}
   m_LevelUIAnimator: {fileID: 0}
+  m_ShowHealthBinding: {fileID: 11400000, guid: 6ecb4f9c47941b742b4b50d1ceb94b64,
+    type: 2}
+  m_ShowHungerBinding: {fileID: 11400000, guid: aac3ae616d0381e4286bc6abbfee7561,
+    type: 2}
 --- !u!114 &3019164518813233963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,6 +487,26 @@ MonoBehaviour:
     exitAnimationTime: 0
     exitAnimationName: 
   m_AnimEditorClipNumReference: 1
+--- !u!114 &5192925073431044122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3019164518813233961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54dfae998fdf63d43b568fcaa423207b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraEvent: 18
+  _depthTest: 0
+  _outlinePattern: 1
+  _Bias: 0.000928
+  _groupIDTextureFormat: 16
+  m_OutlineColor: {r: 1, g: 1, b: 1, a: 0.5176471}
+  m_FillColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.18431373}
+  m_TestMat: {fileID: 2100000, guid: 2df7465b2e354394e91a07fc166a8275, type: 2}
 --- !u!1 &3622673473228268000
 GameObject:
   m_ObjectHideFlags: 0
@@ -3657,6 +3683,7 @@ MonoBehaviour:
   m_TimerText: {fileID: 3622673474253493636}
   m_TimerRect: {fileID: 2217463062327414752}
   m_TextCanvasGroup: {fileID: 3622673474123184151}
+  m_Manager: {fileID: 0}
   m_AudioManager: {fileID: 7402815415580992526}
   m_TimerCompleteAudioIdentifier: TimerComplete
   m_TimerTickAudioIdentifier: TimerTick

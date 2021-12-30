@@ -18,7 +18,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2304
   m_HazardType: {fileID: 11400000, guid: 62dcc3e3ffe72a742b4d8b2ef73b276d, type: 2}
-  m_RestartState: 2
+  m_RestartState: 0
   m_LevelData:
   - {fileID: 11400000, guid: 1a9db3b737d523c41b571353f9a15e3f, type: 2}
   - {fileID: 11400000, guid: 6e1bd68fe35168f40b87e87564f4c5de, type: 2}

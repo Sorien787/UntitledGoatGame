@@ -190,9 +190,9 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 
     public void ProcessMouseInput() 
     {
-        float mouseX = Input.GetAxis("Mouse X") * m_fMouseSensitivityMultiplier * m_SettingsManager.MouseSensitivityX * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * m_fMouseSensitivityMultiplier * m_SettingsManager.MouseSensitivity * Time.deltaTime;
 		float invertY = m_SettingsManager.InvertY ? -1 : 1;
-		float mouseY = invertY * Input.GetAxis("Mouse Y") * m_fMouseSensitivityMultiplier * m_SettingsManager.MouseSensitivityY * Time.deltaTime;
+		float mouseY = invertY * Input.GetAxis("Mouse Y") * m_fMouseSensitivityMultiplier * m_SettingsManager.MouseSensitivity * Time.deltaTime;
 
         m_fCamPoint -= mouseY;
         m_fCamPoint = Mathf.Clamp(m_fCamPoint, -80f, 80f);

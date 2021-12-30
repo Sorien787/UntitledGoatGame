@@ -39,6 +39,8 @@ public class KeyboardBindingContainerUI : MonoBehaviour
 				{
 					newBindingDuplicated = true;
 					changedBinding.IsDuplicated = true;
+					binding.IsDuplicated = true;
+					binding.OnControlBindingChanged.Invoke();
 				}
 				else if (binding.KeyCode == changedBinding.KeyCode)
 				{
@@ -51,6 +53,7 @@ public class KeyboardBindingContainerUI : MonoBehaviour
 		if (duplicatedBindingsPreviously.Count == 1)
 		{
 			duplicatedBindingsPreviously[0].IsDuplicated = false;
+			duplicatedBindingsPreviously[0].OnControlBindingChanged.Invoke();
 		}
 
 		changedBinding.KeyCode = desiredKeyCode;

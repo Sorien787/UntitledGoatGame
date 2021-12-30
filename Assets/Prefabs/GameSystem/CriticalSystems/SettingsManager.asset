@@ -22,18 +22,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
   - {fileID: 11400000, guid: 6ecb4f9c47941b742b4b50d1ceb94b64, type: 2}
   - {fileID: 11400000, guid: aac3ae616d0381e4286bc6abbfee7561, type: 2}
-  m_SFXVol: 1
-  m_AmbientVol: 1
-  m_MusicVol: 1
-  m_UISFXVol: 1
-  m_bIsMuted: 0
-  m_MouseSensitivityX: 1
-  m_MouseSensitivityY: 1
+  m_SFXVol: 0.6083711
+  m_AmbientVol: 0.56900597
+  m_MusicVol: 0.40205413
+  m_UISFXVol: 0.5982576
+  m_bIsMuted: 1
+  m_MouseSensitivity: 1.1391447
   m_InvertY: 0
   m_DisplayMode: 0
-  m_FoV: 61.2
+  m_FoV: 42.35
   m_Bloom: 1
-  m_MotionBlur: 1
-  m_Brightness: 1
-  m_Contrast: 1
+  m_AmbientOcclusion: 1
+  m_MotionBlur: 0
+  m_Brightness: -2.6558018
+  m_Contrast: 5.1072454
   m_DepthOfField: 1

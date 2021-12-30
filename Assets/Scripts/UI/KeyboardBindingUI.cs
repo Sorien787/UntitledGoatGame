@@ -27,11 +27,16 @@ public class KeyboardBindingUI : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		m_BindingBackgroundImage.color = m_binding.IsDuplicated ? m_normal : m_duplicated;
+		m_BindingBackgroundImage.color = m_binding.IsDuplicated ? m_duplicated  : m_normal;
 	}
+
+	bool m_bIsChangingKeycode = false;
 
 	public void OnClickToChangeKeycode()
 	{
+		if (m_bIsChangingKeycode)
+			return;
+		m_bIsChangingKeycode = true;
 		values = (KeyCode[])Enum.GetValues(typeof(KeyCode));
 		StartCoroutine(WaitingForInput());
 	}
@@ -45,27 +50,32 @@ public class KeyboardBindingUI : MonoBehaviour
 		isShowingUnderscore = false;
 		switchTime = 0.0f;
 		string oldString = m_BindingKeyString.name;
+		m_BindingKeyString.text = " ";
 		while (true)
 		{
 			switchTime += Time.deltaTime;
-
 			if (switchTime > 0.5f)
 			{
-				m_BindingKeyString.name = isShowingUnderscore ? "_" : " ";
 				isShowingUnderscore = !isShowingUnderscore;
+				m_BindingKeyString.text = isShowingUnderscore ? "____" : " ";			
+				switchTime = 0.0f;
 			}
 
 			if (Input.GetKey(KeyCode.Escape))
 			{
-				m_BindingKeyString.name = oldString;
-				break;
+				m_BindingKeyString.text = oldString;
+				m_bIsChangingKeycode = false;
+				yield break;
 			}
 			for (int i = 0; i < values.Length; i++)
 			{
 				if (Input.GetKey(values[i]))
 				{
 					OnAttemptSetBinding(m_binding, values[i]);
-					break;
+					m_BindingKeyString.text = values[i].ToString();
+					isShowingUnderscore = false;
+					m_bIsChangingKeycode = false;
+					yield break;
 				}
 			}
 			yield return null;
