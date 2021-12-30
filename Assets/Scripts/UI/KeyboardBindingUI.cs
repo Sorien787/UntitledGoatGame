@@ -10,14 +10,24 @@ public class KeyboardBindingUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI m_BindingKeyString;
 	[SerializeField] private Image m_BindingBackgroundImage;
 
-	public event Action<KeyCode> OnAttemptSetBinding;
+	public event Action<ControlBinding, KeyCode> OnAttemptSetBinding;
 	private KeyCode[] values;
+	private ControlBinding m_binding;
+	private Color32 m_normal;
+	private Color32 m_duplicated;
 
-	public void UpdateUI(ControlBinding binding, Color32 normal, Color32 duplicated)
+	public void InitializeUI(ControlBinding binding, Color32 normal, Color32 duplicated)
 	{
-		m_BindingName.name = binding.GetBindingDisplayName;
-		m_BindingKeyString.name = binding.KeyCode.ToString();
-		m_BindingBackgroundImage.color = binding.IsDuplicated ? normal : duplicated;
+		m_binding = binding;
+		m_normal = normal;
+		m_duplicated = duplicated;
+		m_BindingName.text = binding.GetBindingDisplayName;
+		m_BindingKeyString.text = binding.KeyCode.ToString();
+	}
+
+	public void UpdateUI()
+	{
+		m_BindingBackgroundImage.color = m_binding.IsDuplicated ? m_normal : m_duplicated;
 	}
 
 	public void OnClickToChangeKeycode()
@@ -54,7 +64,7 @@ public class KeyboardBindingUI : MonoBehaviour
 			{
 				if (Input.GetKey(values[i]))
 				{
-					OnAttemptSetBinding(values[i]);
+					OnAttemptSetBinding(m_binding, values[i]);
 					break;
 				}
 			}

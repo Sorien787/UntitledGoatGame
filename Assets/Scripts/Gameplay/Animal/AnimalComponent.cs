@@ -213,43 +213,25 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         Destroy(gameObject);
     }
 
-	public void ShowFullness(bool show)
+	public void SetOutlineColour(Color color)
 	{
-		if (show)
-		{
-			SetOutlineToShowData(Color.Lerp(Color.red, Color.green, Mathf.Clamp01(m_fFullness / m_fBreedingHungerUsage)));
-		}
-		else
-		{
-			ResetOutline();
-		}
-
+		m_Overlay.SetOutlineColour(color);
 	}
 
-	private void SetOutlineToShowData(Color data)
+	public void UpdateHealthColourAnimalOutline()
 	{
-		m_Overlay.SetOutlineColour(data);
-		m_Overlay.ZTestAll();
+		float effectiveHealthBar = 1 - m_DeathHealthRatio;
+		float currentHealthBar = m_AnimalHealthComponent.GetCurrentHealthPercentage - m_DeathHealthRatio;
+		m_Overlay.SetOutlineColour(Color.Lerp(Color.red, Color.green, Mathf.Clamp01(currentHealthBar / effectiveHealthBar)));
 	}
 
-	private void ResetOutline()
+	public void UpdateFullnessColourAnimalOutline()
 	{
-		m_Overlay.SetOutlineColour(Color.white);
-		m_Overlay.ZTestBehindTerrain();
-	}
-
-	public void ShowHealth(bool show)
-	{
-		if (show)
-		{
-			float effectiveHealthBar = 1 - m_DeathHealthRatio;
-			float currentHealthBar = m_AnimalHealthComponent.GetCurrentHealthPercentage - m_DeathHealthRatio;
-			SetOutlineToShowData(Color.Lerp(Color.red, Color.green, Mathf.Clamp01(currentHealthBar / effectiveHealthBar)));
-		}
-		else
-		{
-			ResetOutline();
-		}
+		Type currentState = m_StateMachine.GetCurrentState();
+		bool isInBreedingState = currentState == typeof(AnimalBreedingChaseState) || currentState == typeof(AnimalBreedingState);
+		m_Overlay.SetOutlineColour(isInBreedingState ? 
+			Color.magenta :  
+			Color.Lerp(Color.gray, Color.green, Mathf.Clamp01(m_fFullness / m_fBreedingHungerUsage)));
 	}
 
 	private void OnStartedLassoSpinning()

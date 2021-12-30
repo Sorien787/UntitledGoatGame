@@ -16,12 +16,12 @@ public class KeyboardBindingContainerUI : MonoBehaviour
 		m_BindingsContainer.ForEachControlBinding((ControlBinding binding) =>
 		{
 			GameObject go = Instantiate(m_KeyboardBindingPrefab, m_Transform);
-			KeyboardBindingUI bindingUI = go.GetComponent<KeyboardBindingUI>();
-			bindingUI.UpdateUI(binding, m_NonDuplicatedColor, m_DuplicatedColor);
-			binding.OnControlBindingChanged += () => bindingUI.UpdateUI(binding, m_NonDuplicatedColor, m_DuplicatedColor);
+			KeyboardBindingUI bindingUI = go.GetComponentInChildren<KeyboardBindingUI>();
+			bindingUI.InitializeUI(binding, m_NonDuplicatedColor, m_DuplicatedColor);
+			binding.OnControlBindingChanged += bindingUI.UpdateUI;
 			// when we want to set the binding, we should check that the new binding does not conflict with others.
 			// if so, they need to be marked as duplicate.
-			bindingUI.OnAttemptSetBinding += (KeyCode desiredKeyCode) => OnBindingAttemptedForBindingUI(binding, desiredKeyCode);
+			bindingUI.OnAttemptSetBinding += (ControlBinding uibinding, KeyCode desiredKeyCode) => OnBindingAttemptedForBindingUI(uibinding, desiredKeyCode);
 		});
 	}
 

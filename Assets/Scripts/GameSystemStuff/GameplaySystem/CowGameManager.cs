@@ -127,19 +127,27 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		m_Animals.Add(animal);
 	}
 
-	public void RevealAnimalHealth(bool reveal)
-	{
-		foreach(AnimalComponent animal in m_Animals)
-		{
-			animal.ShowHealth(reveal);
-		}
-	}
-
-	public void RevealAnimalFullness(bool reveal)
+	public void SetAnimalOutlineDefaultColour(Color color)
 	{
 		foreach (AnimalComponent animal in m_Animals)
 		{
-			animal.ShowFullness(reveal);
+			animal.SetOutlineColour(color);
+		}
+	}
+
+	public void UpdateHealthColourAnimalOutline()
+	{
+		foreach (AnimalComponent animal in m_Animals)
+		{
+			animal.UpdateHealthColourAnimalOutline();
+		}
+	}
+
+	public void UpdateFullnessColourAnimalOutline()
+	{
+		foreach (AnimalComponent animal in m_Animals)
+		{
+			animal.UpdateFullnessColourAnimalOutline();
 		}
 	}
 
@@ -200,8 +208,6 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	// Functions relating to pause/unpause functionality
 	#region PauseUnpause
-	public event Action OnPaused;
-	public event Action OnUnpaused;
 	private bool m_bHasStarted = false;
 	private bool m_bIsPaused = false;
 

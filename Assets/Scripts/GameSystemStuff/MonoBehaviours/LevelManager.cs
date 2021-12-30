@@ -5,6 +5,7 @@ using TMPro;
 using LevelManagerStates;
 
 [RequireComponent(typeof(CustomAnimation))]
+[RequireComponent(typeof(OverlayRenderer))]
 public class LevelManager : MonoBehaviour
 {
 	#region SerializedParams
@@ -23,6 +24,7 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI m_LevelIntroTextLeft;
 	[SerializeField] private TextMeshProUGUI m_LevelIntroTextRight;
 	[SerializeField] private GameObject m_ObjectiveObjectPrefab;
+	[SerializeField] private OverlayRenderer m_OverlayRenderer;
 
 	[Header("Canvas references")]
 	[SerializeField] private Transform m_ObjectiveCanvasTransform;
@@ -39,6 +41,9 @@ public class LevelManager : MonoBehaviour
 	[Header("Animator References")]
 	[SerializeField] private Animator m_LevelTransitionAnimator;
 	[SerializeField] private Animator m_LevelUIAnimator;
+
+	[SerializeField] private ControlBinding m_ShowHealthBinding;
+	[SerializeField] private ControlBinding m_ShowHungerBinding;
 	#endregion
 
 	// private params for internal use
@@ -57,6 +62,12 @@ public class LevelManager : MonoBehaviour
 	public Transform GetCamTransform { get; private set; }
 
 	public Transform GetObjectiveCanvasTransform => m_ObjectiveCanvasTransform;
+
+	public ControlBinding GetShowHungerBinding => m_ShowHungerBinding;
+
+	public ControlBinding GetShowHealthBinding => m_ShowHealthBinding;
+
+	public CowGameManager GetManager => m_Manager;
 
 	public event Action OnLevelStarted;
 
@@ -299,6 +310,11 @@ public class LevelManager : MonoBehaviour
 		}
 	}
 
+	public void SetOverlayRendererDepthTestMode(DepthTests depthTestMode)
+	{
+		m_OverlayRenderer.SetDepthTestMode(depthTestMode);
+	}
+
 	public void InitializeLevel(LevelData levelData, Transform camTransform)
 	{
 		m_LevelEnterAnimation.SetFocusedTransform(camTransform);
@@ -364,6 +380,7 @@ namespace LevelManagerStates
 	public class PlayingState : AStateBase<LevelManager>
 	{
 		private bool m_bHasAlreadyStarted = false;
+		private bool m_bZTestAlways = false;
 		private readonly CanvasGroup m_CanvasGroup;
 		public PlayingState( CanvasGroup pauseGroup)
 		{
@@ -389,6 +406,20 @@ namespace LevelManagerStates
 			{
 				RequestTransition<PausedState>();
 			}
+
+			bool isHealthBindingPressed = Host.GetShowHealthBinding.IsBindingPressed();
+			bool isHungerBindingPressed = Host.GetShowHungerBinding.IsBindingPressed();
+
+			if (isHealthBindingPressed)
+				Host.GetManager.UpdateHealthColourAnimalOutline();
+			if (isHungerBindingPressed)
+				Host.GetManager.UpdateFullnessColourAnimalOutline();
+			if ((isHealthBindingPressed || isHungerBindingPressed) != m_bZTestAlways)
+			{ 
+				m_bZTestAlways = isHealthBindingPressed || isHungerBindingPressed;
+				Host.SetOverlayRendererDepthTestMode(m_bZTestAlways ? DepthTests.Always : DepthTests.LEqual);
+			}
+
 		}
 
 		public override void OnExit()

@@ -126,7 +126,7 @@
 	// Fragment shader (first pass)
 	float4 FragWriteOverlayID(UNITY_VPOS_TYPE screenPos : VPOS, float eyeDepth : TEXCOORD0) : SV_Target
 	{
-
+#if EnableDepthTest
 		// The depth of the current fragment
 		float vDepth = eyeDepth / _ProjectionParams.z;
 
@@ -136,7 +136,7 @@
 		// Depth test
 		if (vDepth - _ZBias < gDepth)
 			return float4(0.0, 0.0, 0.0, 0.0);
-
+#endif
 		//// Map range [0, 255] to [0.0f, 1.0f]
 		return _FillColor;
 	}
