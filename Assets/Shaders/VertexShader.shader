@@ -13,6 +13,12 @@
     {
         Tags { "RenderType" = "Opaque" }
         LOD 300
+		Stencil
+		{
+			Ref 3
+			Comp always
+			Pass replace
+		}
 
       CGPROGRAM
       #pragma surface surf BlinnPhong vertex:vert

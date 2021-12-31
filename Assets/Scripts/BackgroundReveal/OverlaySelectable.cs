@@ -8,13 +8,11 @@ public class OverlaySelectable : MonoBehaviour
     public static IReadOnlyCollection<OverlaySelectable> Instances { get { return _instances; } }
 
 	[SerializeField] private bool _highlightAlways = true;
-	[SerializeField] private int _overlayGroupID = 1;
 	[SerializeField] private Color _highlightColor = Color.white;
 	[SerializeField] private bool _ZTestAlways = false;
 
 	public Color GetHighlightColor => _highlightColor;
 	public bool HighlightAlways => _highlightAlways;
-	public int GroupId => _overlayGroupID;
 	public bool VisibleNotBehindTerrain => _ZTestAlways;
 
 	private void OnEnable()

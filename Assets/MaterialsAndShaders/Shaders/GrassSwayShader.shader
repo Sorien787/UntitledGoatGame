@@ -220,6 +220,12 @@
 				"RenderType" = "Opaque"
 				"LightMode" = "ForwardBase"
 			}
+			Stencil
+			{
+				Ref 3
+				Comp always
+				Pass replace
+			}
 
 			CGPROGRAM
 			#pragma vertex vert
