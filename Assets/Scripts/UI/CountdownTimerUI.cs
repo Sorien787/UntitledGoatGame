@@ -20,15 +20,17 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 	[SerializeField] private AnimationCurve m_TextPulseOpacityByTimer;
 	[SerializeField] private float m_TimerFadeTime;
 	[SerializeField] private string m_FinalTimerTickString = "0";
-
+	[SerializeField] private bool m_bAffectedByPause = false;
 	// Start is called before the first frame update
 	private int m_CurrentTime;
 	private IEnumerator m_TimerCoroutine;
 	public event Action OnTimerComplete;
 	public event Action<float> OnTimerTick;
 
-	private void Awake()
+	private void Start()
 	{
+		if (!m_bAffectedByPause)
+			return;
 		m_Manager.AddToPauseUnpause(this);
 	}
 
@@ -49,11 +51,12 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 	{
 		if (hideTimer)
 			LeanTween.alphaCanvas(m_TextCanvasGroup, 0.0f, m_TimerFadeTime).setEaseInCubic();
-
-		StopCoroutine(m_TimerCoroutine);
+		if (m_TimerCoroutine != null)
+			StopCoroutine(m_TimerCoroutine);
 		OnTimerComplete = null;
 		m_TimeTimerStarted = 0.0f;
 		m_TimeRemainingWhenTimerPaused = 0.0f;
+		m_InitialTime = 0.0f;
 		m_bIsTimerPaused = false;
 	}
 

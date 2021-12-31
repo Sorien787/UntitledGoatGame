@@ -255,6 +255,9 @@ MonoBehaviour:
   m_fFocusDistanceSettleTime: 0.2
   m_fMaxFocusDistanceSettleVelocity: 100
   m_fMaxFocalLength: 100
+  m_DepthOfFieldRaycastMask:
+    serializedVersion: 2
+    m_Bits: 0
   m_SettingsManager: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
 --- !u!1 &3338445512809281105
 GameObject:
@@ -648,8 +651,8 @@ MonoBehaviour:
   numStepsLight: 8
   rayOffsetStrength: 0.1
   blueNoise: {fileID: 2800000, guid: 6d82457f96ba8449597922c106f17caa, type: 3}
-  cloudScale: 1.14
-  densityMultiplier: 21.58
+  cloudScale: 5.6
+  densityMultiplier: 12.4
   densityOffset: 2.3
   shapeOffset: {x: 30, y: 47, z: 1}
   heightOffset: {x: 0, y: 0}

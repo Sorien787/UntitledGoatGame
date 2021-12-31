@@ -233,6 +233,10 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		if (m_bIsInPlayerPerspective)
 			listener.PlayerPerspectiveBegin();
 	}
+	public void RemoveFromLevelStarted(ILevelListener listener)
+	{
+		m_LevelListeners.Remove(listener);
+	}
 
 	public void SetPausedState(bool pauseState)
 	{

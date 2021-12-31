@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI m_LevelIntroTextRight;
 	[SerializeField] private GameObject m_ObjectiveObjectPrefab;
 	[SerializeField] private OverlayRenderer m_OverlayRenderer;
+	[SerializeField] private MenuManager m_MenuManager;
 
 	[Header("Canvas references")]
 	[SerializeField] private Transform m_ObjectiveCanvasTransform;
@@ -347,6 +348,7 @@ public class LevelManager : MonoBehaviour
 
 	public void ResumeLevel()
 	{
+		m_MenuManager.ReturnToMainMenu();
 		m_LevelState.RequestTransition(typeof(PlayingState));
 	}
 	#endregion
@@ -390,6 +392,7 @@ namespace LevelManagerStates
 		{
 			if (!m_bHasAlreadyStarted) 
 			{
+				m_bHasAlreadyStarted = true;
 				Host.StartLevel();
 			}
 			Host.PauseLevel(false);

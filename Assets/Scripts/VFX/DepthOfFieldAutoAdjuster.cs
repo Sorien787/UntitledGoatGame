@@ -9,6 +9,7 @@ public class DepthOfFieldAutoAdjuster : MonoBehaviour
 	[SerializeField] private float m_fFocusDistanceSettleTime;
 	[SerializeField] private float m_fMaxFocusDistanceSettleVelocity;
 	[SerializeField] private float m_fMaxFocalLength;
+	[SerializeField] private LayerMask m_DepthOfFieldRaycastMask;
 
 	[SerializeField] private SettingsManager m_SettingsManager;
 
@@ -22,6 +23,7 @@ public class DepthOfFieldAutoAdjuster : MonoBehaviour
 	public float GetMaxFocalLength => m_fMaxFocalLength;
 	public Transform GetFocusedTransform => m_FocusedTransform;
 	public Transform GetCamTransform => m_CamTransform;
+	public LayerMask GetDepthOfFieldRaycastMask => m_DepthOfFieldRaycastMask;
 
 	public void SetFocusedTransform(ThrowableObjectComponent focusedTransform) 
 	{ 
@@ -91,7 +93,7 @@ class AutoAdjustByRaycastState : AStateBase<DepthOfFieldAutoAdjuster>
 {
 	public override void Tick()
 	{
-		if (Physics.Raycast(Host.GetCamTransform.position, Host.GetCamTransform.forward, out RaycastHit hit, Host.GetMaxFocalLength))
+		if (Physics.Raycast(Host.GetCamTransform.position, Host.GetCamTransform.forward, out RaycastHit hit, Host.GetMaxFocalLength, Host.GetDepthOfFieldRaycastMask))
 		{
 			Host.SetTargetFocalLength(hit.distance);
 		}

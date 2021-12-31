@@ -80,7 +80,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     private float m_fFullness = 0.0f;
 	private float m_TotalStaggerTime = 0.0f;
     private bool  m_bIsMated = false;
-    private Vector3 m_BodyVelocity = Vector3.zero;
     private bool  m_bWasUsingNavmeshAgent = false;
     private Vector3 m_CachedTargetDirection = Vector3.zero;
     private bool  m_bHasAttackBeenTriggered = false;
@@ -685,15 +684,19 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_fFullness += damageAmount;
     }
 
+	Vector3 animalDestination;
+	Vector3 animalVelocity;
     public void Pause()
     {
         if (m_AnimalAgent.enabled)
         {
             m_bWasUsingNavmeshAgent = true;
-            m_BodyVelocity = m_AnimalAgent.velocity;
-        }
+			m_AnimalAgent.enabled = false;
+			animalDestination = m_AnimalAgent.destination;
+			animalVelocity = m_AnimalAgent.velocity;
+		}
 
-        m_AnimalAgent.enabled = false;
+
         m_AnimalAnimator.enabled = false;
         m_AnimalMovement.enabled = false;
         enabled = false;
@@ -703,9 +706,10 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         if (m_bWasUsingNavmeshAgent)
         {
-            m_AnimalAgent.velocity = m_BodyVelocity;
+            m_AnimalAgent.velocity = animalVelocity;
             m_AnimalAgent.enabled = true;
-            m_bWasUsingNavmeshAgent = false;
+			m_AnimalAgent.destination = animalDestination;
+			m_bWasUsingNavmeshAgent = false;
         }
 
         m_AnimalAnimator.enabled = true;
@@ -878,8 +882,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 	private void OnDestroy()
 	{
-        m_Manager.RemoveFromPauseUnpause(this);
-    }
+		m_Manager.RemoveFromPauseUnpause(this);
+	}
 
 	private bool ShouldEnterWrangled() 
     {
@@ -972,6 +976,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 		if (currentHealthPercentage > m_DeathHealthRatio)
             return;
+
+		m_Manager.RemoveFromPauseUnpause(this);
 		m_Overlay.EnableOutline(false);
 		m_Manager.RemoveAnimal(this);
 

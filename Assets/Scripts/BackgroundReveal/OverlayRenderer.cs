@@ -128,7 +128,7 @@ public class OverlayRenderer : MonoBehaviour
 		foreach (var instance in instances)
         {
 			if (!instance.HighlightAlways)
-				return;
+				continue;
 
 			_commandBuffer.SetGlobalInt(ShaderIDs._GroupID, instance.GroupId);
 			//// draws the meshes to the texture using the command buffer extension

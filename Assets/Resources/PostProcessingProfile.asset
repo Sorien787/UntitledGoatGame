@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
     value: 0
   smoothness:
     overrideState: 1
-    value: 0.387
+    value: 0.01
   roundness:
     overrideState: 1
     value: 0.945
@@ -56,22 +56,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
   focusDistance:
     overrideState: 1
-    value: 56.8
+    value: 17.06
   aperture:
     overrideState: 1
-    value: 7.01
+    value: 2
   focalLength:
     overrideState: 1
-    value: 1
+    value: 30
   kernelSize:
     overrideState: 1
-    value: 0
+    value: 2
 --- !u!114 &-5354685683164504923
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -87,7 +87,7 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   intensity:
     overrideState: 1
     value: 0.81
@@ -224,13 +224,13 @@ MonoBehaviour:
     value: 5.2
   brightness:
     overrideState: 1
-    value: -2.6558018
+    value: 9.986095
   postExposure:
     overrideState: 0
     value: 0
   contrast:
     overrideState: 1
-    value: 5.1072454
+    value: 0.73007107
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -1548,7 +1548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 0

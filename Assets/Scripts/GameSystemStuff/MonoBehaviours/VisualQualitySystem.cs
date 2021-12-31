@@ -5,7 +5,8 @@ using System;
 
 public class VisualQualitySystem : MonoBehaviour
 {
-	[SerializeField] private PostProcessProfile m_VolumeProfile;
+	private PostProcessProfile m_VolumeProfile;
+	[SerializeField] private PostProcessVolume m_Volume;
 	[SerializeField] private SettingsManager m_Settings;
 
 	private Bloom m_Bloom;
@@ -23,6 +24,7 @@ public class VisualQualitySystem : MonoBehaviour
 	{
 		bool hasSettings = false;
 		m_Settings.PropertyChanged += OnPropertyChanged;
+		m_VolumeProfile = m_Volume.profile;
 		if (!m_VolumeProfile) throw new System.NullReferenceException(nameof(PostProcessProfile));
 		hasSettings = m_VolumeProfile.TryGetSettings(out m_Bloom);
 		hasSettings = m_VolumeProfile.TryGetSettings(out m_MotionBlur);

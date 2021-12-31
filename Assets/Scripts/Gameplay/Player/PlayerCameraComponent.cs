@@ -130,7 +130,10 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 	{
 		if (e.PropertyName == UnityUtils.UnityUtils.GetPropertyName(() => m_SettingsManager.FoV))
 		{
+			float FoVDifference = m_SettingsManager.FoV - m_fDefaultFOV;
+			m_fCurrentFOV += FoVDifference;
 			m_fDefaultFOV = m_SettingsManager.FoV;
+			m_PlayerCamera.fieldOfView = m_fCurrentFOV;
 		}
 	}
 
