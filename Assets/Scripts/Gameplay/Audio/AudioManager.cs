@@ -18,11 +18,6 @@ public class AudioManager : MonoBehaviour
 		{
 			Sound newSound = new Sound(sound.m_AudioType, sound.defaultVolume, sound.defaultPitch, sound.loop, sound.clip, gameObject.AddComponent<AudioSource>());
 			m_SoundDict.Add(sound.m_Identifier, newSound);
-			System.Reflection.PropertyInfo info = m_Settings.GetType().GetProperty(newSound.GetAudioType.GetAudioTypeIdentifier);
-			if (info != null)
-			{
-				float vol = (float)info.GetValue(m_Settings);
-			}
 		}
 	}
 
@@ -32,33 +27,28 @@ public class AudioManager : MonoBehaviour
 		{
 			System.Reflection.PropertyInfo info = sender.GetType().GetProperty(e.PropertyName);
 			bool isMuted = (bool)info.GetValue(sender);
-			if (isMuted)
-			{
-				foreach (Sound sound in m_SoundDict.Values)
-				{
-					m_fCachedVolume = sound.GetVolume();
-					sound.SetVolume(0);
-				}
-			}
-			else
-			{
-				foreach (Sound sound in m_SoundDict.Values)
-				{
-					sound.SetVolume(m_fCachedVolume);
-				}
-			}
-		}
 
-		foreach (Sound sound in m_SoundDict.Values)
+			foreach (Sound sound in m_SoundDict.Values)
+			{
+				sound.MuteSound(isMuted);
+			}
+
+		}
+		else
 		{
-			if (sound.GetAudioType.GetAudioTypeIdentifier == e.PropertyName)
+			foreach (Sound sound in m_SoundDict.Values)
 			{
-				System.Reflection.PropertyInfo info = sender.GetType().GetProperty(e.PropertyName);
-				float newVolume = (float)info.GetValue(sender);
-				sound.SetVolume(newVolume);
+				if (!sound.GetAudioType.WasValidPropertyChanged(e.PropertyName))
+					continue;
+				sound.UpdateAudioVolume();
 			}
-
 		}
+	}
+
+	public static bool GetIsMuted(SettingsManager settings)
+	{
+		System.Reflection.PropertyInfo info = settings.GetType().GetProperty("IsMuted");
+		return (bool)info.GetValue(settings);
 	}
 
 	public void Play(string soundIdentifier)
@@ -109,6 +99,8 @@ public class Sound
 	private readonly float m_fDefaultVolume;
 	private readonly float m_fDefaultPitch;
 
+	private float m_fVolumeModifierInternal = 1.0f;
+	private float m_fPitchModifierInternal = 1.0f;
 	public Sound(in AudioType type, in float defaultVolume, in float defaultPitch, in bool doesLoop, in AudioClip clipToPlay, in AudioSource sourceToplayFrom) 
 	{
 		m_AudioType = type;
@@ -118,6 +110,29 @@ public class Sound
 		m_fDefaultVolume = defaultVolume;
 		m_AudioSource.loop = doesLoop;
 		m_AudioSource.clip = m_AudioClip;
+		MuteSound(AudioManager.GetIsMuted(m_AudioType.GetViewModelAsSettingsManager()));
+
+	}
+	public void UpdateAudioVolume()
+	{
+		m_AudioSource.volume = (m_AudioType.GetVolumeValModifier() * m_fDefaultVolume * m_fVolumeModifierInternal);
+	}
+
+	public void MuteSound(bool mute)
+	{
+		if (mute)
+		{
+			m_AudioSource.volume = 0.0f;
+		}
+		else
+		{
+			UpdateAudioVolume();
+		}
+	}
+
+	public void UpdateAudioPitch()
+	{
+		m_AudioSource.pitch = (m_fDefaultPitch * m_fPitchModifierInternal);
 	}
 
 	public void Start() 
@@ -134,12 +149,14 @@ public class Sound
 
 	public void SetPitch(in float pitchPercent) 
 	{
-		m_AudioSource.pitch = pitchPercent * m_fDefaultPitch;
+		m_fPitchModifierInternal = pitchPercent;
+		UpdateAudioPitch();
 	}
 
 	public void SetVolume(in float volumePercent) 
 	{
-		m_AudioSource.volume = volumePercent * m_fDefaultVolume;
+		m_fVolumeModifierInternal = volumePercent;
+		UpdateAudioVolume();
 	}
 
 	public float GetVolume()

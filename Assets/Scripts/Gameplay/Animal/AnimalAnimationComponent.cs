@@ -275,7 +275,8 @@ public class AnimalAnimationComponent : MonoBehaviour
     {
         if (!m_LastMood.Equals(mood) || overrideMood) 
         {
-            m_ActiveController.TurnOffAllSystems();
+			if (m_ActiveController)
+				m_ActiveController.TurnOffAllSystems();
             m_LastMood = mood;
             return true;
         }

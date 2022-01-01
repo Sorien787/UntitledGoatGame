@@ -34,6 +34,8 @@ public class MenuManager : MonoBehaviour
 	[SerializeField] private Animator m_LevelTransitionAnimator;
 	[SerializeField] private Animator m_MainScreenAnimator;
 
+	[SerializeField] private bool m_bFreeMouse = false;
+
 	private StateMachine<MenuManager> m_MenuStateMachine;
 
 	#region UnityFunctions

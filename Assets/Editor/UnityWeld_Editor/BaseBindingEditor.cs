@@ -75,10 +75,10 @@ namespace UnityWeld_Editor
 			content = EditorGUILayout.ObjectField("View Model: ", content, typeof(UnityEngine.Object), true);
 		}
 
-        /// <summary>
-        /// Display a popup menu for selecting a property from a view-model.
-        /// </summary>
-        protected void ShowViewModelPropertyMenu(
+		/// <summary>
+		/// Display a popup menu for selecting a property from a view-model.
+		/// </summary>
+		protected void ShowViewModelPropertyMenu(
             GUIContent label,
             BindableMember<PropertyInfo>[] bindableProperties,
             Action<string> propertyValueSetter,

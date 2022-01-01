@@ -293,6 +293,12 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		});
 	}
 
+	public void InMenuStarted()
+	{
+		m_bHasStarted = true;
+		m_LevelListeners.ForEachListener((ILevelListener listener) => listener.LevelStarted());
+	}
+
 	private int m_NumObjectivesToComplete = 0;
 	private int m_NumObjectivesCompleted = 0;
 

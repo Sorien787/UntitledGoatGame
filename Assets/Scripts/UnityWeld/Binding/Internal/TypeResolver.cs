@@ -189,8 +189,6 @@ namespace UnityWeld.Binding.Internal
         /// </summary>
         private static IEnumerable<Type> FindAvailableViewModelTypes(AbstractMemberBinding memberBinding)
         {
-            var foundAtLeastOneBinding = false;
-
 			ScriptableObject scriptableObject = memberBinding.GetViewModel() as ScriptableObject;
 
 			if (scriptableObject)
@@ -202,26 +200,49 @@ namespace UnityWeld.Binding.Internal
 					// Ignore view model bindings that haven't been set up yet.
 					if (!string.IsNullOrEmpty(viewModelTypeName))
 					{
-						foundAtLeastOneBinding = true;
-
 						yield return GetViewModelType(viewModelBinding.GetViewModelTypeName());
 					}		
 				}
 				else if (scriptableObject.GetType().GetCustomAttributes(typeof(BindingAttribute), false).Any())
 				{
 					// Case where we are binding to an existing MonoBehaviour.
-					foundAtLeastOneBinding = true;
-
 					yield return scriptableObject.GetType();
 				}
 			}
 			// Case where a ViewModelBinding is used to bind a non-MonoBehaviour class.
         }
 
-        /// <summary>
-        /// Find bindable properties in available view models.
-        /// </summary>
-        public static BindableMember<PropertyInfo>[] FindBindableProperties(AbstractMemberBinding target)
+		private static IEnumerable<Type> FindAvailableViewModelTypes(UnityEngine.Object viewModel)
+		{
+			ScriptableObject scriptableObject = viewModel as ScriptableObject;
+
+			if (scriptableObject)
+			{
+				IViewModelProvider viewModelBinding = scriptableObject as IViewModelProvider;
+				if (viewModelBinding != null)
+				{
+					var viewModelTypeName = viewModelBinding.GetViewModelTypeName();
+					// Ignore view model bindings that haven't been set up yet.
+					if (!string.IsNullOrEmpty(viewModelTypeName))
+					{
+						yield return GetViewModelType(viewModelBinding.GetViewModelTypeName());
+					}
+				}
+				else 
+				{
+					Type type = scriptableObject.GetType();
+					object[] customAttributes = type.GetCustomAttributes(typeof(BindingAttribute), false);
+					if (customAttributes.Any())
+						yield return scriptableObject.GetType();
+				}
+			}
+			// Case where a ViewModelBinding is used to bind a non-MonoBehaviour class.
+		}
+
+		/// <summary>
+		/// Find bindable properties in available view models.
+		/// </summary>
+		public static BindableMember<PropertyInfo>[] FindBindableProperties(AbstractMemberBinding target)
         {
             return FindAvailableViewModelTypes(target)
                 .SelectMany(type => GetPublicProperties(type)
@@ -233,6 +254,19 @@ namespace UnityWeld.Binding.Internal
                 )
                 .ToArray();
         }
+
+		public static BindableMember<PropertyInfo>[] FindBindableProperties(UnityEngine.Object target)
+		{
+			return FindAvailableViewModelTypes(target)
+				.SelectMany(type => GetPublicProperties(type)
+					.Select(p => new BindableMember<PropertyInfo>(p, type))
+				)
+				.Where(p => p.Member
+					.GetCustomAttributes(typeof(BindingAttribute), false)
+					.Any() // Filter out properties that don't have [Binding].
+				)
+				.ToArray();
+		}
 
         /// <summary>
         /// Get all the declared and inherited public properties from a class or interface.
