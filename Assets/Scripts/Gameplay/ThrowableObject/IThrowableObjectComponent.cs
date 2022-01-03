@@ -9,6 +9,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [SerializeField] private ParticleEffectsController m_DragFX;
     [SerializeField] private Transform m_Transform;
     [SerializeField] private PhysicalEntity m_Entity;
+    [SerializeField] private AudioManager m_AudioManager;
 
     [Header("Animation Settings")]
     [SerializeField] private AnimationCurve m_DragAnimationCurve;
@@ -27,6 +28,10 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [SerializeField] private bool m_CausesDragging = false;
     [SerializeField] private bool m_CausesImpacts = false;
     [SerializeField] [Range(0.1f, 5f)] private float m_GravityMultiplier = 1.0f;
+
+    [Header("Sound References")]
+    [SerializeField] private SoundObject m_ImpactSoundObject;
+    [SerializeField] private SoundObject m_DragSoundObject;
 
     public event Action OnTuggedByLasso;
     public event Action OnStartSpinning;
@@ -91,17 +96,21 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             if (m_bParticleFXActive)
             {
                 m_DragFX.TurnOnAllSystems();
+                m_AudioManager.Play(m_DragSoundObject);
             }
             else
             {
                 m_DragFX.TurnOffAllSystems();
+                m_AudioManager.StopPlaying(m_DragSoundObject);
             }
         }
         if (m_bParticleFXActive)
         {
-            m_ParticleStrength.SetParamsOfObject(m_DragAnimationCurve.Evaluate(m_Entity.GetVelocity.magnitude));
+            float scaleStrength = m_DragAnimationCurve.Evaluate(m_Entity.GetVelocity.magnitude);
+            m_ParticleStrength.SetParamsOfObject(scaleStrength);
             m_DragFXTransform.position = m_Entity.GetGroundedPos;
             m_DragFXTransform.rotation = Quaternion.LookRotation(m_Entity.GetGroundedNorm);
+            m_AudioManager.SetPitch(m_DragSoundObject, scaleStrength);
         }
     }
 
@@ -149,6 +158,8 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
         GameObject impactObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
         impactObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));
+
+        m_AudioManager.Play(m_ImpactSoundObject);
 
         // if we've hit an animal, dont create a hazard (otherwise, do)
         if (other.GetComponent<AnimalComponent>())

@@ -136,8 +136,13 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
     {
         m_StateMachine.Tick(Time.deltaTime);
     }
+	[Header("Sound References")]
+	[SerializeField] private SoundObject m_throwSoundRef;
+	[SerializeField] private SoundObject m_returnSoundRef;
+	[SerializeField] private SoundObject m_spinSoundRef;
+	[SerializeField] private SoundObject m_tugSoundRef;
 
-    private void Awake()
+	private void Awake()
     {
 		m_EndColliders = m_LassoEndPoint.GetComponentsInChildren<Collider>();
 		m_PlayerThrowableComponent = m_PlayerObject.GetComponent<ThrowablePlayerComponent>();
@@ -155,11 +160,11 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 
         GetEndTransform = m_LassoEndTransform;
         m_StateMachine = new StateMachine<LassoInputComponent>(new LassoIdleState(), this);
-        m_StateMachine.AddState(new LassoReturnState());
-        m_StateMachine.AddState(new LassoThrowingState());
-        m_StateMachine.AddState(new LassoSpinningState());
-        m_StateMachine.AddState(new LassoAnimalAttachedState(m_TriggerBinding));
-        m_StateMachine.AddState(new LassoAnimalSpinningState());
+        m_StateMachine.AddState(new LassoReturnState(m_AudioManager.GetSoundBySoundObject(m_returnSoundRef)));
+        m_StateMachine.AddState(new LassoThrowingState(m_AudioManager.GetSoundBySoundObject(m_throwSoundRef)));
+        m_StateMachine.AddState(new LassoSpinningState(m_AudioManager.GetSoundBySoundObject(m_spinSoundRef)));
+        m_StateMachine.AddState(new LassoAnimalAttachedState(m_TriggerBinding, m_AudioManager.GetSoundBySoundObject(m_tugSoundRef)));
+        m_StateMachine.AddState(new LassoAnimalSpinningState(m_AudioManager.GetSoundBySoundObject(m_spinSoundRef)));
 
 
 		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(LassoThrowingState)).AddOnEnter(() => SetLassoHitColliders(true)).AddOnExit(() => SetLassoHitColliders(false)));
@@ -487,16 +492,17 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 
 namespace LassoStates
 {
-
 	// raise from off to the side to above head
 	// actual point is offset
 	public class LassoSpinningState : AStateBase<LassoInputComponent>
 	{
 		float m_fCurrentAngle;
 		float m_CurrentInitializeTime = 0.0f;
+		private readonly ValueBasedEdgeTrigger m_LassoSwingSoundTrigger;
 
-		public LassoSpinningState() 
+		public LassoSpinningState(Sound lassoSwingSound)
 		{
+			m_LassoSwingSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 1f, lassoSwingSound);
 			AddTimers(1);
 		}
 
@@ -541,6 +547,7 @@ namespace LassoStates
 			Host.SetSpinStrength(spinStr);
 			Host.RenderTrajectory();
 
+
 			Vector3 forwardPlanar = Vector3.ProjectOnPlane(Host.GetLassoGrabPoint.forward, Vector3.up);
 
 			Quaternion desiredGrabPointToSwingCentreQuat = Quaternion.AngleAxis(Host.SpinSidewaysProfile.Evaluate(time), forwardPlanar);
@@ -565,6 +572,9 @@ namespace LassoStates
 			m_fCurrentAngle += Host.SpinSpeedProfile.Evaluate(time) * Time.deltaTime;
 			m_fCurrentAngle %= 360.0f;
 
+			m_LassoSwingSoundTrigger.Tick(m_fCurrentAngle);
+			m_LassoSwingSoundTrigger.GetSound.SetPitch(spinStr);
+
 			if (m_CurrentInitializeTime > 0)
 			{
 				m_CurrentInitializeTime = Mathf.Max(m_CurrentInitializeTime - Time.deltaTime, 0);
@@ -585,9 +595,11 @@ namespace LassoStates
 	{
 		float m_CurrentAngle;
 		float m_CurrentInitializeTime = 0.0f;
+		private readonly ValueBasedEdgeTrigger m_LassoSwingSoundTrigger;
 
-		public LassoAnimalSpinningState() 
+		public LassoAnimalSpinningState(Sound lassoSwingSound) 
 		{
+			m_LassoSwingSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 1f, lassoSwingSound);
 			AddTimers(1);
 		}
 
@@ -627,7 +639,12 @@ namespace LassoStates
 			Host.RenderRope();
 			Host.RenderTrajectory();
 
-			m_CurrentAngle += Host.SpinSpeedProfile.Evaluate(time) * Time.deltaTime;
+			m_CurrentAngle += (Host.SpinSpeedProfile.Evaluate(time) * Time.deltaTime);
+			m_CurrentAngle %= 360f;
+
+			m_LassoSwingSoundTrigger.Tick(m_CurrentAngle);
+			m_LassoSwingSoundTrigger.GetSound.SetPitch(spinStr);
+
 			if (m_CurrentInitializeTime > 0)
 			{
 				m_CurrentInitializeTime = Mathf.Max(m_CurrentInitializeTime - Time.deltaTime, 0);
@@ -645,16 +662,22 @@ namespace LassoStates
 
 	public class LassoThrowingState : AStateBase<LassoInputComponent>
 	{
-		float m_fCurrentAngle = 0.0f;
-		float m_fRandomSizeMult = 1.0f;
-		float m_fRandomRotationSpeedMult = 1.0f;
+		private float m_fCurrentAngle = 0.0f;
+		private float m_fRandomSizeMult = 1.0f;
+		private readonly Sound m_ThrowSound;
+		private float m_fRandomRotationSpeedMult = 1.0f;
+
+		public LassoThrowingState(Sound throwSound) 
+		{
+			m_ThrowSound = throwSound;
+		}
 
 		public override void OnEnter()
 		{
 			m_fCurrentAngle = UnityEngine.Random.Range(0.0f, 360.0f);
 			m_fRandomSizeMult = UnityEngine.Random.Range(0.7f, 1.3f);
 			m_fRandomRotationSpeedMult = UnityEngine.Random.Range(0.7f, 1.3f) * Mathf.Sign(UnityEngine.Random.Range(-1.0f, 1.0f));
-
+			m_ThrowSound.Start();
 			Host.SetRopeLineRenderer(true);
 			Host.SetLoopLineRenderer(true);
 			AddTimers(1);
@@ -664,7 +687,6 @@ namespace LassoStates
 			Host.SetRopeLineRenderer(false);
 			Host.SetLoopLineRenderer(false);
 		}
-
 
 		public override void Tick()
 		{
@@ -717,9 +739,11 @@ namespace LassoStates
 		float m_fTimeSinceClicked;
 
 		private readonly ControlBinding m_TriggerBinding;
+		private readonly Sound m_lassoSound;
 
-		public LassoAnimalAttachedState(ControlBinding triggerBinding)
+		public LassoAnimalAttachedState(ControlBinding triggerBinding, Sound lassoPullSound)
 		{
+			m_lassoSound = lassoPullSound;
 			m_TriggerBinding = triggerBinding;
 		}
 		public override void OnEnter()
@@ -751,6 +775,7 @@ namespace LassoStates
 
 			if (m_TriggerBinding.GetBindingDown() && m_fTimeSinceClicked > 0.4f)
 			{
+				m_lassoSound.Start();
 				Host.GetThrowableObject.TuggedByLasso();
 				m_fCurrentJerkTime = Host.JerkTimeForPull;
 				float fForceIncrease = Host.ForceIncreasePerPull.Evaluate(m_fTotalCurrentForce / Host.MaxForceForPull);
@@ -776,13 +801,17 @@ namespace LassoStates
 
 	public class LassoReturnState : AStateBase<LassoInputComponent>
 	{
-		float m_LassoSpeed = 0.0f;
+		private float m_LassoSpeed = 0.0f;
+		private readonly Sound m_lassoReturnSound;
+		public LassoReturnState(Sound returnBeginSound) 
+		{
+			m_lassoReturnSound = returnBeginSound;
+		}
 
 		public override void OnEnter()
 		{
 			m_LassoSpeed = 0.0f;
-			Host.SetRopeLineRenderer(true);
-			Host.SetLoopLineRenderer(true);
+			m_lassoReturnSound.Start();
 		}
 
 		public override void OnExit()
@@ -807,7 +836,6 @@ namespace LassoStates
 	{
 
 	}
-
 }
 
 #endregion

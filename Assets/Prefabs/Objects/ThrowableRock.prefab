@@ -193,6 +193,7 @@ MonoBehaviour:
   m_DragFX: {fileID: 8617004741241626947}
   m_Transform: {fileID: 8565041533130692324}
   m_Entity: {fileID: 653192708}
+  m_AudioManager: {fileID: 0}
   m_DragAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -299,6 +300,9 @@ MonoBehaviour:
   m_CausesDragging: 1
   m_CausesImpacts: 1
   m_GravityMultiplier: 1.93
+  m_ImpactSoundObject: {fileID: 11400000, guid: d832f1980356eee4f96c464b2a21d383,
+    type: 2}
+  m_DragSoundObject: {fileID: 11400000, guid: 4067fc4592374cf459e2e12e659a61cd, type: 2}
   m_ThrowingBody: {fileID: 1444594708651495038}
   m_CameraFocusTransform: {fileID: 8565041533130692324}
   m_AttachmentTransform: {fileID: 8565041533130692324}

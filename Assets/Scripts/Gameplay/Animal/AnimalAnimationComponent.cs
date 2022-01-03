@@ -73,6 +73,21 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private string m_AnimalStepSoundIdentifier;
     [SerializeField] private string m_AnimalImpactSoundIdentifier;
 
+
+    [Header("Sound References")]
+    [SerializeField] private SoundObject m_GeneralCall;
+    [SerializeField] private SoundObject m_DamagedCall;
+    [SerializeField] private SoundObject m_WalkSound;
+    [SerializeField] private SoundObject m_EatSound;
+    [SerializeField] private SoundObject m_AttackSound;
+    [SerializeField] private SoundObject m_BornSound;
+    [SerializeField] private SoundObject m_CapturedPullSound;
+    private EdgeTrigger m_runEdgeTrigger;
+
+    [Header("Sound Parameters")]
+    [SerializeField] private float m_lowSound;
+    [SerializeField] private float m_highSound;
+
     [Header("Object references")]
     [SerializeField] private Transform m_tAnimationTransform;
     [SerializeField] private Transform m_tParentObjectTransform;
@@ -110,10 +125,11 @@ public class AnimalAnimationComponent : MonoBehaviour
     private float m_fAnimationSpeedRandomMult;
 
     public float GetCurrentHopHeight => m_HopHeightMultiplier * m_HopAnimationCurve.Evaluate((m_CurrentAnimationTime + m_Phase) % 1);
+    public float GetAnimationTime => (m_CurrentAnimationTime + m_Phase % 1);
     public float GetCurrentTilt => m_TiltSizeMultiplier * m_TiltAnimationCurve.Evaluate(m_CurrentAnimationTime);
     public float GetCurrentForwardBackward => m_ForwardBackwardMovementMultiplier * m_ForwardBackwardAnimationCurve.Evaluate(m_CurrentAnimationTime);
+    public float GetAttackDamageTime => m_AnimalComponent.GetAttackDamageTime;
     public float GetCurrentYaw => m_YawSizeMultiplier * m_YawAnimationCurve.Evaluate(m_CurrentAnimationTime);
-    public float GetCurrentStepSound => m_StepSoundCurve.Evaluate((m_CurrentAnimationTime + m_Phase) % 1);
     public float GetCurrentHorizontalMovement => m_HorizontalMovementMultiplier * m_WalkHorizontalAnimationCurve.Evaluate((m_CurrentAnimationTime + m_Phase) % 1);
     public AudioManager GetAudioManager => m_AudioManager;
 
@@ -160,26 +176,6 @@ public class AnimalAnimationComponent : MonoBehaviour
 	private AttackBase m_CurrentAttack;
 
 
-	public void PlayAnimalStepSound(float strength) 
-    {
-        m_AudioManager.Play(m_AnimalStepSoundIdentifier);
-    }
-
-    public void PlayAnimalCall() 
-    {
-        m_AudioManager.Play(m_AnimalCallSoundIdentifier);
-    }
-
-    public void PlayAnimalImpactSound() 
-    {
-        m_AudioManager.Play(m_AnimalImpactSoundIdentifier);
-    }
-
-    public void EnableDraggingParticles(bool enabled) 
-    {
-        
-    }
-
     public void SetSizeOnStartup() 
     {
         ScaleTransform.localScale = GetSizeMult * Vector3.one;
@@ -208,20 +204,27 @@ public class AnimalAnimationComponent : MonoBehaviour
         return Quaternion.LookRotation(forward, up);
     }
 
+
+
+
     private void Awake()
     {
         m_fAnimationSpeedRandomMult = 1 + UnityEngine.Random.Range(-m_AnimationSpeedRandom, m_AnimationSpeedRandom);
 
-        m_AnimatorStateMachine = new StateMachine<AnimalAnimationComponent>(new AnimalIdleAnimationState(), this);
+
+
+        m_runEdgeTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, m_HopAnimationCurve, m_AudioManager.GetSoundBySoundObject(m_WalkSound));
+
+        m_AnimatorStateMachine = new StateMachine<AnimalAnimationComponent>(new AnimalIdleAnimationState(m_AudioManager.GetSoundBySoundObject(m_GeneralCall), m_lowSound, m_highSound), this);
         m_AnimatorStateMachine.AddState(new AnimalStaggeredAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalWalkingAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalCapturedAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalFreeFallAnimationState(m_FreeFallingParticleController));
-        m_AnimatorStateMachine.AddState(new AnimalAttackAnimationState());
-        m_AnimatorStateMachine.AddState(new AnimalDamagedAnimationState());
+        m_AnimatorStateMachine.AddState(new AnimalAttackAnimationState(m_AudioManager.GetSoundBySoundObject(m_EatSound), m_AudioManager.GetSoundBySoundObject(m_AttackSound)));
+        m_AnimatorStateMachine.AddState(new AnimalDamagedAnimationState(m_AudioManager.GetSoundBySoundObject(m_DamagedCall)));
         m_AnimatorStateMachine.AddState(new AnimalBreedingAnimationState());
-        m_AnimatorStateMachine.AddState(new AnimalBornAnimationState());
-        m_AnimatorStateMachine.AddState(new AnimalCapturedPulledState());
+        m_AnimatorStateMachine.AddState(new AnimalBornAnimationState(m_AudioManager.GetSoundBySoundObject(m_BornSound)));
+        m_AnimatorStateMachine.AddState(new AnimalCapturedPulledState(m_AudioManager.GetSoundBySoundObject(m_CapturedPullSound)));
         m_AnimalComponent = GetComponent<AnimalComponent>();
 
         m_fSizeVariationActual = (1 + UnityEngine.Random.Range(-m_SizeVariation, m_SizeVariation));
@@ -458,13 +461,27 @@ public class AnimalAnimationComponent : MonoBehaviour
         float multiplier = Mathf.Sign(currentSpeed - m_MaximumRunAnimationSpeed);
         windup = Mathf.Clamp(windup + multiplier * Time.deltaTime, 0.0f, WalkWindup);
 
+        m_runEdgeTrigger.Tick(m_CurrentAnimationTime);
+
         float bounceMult = windup / WalkWindup;
         AnimTransform.rotation = currentQuat * Quaternion.Euler(yawSize * bounceMult, 0, bounceMult * tiltSize);
         AnimTransform.localPosition = AnimTransform.forward * bounceMult * forwardBackwardMovement + AnimTransform.right * bounceMult * horizontalMovement + AnimTransform.up * bounceMult * hopHeight;
     }
 }
 
-public class AnimalIdleAnimationState : AStateBase<AnimalAnimationComponent> { }
+public class AnimalIdleAnimationState : AStateBase<AnimalAnimationComponent> 
+{
+    private readonly RandomSoundTrigger m_soundTrigger;
+    public AnimalIdleAnimationState(Sound sound, float lowTime, float highTime) 
+    {
+        m_soundTrigger = new RandomSoundTrigger(lowTime, highTime, sound);
+    }
+
+	public override void Tick()
+	{
+        m_soundTrigger.Tick(Time.deltaTime);
+	}
+}
 
 public class AnimalBreedingAnimationState : AStateBase<AnimalAnimationComponent>
 {
@@ -613,8 +630,11 @@ public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
 {
     private List<MeshRenderer> m_VisualMeshRenderers = new List<MeshRenderer>();
 
-    public AnimalDamagedAnimationState()
+    private ValueBasedEdgeTrigger m_valueTrigger;
+
+    public AnimalDamagedAnimationState(Sound damagedSound)
     {
+        m_valueTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.1f, damagedSound);
         AddTimers(1);
     }
 
@@ -646,7 +666,7 @@ public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
         if (GetTimerVal(0) < Host.DamagedAnimTime)
         {
 			float animTime = GetTimerVal(0) / Host.DamagedAnimTime;
-
+            m_valueTrigger.Tick(animTime);
 			float colorSlider = Host.DamagedColorCurve.Evaluate(animTime);
             ForEachMeshRenderer(m_VisualMeshRenderers, (MeshRenderer renderer) =>
             {
@@ -681,14 +701,17 @@ public class AnimalDamagedAnimationState : AStateBase<AnimalAnimationComponent>
 
 public class AnimalBornAnimationState : AStateBase<AnimalAnimationComponent> 
 {
-    public AnimalBornAnimationState() 
+    private readonly ValueBasedEdgeTrigger m_bornSoundTrigger;
+    public AnimalBornAnimationState(Sound sound) 
     {
+        m_bornSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.0f, sound);
         AddTimers(1);
     }
 
 	public override void Tick()
 	{
         float percentage = GetTimerVal(0) / Host.GetBornDuration;
+        m_bornSoundTrigger.Tick(percentage);
         float size = Host.BornSizeCurve.Evaluate(percentage) * Host.GetSizeMult;
         Host.ScaleTransform.localScale = Vector3.one * size;
 	}
@@ -698,10 +721,19 @@ public class AnimalAttackAnimationState : AStateBase<AnimalAnimationComponent>
 {
     private Quaternion m_startQuat;
 
+    private ValueBasedEdgeTrigger m_AttackSoundTrigger;
+    private EdgeTrigger m_EatSoundTrigger;
+
+    public AnimalAttackAnimationState(Sound eatSound, Sound attackSound) 
+    {
+        AddTimers(1);
+        m_EatSoundTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, Host.GetAttackPitchCurve, eatSound);
+        m_AttackSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, Host.GetAttackDamageTime, attackSound);
+    }
+
     public override void OnEnter()
     {
         m_startQuat = Host.AnimTransform.localRotation;
-		AddTimers(1);
     }
 
     public override void Tick()
@@ -716,6 +748,8 @@ public class AnimalAttackAnimationState : AStateBase<AnimalAnimationComponent>
 			float forwardAmount = Host.GetAttackForwardCurve.Evaluate(animTime);
 			float hopAmount = Host.GetAttackHopCurve.Evaluate(animTime);
 
+            m_AttackSoundTrigger.Tick(animTime);
+
 			Quaternion targetQuat = lookQuat * Quaternion.Euler(pitchAng, 0, tiltAng);
 			Host.AnimTransform.localRotation = Quaternion.RotateTowards(Host.AnimTransform.localRotation, targetQuat, Host.AnimRotationSpeed);
 
@@ -728,19 +762,22 @@ public class AnimalAttackAnimationState : AStateBase<AnimalAnimationComponent>
 public class AnimalCapturedPulledState : AStateBase<AnimalAnimationComponent> 
 {
     Quaternion m_InitQuat;
-    public AnimalCapturedPulledState()
+
+    private ValueBasedEdgeTrigger m_CapturedEdgeTrigger;
+
+    public AnimalCapturedPulledState(Sound triggerSound)
     {
+        m_CapturedEdgeTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.1f, triggerSound);
         AddTimers(1);
     }
 	public override void OnEnter()
 	{
-        Host.EnableDraggingParticles(true);
         m_InitQuat = Host.AnimTransform.localRotation;
     }
 	public override void Tick()
     {
-
         float time = GetTimerVal(0) / Host.GetPullTime;
+        m_CapturedEdgeTrigger.Tick(time);
         if (time > 1)
         {
             RequestTransition<AnimalCapturedAnimationState>();
@@ -749,10 +786,6 @@ public class AnimalCapturedPulledState : AStateBase<AnimalAnimationComponent>
         {
             Host.AnimTransform.localRotation = Quaternion.RotateTowards(Host.AnimTransform.localRotation, m_InitQuat * Quaternion.Euler(time * 60.0f, 0, 0), Host.AnimRotationSpeed * Time.fixedDeltaTime);
         }      
-    }
-	public override void OnExit()
-	{
-        Host.EnableDraggingParticles(false);
     }
 }
 

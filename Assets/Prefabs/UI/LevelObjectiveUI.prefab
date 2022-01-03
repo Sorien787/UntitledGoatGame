@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -170,6 +171,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -355,6 +357,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.40866065, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -428,6 +431,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -625,6 +629,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.40866065, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -699,6 +704,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -875,6 +881,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.66, g: 0.66, b: 0.66, a: 0.5058824}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -954,8 +961,10 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_AudioManager: {fileID: 8468517277381275507}
   m_LayoutGroup: {fileID: 7458621355481296903}
-  m_EnterGoalZoneAudioIdentifier: 
-  m_ExitGoalZoneAudioIdentifier: 
+  m_EnterGoalZoneAudioIdentifier: {fileID: 11400000, guid: a2e40d8a15bcc3c4289b751fa55d1c8e,
+    type: 2}
+  m_ExitGoalZoneAudioIdentifier: {fileID: 11400000, guid: 7e05103f74b79934bbfcb99479e64ee8,
+    type: 2}
   m_fSliderAcceleration: 2
   m_EnterGoalPulseColour: {r: 0, g: 1, b: 0.29543853, a: 1}
   m_ExitGoalPulseColour: {r: 1, g: 0, b: 0, a: 1}
@@ -998,7 +1007,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
-  sounds: []
+  sounds:
+  - {fileID: 11400000, guid: a2e40d8a15bcc3c4289b751fa55d1c8e, type: 2}
+  - {fileID: 11400000, guid: 7e05103f74b79934bbfcb99479e64ee8, type: 2}
 --- !u!222 &3535435492705572793
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1239,6 +1250,18 @@ PrefabInstance:
       propertyPath: m_TextPulseSizeByTimer.m_Curve.Array.data[1].value
       value: 0.19335794
       objectReference: {fileID: 0}
+    - target: {fileID: 5180011089108255889, guid: 12044b67e0016a94c994db5f44d13b54,
+        type: 3}
+      propertyPath: m_TimerCompleteAudioIdentifier
+      value: 
+      objectReference: {fileID: 11400000, guid: 1643d188a1931e54e9cda8914f6be0a8,
+        type: 2}
+    - target: {fileID: 5180011089108255889, guid: 12044b67e0016a94c994db5f44d13b54,
+        type: 3}
+      propertyPath: m_TimerTickAudioIdentifier
+      value: 
+      objectReference: {fileID: 11400000, guid: 112993437bb2c3442b99e51953232497,
+        type: 2}
     - target: {fileID: 7097643374194794427, guid: 12044b67e0016a94c994db5f44d13b54,
         type: 3}
       propertyPath: m_Name

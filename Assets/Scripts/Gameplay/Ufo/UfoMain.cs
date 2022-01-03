@@ -159,18 +159,18 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 	{
 		SetDestination(GetNewPatrolDestination());
 	}
-	private void OnCollisionEnter(Collision collision)
-	{
-		if (collision.gameObject.GetComponent<DamagingProjectileComponent>()) 
-		{
-			if (m_bCanBeHit)
-			{
-				StartCoroutine(InvulnerabilityCoroutine());
-				StartCoroutine(StaggerCoroutine());
-				m_UfoStateMachine.RequestTransition(typeof(UFOStaggeredState));
-			}
-		}
-	}
+	//private void OnCollisionEnter(Collision collision)
+	//{
+	//	if (collision.gameObject.GetComponent<DamagingProjectileComponent>()) 
+	//	{
+	//		if (m_bCanBeHit)
+	//		{
+	//			StartCoroutine(InvulnerabilityCoroutine());
+	//			StartCoroutine(StaggerCoroutine());
+	//			m_UfoStateMachine.RequestTransition(typeof(UFOStaggeredState));
+	//		}
+	//	}
+	//}
 	private bool m_bCanBeHit = true;
 
 	private IEnumerator InvulnerabilityCoroutine() 

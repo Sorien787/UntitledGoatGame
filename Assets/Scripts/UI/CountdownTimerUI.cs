@@ -14,8 +14,8 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 	[SerializeField] private AudioManager m_AudioManager;
 
 	[Header("Animation and Audio references")]
-	[SerializeField] private string m_TimerCompleteAudioIdentifier;
-	[SerializeField] private string m_TimerTickAudioIdentifier;
+	[SerializeField] private SoundObject m_TimerCompleteAudioIdentifier;
+	[SerializeField] private SoundObject m_TimerTickAudioIdentifier;
 	[SerializeField] private AnimationCurve m_TextPulseSizeByTimer;
 	[SerializeField] private AnimationCurve m_TextPulseOpacityByTimer;
 	[SerializeField] private float m_TimerFadeTime;
@@ -109,7 +109,7 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 	private float m_InitialTime = 0;
 	private float m_TimeTimerStarted = 0;
 
-	private void TimerTick(in string timerText, in string audioIdentifier)
+	private void TimerTick(in string timerText, in SoundObject audioIdentifier)
 	{
 		m_AudioManager.Play(audioIdentifier);
 		OnTimerTick?.Invoke(1 - m_CurrentTime / m_InitialTime);

@@ -18,6 +18,8 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
 
     [Header("Internal References")]
     [SerializeField] private ParticleEffectsController m_ParticleFXController;
+    [SerializeField] private AudioManager m_AudioManager;
+    [SerializeField] private SoundObject m_Splosion;
 
     private FreeFallTrajectoryComponent m_FreeFallComponent;
     private bool m_bBombPrimed = false;
@@ -89,6 +91,7 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
         }
         EZCameraShake.CameraShaker.Instance.Shake(EZCameraShake.CameraShakePresets.Explosion);
         Instantiate(m_HazardRef, m_Transform.position, m_Transform.rotation);
+        m_AudioManager.Play(m_Splosion);
         Vector3 forward = Vector3.forward;
         if (Vector3.Dot(norm, Vector3.up ) != 1.0f) 
         {

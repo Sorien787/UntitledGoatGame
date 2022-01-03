@@ -21,8 +21,8 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	[SerializeField] private VerticalLayoutGroup m_LayoutGroup;
 
 	[Header("Audio Settings")]
-	[SerializeField] private string m_EnterGoalZoneAudioIdentifier;
-	[SerializeField] private string m_ExitGoalZoneAudioIdentifier;
+	[SerializeField] private SoundObject m_EnterGoalZoneAudioIdentifier;
+	[SerializeField] private SoundObject m_ExitGoalZoneAudioIdentifier;
 
 	[Header("Animation Settings")]
 	[SerializeField] private float m_fSliderAcceleration;

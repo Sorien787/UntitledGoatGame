@@ -42,6 +42,69 @@ MonoBehaviour:
   m_SettingsAnimators: []
   m_LevelTransitionAnimator: {fileID: 0}
   m_MainScreenAnimator: {fileID: 5751737603378956878}
+  m_bFreeMouse: 0
+--- !u!1 &706055277099750104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4950708703209876823}
+  - component: {fileID: 263700128062496673}
+  - component: {fileID: 7722050082647366468}
+  m_Layer: 0
+  m_Name: MusicObj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4950708703209876823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706055277099750104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7641568082878037861}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &263700128062496673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706055277099750104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c0bc8aae1376104ab47ad3c1997bad3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AudioManager: {fileID: 7722050082647366468}
+  m_MusicIdentifier: {fileID: 11400000, guid: 096fd8d78414a474da4919c77808e6e9, type: 2}
+  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+--- !u!114 &7722050082647366468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706055277099750104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1405774d9b92bc94eaae0536c8f0c058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Settings: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
+  sounds:
+  - {fileID: 11400000, guid: 096fd8d78414a474da4919c77808e6e9, type: 2}
 --- !u!1 &1218149389597148473
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,6 +215,7 @@ Transform:
   - {fileID: 20953450329474821}
   - {fileID: 9063953593463379423}
   - {fileID: 2807500040878022631}
+  - {fileID: 4950708703209876823}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

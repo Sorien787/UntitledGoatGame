@@ -474,6 +474,7 @@ MonoBehaviour:
   m_DragFX: {fileID: 0}
   m_Transform: {fileID: 0}
   m_Entity: {fileID: 0}
+  m_AudioManager: {fileID: 0}
   m_DragAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -506,6 +507,8 @@ MonoBehaviour:
   m_CausesDragging: 0
   m_CausesImpacts: 0
   m_GravityMultiplier: 1.33
+  m_ImpactSoundObject: {fileID: 0}
+  m_DragSoundObject: {fileID: 0}
   m_ThrowingBody: {fileID: 3338445512843362041}
   m_CameraFocusTransform: {fileID: 3338445512843362043}
   m_AttachmentTransform: {fileID: 3338445512843362043}
@@ -814,6 +817,10 @@ MonoBehaviour:
   m_CancelBinding: {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_LassoParams: {fileID: 11400000, guid: 54e6bedcceb2de94d9a368bf3b01d740, type: 2}
+  m_throwSoundRef: {fileID: 11400000, guid: 7292b50582ad3ec4d823101fc2ba3333, type: 2}
+  m_returnSoundRef: {fileID: 11400000, guid: b14d0a4105649334dbe16cfd55712682, type: 2}
+  m_spinSoundRef: {fileID: 11400000, guid: dde579c0715a55a4797cc21450bd0b7b, type: 2}
+  m_tugSoundRef: {fileID: 11400000, guid: 2ac6413e92e6f8c47a3f20aeb4c6cdd1, type: 2}
 --- !u!114 &3338445513214232709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -844,7 +851,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
-  sounds: []
+  sounds:
+  - {fileID: 11400000, guid: b14d0a4105649334dbe16cfd55712682, type: 2}
+  - {fileID: 11400000, guid: dde579c0715a55a4797cc21450bd0b7b, type: 2}
+  - {fileID: 11400000, guid: 7292b50582ad3ec4d823101fc2ba3333, type: 2}
+  - {fileID: 11400000, guid: 2ac6413e92e6f8c47a3f20aeb4c6cdd1, type: 2}
 --- !u!1 &3338445513539745686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1693,6 +1704,7 @@ MonoBehaviour:
   m_DragFX: {fileID: 0}
   m_Transform: {fileID: 0}
   m_Entity: {fileID: 0}
+  m_AudioManager: {fileID: 0}
   m_DragAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -1725,6 +1737,8 @@ MonoBehaviour:
   m_CausesDragging: 0
   m_CausesImpacts: 0
   m_GravityMultiplier: 1
+  m_ImpactSoundObject: {fileID: 0}
+  m_DragSoundObject: {fileID: 0}
   m_ObjectMass: 1
 --- !u!114 &3338445514369759818
 MonoBehaviour:

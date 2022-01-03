@@ -3,9 +3,6 @@
 [CreateAssetMenu(menuName = "New Sound Object", fileName = "New Sound Object")]
 public class SoundObject : ScriptableObject
 {
-
-	public string m_Identifier;
-
 	public AudioClip clip;
 
 	public AudioType m_AudioType;
@@ -15,6 +12,12 @@ public class SoundObject : ScriptableObject
 
 	[Range(0.1f, 2f)]
 	public float defaultPitch = 1.0f;
+
+	[Range(0.1f, 2f)]
+	public float maxPitchModifier = 1.0f;
+
+	[Range(0.1f, 2f)]
+	public float maxVolumeModifier = 1.0f;
 
 	public bool loop = false;
 }

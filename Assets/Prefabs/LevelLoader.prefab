@@ -299,6 +299,7 @@ MonoBehaviour:
   m_ObjectiveObjectPrefab: {fileID: 8000029109370356668, guid: 4a73fb79f8ba26f4ba291ab35e77f227,
     type: 3}
   m_OverlayRenderer: {fileID: 5192925073431044122}
+  m_MenuManager: {fileID: 0}
   m_ObjectiveCanvasTransform: {fileID: 3622673474668695247}
   m_FinalCountdownTimer: {fileID: 1202231026925102367}
   m_StartCountdownTimer: {fileID: 7402815415580992521}
@@ -501,12 +502,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraEvent: 18
   _depthTest: 0
-  _outlinePattern: 1
-  _Bias: 0.000928
+  _zBias: 0.000001
   _groupIDTextureFormat: 16
-  m_OutlineColor: {r: 1, g: 1, b: 1, a: 0.5176471}
-  m_FillColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.18431373}
-  m_TestMat: {fileID: 2100000, guid: 2df7465b2e354394e91a07fc166a8275, type: 2}
+  m_TestMat: {fileID: 0}
 --- !u!1 &3622673473228268000
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +565,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -644,6 +643,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -725,6 +725,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.6132076, g: 0.5929602, b: 0.5929602, a: 0.34901962}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -846,6 +847,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 1, b: 0.45791864, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -947,6 +949,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1074,6 +1077,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1359,6 +1363,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1548,6 +1553,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.24705882}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1621,6 +1627,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1778,6 +1785,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1946,6 +1954,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2020,6 +2029,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2627,6 +2637,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2714,6 +2725,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2841,6 +2853,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2998,6 +3011,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3314,6 +3328,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.24705882}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3388,6 +3403,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.24705882}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3461,6 +3477,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3683,10 +3700,12 @@ MonoBehaviour:
   m_TimerText: {fileID: 3622673474253493636}
   m_TimerRect: {fileID: 2217463062327414752}
   m_TextCanvasGroup: {fileID: 3622673474123184151}
-  m_Manager: {fileID: 0}
+  m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_AudioManager: {fileID: 7402815415580992526}
-  m_TimerCompleteAudioIdentifier: TimerComplete
-  m_TimerTickAudioIdentifier: TimerTick
+  m_TimerCompleteAudioIdentifier: {fileID: 11400000, guid: f20bd0fe74250a54fb2945bb1b46be28,
+    type: 2}
+  m_TimerTickAudioIdentifier: {fileID: 11400000, guid: 27f0b8abb4ce3564f882b8759cc09361,
+    type: 2}
   m_TextPulseSizeByTimer:
     serializedVersion: 2
     m_Curve:
@@ -3746,6 +3765,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_TimerFadeTime: 0.8
   m_FinalTimerTickString: Begin
+  m_bAffectedByPause: 0
 --- !u!114 &7402815415580992526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3759,7 +3779,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
-  sounds: []
+  sounds:
+  - {fileID: 11400000, guid: f20bd0fe74250a54fb2945bb1b46be28, type: 2}
+  - {fileID: 11400000, guid: 27f0b8abb4ce3564f882b8759cc09361, type: 2}
 --- !u!1 &7980802110367627254
 GameObject:
   m_ObjectHideFlags: 0
