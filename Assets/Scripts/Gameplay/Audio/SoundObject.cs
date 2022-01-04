@@ -7,7 +7,7 @@ public class SoundObject : ScriptableObject
 
 	public AudioType m_AudioType;
 
-	[Range(0f, 2f)]
+	[Range(0.1f, 2f)]
 	public float defaultVolume = 1.0f;
 
 	[Range(0.1f, 2f)]
@@ -18,6 +18,12 @@ public class SoundObject : ScriptableObject
 
 	[Range(0.1f, 2f)]
 	public float maxVolumeModifier = 1.0f;
+
+	[Range(0.0f, 1f)]
+	public float pitchRandomize = 0.0f;
+
+	[Range(0.0f, 1f)]
+	public float volRandomize = 0.0f;
 
 	public bool loop = false;
 }

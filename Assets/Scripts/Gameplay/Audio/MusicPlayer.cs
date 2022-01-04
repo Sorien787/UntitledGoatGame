@@ -8,10 +8,13 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
     [SerializeField] private SoundObject m_MusicIdentifier;
 	[SerializeField] private CowGameManager m_Manager;
 
+	[SerializeField] private float m_AudioFadeTimeEnd = 2.0f;
+	[SerializeField] private float m_AudioFadeTime = 0.3f;
+	[SerializeField] private float m_AudioFadeVolume = 0.3f;
+
 	void Awake() 
 	{
 		m_Manager.AddToLevelStarted(this);
-		m_Manager.AddToPauseUnpause(this);
 	}
 
 	private IEnumerator m_CurrentCoroutine;
@@ -43,23 +46,24 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 
 	public void LevelFinished()
 	{
-		StartFade(0.0f, 2.0f);
+		StartFade(0.0f, m_AudioFadeTimeEnd);
 	}
 
 	public void LevelStarted() 
 	{
 		m_AudioManager.Play(m_MusicIdentifier);
+		m_Manager.AddToPauseUnpause(this);
 	}
 
 	public void Pause()
 	{
-		StartFade(0.3f, 0.3f);
+		StartFade(m_AudioFadeVolume, m_AudioFadeTime);
 	}
 
 	public void PlayerPerspectiveBegin() {}
 
 	public void Unpause()
 	{
-		StartFade(1.0f, 0.3f);
+		StartFade(1.0f, m_AudioFadeTime);
 	}
 }

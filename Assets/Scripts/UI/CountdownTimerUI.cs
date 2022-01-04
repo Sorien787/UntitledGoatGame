@@ -109,9 +109,9 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 	private float m_InitialTime = 0;
 	private float m_TimeTimerStarted = 0;
 
-	private void TimerTick(in string timerText, in SoundObject audioIdentifier)
+	private void TimerTick(in string timerText, in SoundObject tickAudioIdentifier)
 	{
-		m_AudioManager.Play(audioIdentifier);
+		m_AudioManager.PlayOneShot(tickAudioIdentifier);
 		OnTimerTick?.Invoke(1 - m_CurrentTime / m_InitialTime);
 		m_TimerRect.localScale = Vector3.one * (1 + m_TextPulseSizeByTimer.Evaluate(m_CurrentTime / m_InitialTime));
 		LeanTween.scale(m_TimerRect.gameObject, Vector3.one, 1.0f).setEaseInOutCubic();

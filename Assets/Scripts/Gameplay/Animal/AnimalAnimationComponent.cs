@@ -68,12 +68,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private float m_BreedHopDuration;
     [SerializeField] private float m_BornEffectsSize;
 
-    [Header("Audio Identifiers")]
-    [SerializeField] private string m_AnimalCallSoundIdentifier;
-    [SerializeField] private string m_AnimalStepSoundIdentifier;
-    [SerializeField] private string m_AnimalImpactSoundIdentifier;
-
-
     [Header("Sound References")]
     [SerializeField] private SoundObject m_GeneralCall;
     [SerializeField] private SoundObject m_DamagedCall;
@@ -110,7 +104,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private ParticleEffectsController m_BashedParticleController;
 
     [SerializeField] private AudioManager m_AudioManager;
-    [SerializeField] private List<MeshRenderer> m_DamagedMeshRenderers;
     [SerializeField] private CowGameManager m_Manager;
     [SerializeField] private PhysicalEntity m_PhysicalEntity;
 
@@ -210,8 +203,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     private void Awake()
     {
         m_fAnimationSpeedRandomMult = 1 + UnityEngine.Random.Range(-m_AnimationSpeedRandom, m_AnimationSpeedRandom);
-
-
 
         m_runEdgeTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, m_HopAnimationCurve, m_AudioManager.GetSoundBySoundObject(m_WalkSound));
 

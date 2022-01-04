@@ -120,13 +120,13 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 
 	public void OnObjectiveEnteredGoal()
 	{
-		m_AudioManager.Play(m_EnterGoalZoneAudioIdentifier);
+		m_AudioManager.PlayOneShot(m_EnterGoalZoneAudioIdentifier);
 		PulseBackground(m_EnterGoalPulseColour, 1.0f);
 	}
 
 	public void OnObjectiveLeftGoal()
 	{
-		m_AudioManager.Play(m_ExitGoalZoneAudioIdentifier);
+		m_AudioManager.PlayOneShot(m_ExitGoalZoneAudioIdentifier);
 		PulseBackground(m_ExitGoalPulseColour, 1.0f);
 	}
 

@@ -159,7 +159,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         GameObject impactObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
         impactObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));
 
-        m_AudioManager.Play(m_ImpactSoundObject);
+        m_AudioManager.PlayOneShot(m_ImpactSoundObject);
 
         // if we've hit an animal, dont create a hazard (otherwise, do)
         if (other.GetComponent<AnimalComponent>())

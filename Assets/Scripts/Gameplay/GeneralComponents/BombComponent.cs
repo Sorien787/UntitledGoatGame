@@ -91,7 +91,7 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
         }
         EZCameraShake.CameraShaker.Instance.Shake(EZCameraShake.CameraShakePresets.Explosion);
         Instantiate(m_HazardRef, m_Transform.position, m_Transform.rotation);
-        m_AudioManager.Play(m_Splosion);
+        m_AudioManager.PlayOneShot(m_Splosion);
         Vector3 forward = Vector3.forward;
         if (Vector3.Dot(norm, Vector3.up ) != 1.0f) 
         {

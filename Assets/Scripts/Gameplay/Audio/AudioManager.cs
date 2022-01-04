@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
+[RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
 	[SerializeField] private SettingsManager m_Settings;
@@ -11,11 +12,12 @@ public class AudioManager : MonoBehaviour
 
 	void Awake()
 	{
+		AudioSource source = GetComponent<AudioSource>();
 		m_Settings.PropertyChanged += OnPropertyChanged;
 
 		foreach (SoundObject sound in sounds) 
 		{
-			Sound newSound = new Sound(sound, gameObject.AddComponent<AudioSource>());
+			Sound newSound = new Sound(sound, source);
 			m_SoundDict.Add(sound, newSound);
 		}
 	}
@@ -58,6 +60,11 @@ public class AudioManager : MonoBehaviour
 	public void Play(SoundObject soundIdentifier)
 	{
 		ApplyToSound(soundIdentifier, (Sound sound) => sound.Start());
+	}
+
+	public void PlayOneShot(SoundObject soundIdentifier) 
+	{
+		ApplyToSound(soundIdentifier, (Sound sound) => sound.PlayOneShot());
 	}
 
 	public void SetPitch(SoundObject soundIdentifier, float newPitch) 
@@ -109,7 +116,7 @@ public abstract class SoundTrigger
 
 	protected void TriggerSound() 
 	{
-		m_Sound.Start();
+		m_Sound.PlayOneShot();
 	}
 	public Sound GetSound => m_Sound;
 	public abstract void Tick(float tickVal);
@@ -288,7 +295,16 @@ public class Sound
 	}
 	public void UpdateAudioVolume()
 	{
-		m_AudioSource.volume = m_AudioType.GetVolumeValModifier() * ( m_fDefaultVolume + (m_fVolumeModifierInternal - 1) * m_SoundObject.maxVolumeModifier);
+		m_AudioSource.volume = GetAudioVol();
+	}
+
+	private float GetAudioVol() 
+	{
+		return 
+			m_AudioType.GetVolumeValModifier() * // From game system
+			(m_fDefaultVolume +					// never changes - static val
+			UnityEngine.Random.Range(-m_SoundObject.volRandomize, m_SoundObject.volRandomize) + // random addition
+			(m_fVolumeModifierInternal - 1) * m_SoundObject.maxVolumeModifier);	// volume modifier - left is percentage, right is amount the percentage affects
 	}
 
 	public void MuteSound(bool mute)
@@ -305,12 +321,23 @@ public class Sound
 
 	public void UpdateAudioPitch()
 	{
-		m_AudioSource.pitch = (m_fDefaultPitch + (m_fPitchModifierInternal - 1) * m_SoundObject.maxPitchModifier);
+		m_AudioSource.pitch = GetAudioPitch();
+	}
+
+	private float GetAudioPitch() 
+	{
+		return (m_fDefaultPitch + (m_fPitchModifierInternal - 1) * m_SoundObject.maxPitchModifier);
 	}
 
 	public void Start() 
 	{
 		m_AudioSource.Play();
+	}
+
+	public void PlayOneShot() 
+	{
+		m_AudioSource.pitch = GetAudioPitch();
+		m_AudioSource.PlayOneShot(m_SoundObject.clip, GetAudioVol());
 	}
 
 	public void Stop() 
