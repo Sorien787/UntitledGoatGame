@@ -27,6 +27,12 @@ public class AudioType : ScriptableObject
 		return (SettingsManager)m_ViewModel;
 	}
 
+	private string GetViewModelReducedPropertyName() 
+	{
+		int index = viewModelPropertyName.LastIndexOf(".");
+		return viewModelPropertyName.Substring(index + 1);
+	}
+
 	public ref Object GetViewModel()
 	{
 		return ref m_ViewModel;
@@ -34,12 +40,12 @@ public class AudioType : ScriptableObject
 
 	public bool WasValidPropertyChanged(string propertyName)
 	{
-		return viewModelPropertyName == propertyName;
+		return GetViewModelReducedPropertyName() == propertyName;
 	}
 
 	public float GetVolumeValModifier()
 	{
-		System.Reflection.PropertyInfo info = m_ViewModel.GetType().GetProperty(viewModelPropertyName);
+		System.Reflection.PropertyInfo info = m_ViewModel.GetType().GetProperty(GetViewModelReducedPropertyName());
 		return (float) info.GetValue(m_ViewModel); 
 	}
 

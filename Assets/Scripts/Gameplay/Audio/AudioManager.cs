@@ -280,8 +280,6 @@ public class Sound
 	private readonly AudioSource m_AudioSource;
 	private readonly AudioType m_AudioType;
 	private readonly SoundObject m_SoundObject;
-	private readonly float m_fDefaultVolume;
-	private readonly float m_fDefaultPitch;
 
 	private float m_fVolumeModifierInternal = 1.0f;
 	private float m_fPitchModifierInternal = 1.0f;
@@ -289,8 +287,11 @@ public class Sound
 	{
 		m_SoundObject = soundObject;
 		m_AudioSource = sourceToplayFrom;
+		m_AudioType = soundObject.m_AudioType;
 		m_AudioSource.clip = soundObject.clip;
-		MuteSound(AudioManager.GetIsMuted(m_AudioType.GetViewModelAsSettingsManager()));
+		SettingsManager manager = m_AudioType.GetViewModelAsSettingsManager();
+		bool isMuted = AudioManager.GetIsMuted(manager);
+		MuteSound(isMuted);
 
 	}
 	public void UpdateAudioVolume()
@@ -300,11 +301,11 @@ public class Sound
 
 	private float GetAudioVol() 
 	{
-		return 
-			m_AudioType.GetVolumeValModifier() * // From game system
-			(m_fDefaultVolume +					// never changes - static val
-			UnityEngine.Random.Range(-m_SoundObject.volRandomize, m_SoundObject.volRandomize) + // random addition
-			(m_fVolumeModifierInternal - 1) * m_SoundObject.maxVolumeModifier);	// volume modifier - left is percentage, right is amount the percentage affects
+		float volumeValMod = m_AudioType.GetVolumeValModifier();// From game system
+		float defaultVolume = m_SoundObject.defaultVolume;                   // never changes - static val
+		float randomVolumeAddition = UnityEngine.Random.Range(-m_SoundObject.volRandomize, m_SoundObject.volRandomize);// random addition
+		float volumeModifierInternal = (m_fVolumeModifierInternal - 1) * m_SoundObject.maxVolumeModifier;// volume modifier - left is percentage, right is amount the percentage affects
+		return volumeValMod * (defaultVolume + randomVolumeAddition + volumeModifierInternal);	
 	}
 
 	public void MuteSound(bool mute)
@@ -326,7 +327,7 @@ public class Sound
 
 	private float GetAudioPitch() 
 	{
-		return (m_fDefaultPitch + (m_fPitchModifierInternal - 1) * m_SoundObject.maxPitchModifier);
+		return (m_SoundObject.defaultPitch + (m_fPitchModifierInternal - 1) * m_SoundObject.maxPitchModifier);
 	}
 
 	public void Start() 
@@ -337,7 +338,8 @@ public class Sound
 	public void PlayOneShot() 
 	{
 		m_AudioSource.pitch = GetAudioPitch();
-		m_AudioSource.PlayOneShot(m_SoundObject.clip, GetAudioVol());
+		float volume = GetAudioVol();
+		m_AudioSource.PlayOneShot(m_SoundObject.clip, volume);
 	}
 
 	public void Stop() 
@@ -359,8 +361,4 @@ public class Sound
 		UpdateAudioVolume();
 	}
 
-	public float GetVolume()
-	{
-		return m_AudioSource.volume / m_fDefaultVolume;
-	}
 }

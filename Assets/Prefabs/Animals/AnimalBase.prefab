@@ -14771,7 +14771,6 @@ GameObject:
   - component: {fileID: 6261768213309388414}
   - component: {fileID: 6261768213309388415}
   - component: {fileID: 6261768213309388412}
-  - component: {fileID: 6261768213309388389}
   - component: {fileID: 6261768213309388388}
   - component: {fileID: 6261768213309388391}
   - component: {fileID: 6261768213309388390}
@@ -15478,7 +15477,7 @@ MonoBehaviour:
   m_AlertIdleEffectsController: {fileID: 2973502529295201285}
   m_FreeFallingParticleController: {fileID: 6747988760286121710}
   m_BashedParticleController: {fileID: 2973502529295201285}
-  m_AudioManager: {fileID: 6261768213309388389}
+  m_AudioManager: {fileID: 8292355820667919450}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_PhysicalEntity: {fileID: 5535792141253275086}
   m_debugTextComponent: {fileID: 3268333415586914426}
@@ -15498,20 +15497,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 16
   m_CollisionDetection: 3
---- !u!114 &6261768213309388389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6261768213309388409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1405774d9b92bc94eaae0536c8f0c058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Settings: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
-  sounds: []
 --- !u!114 &6261768213309388388
 MonoBehaviour:
   m_ObjectHideFlags: 0

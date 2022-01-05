@@ -204,8 +204,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     {
         m_fAnimationSpeedRandomMult = 1 + UnityEngine.Random.Range(-m_AnimationSpeedRandom, m_AnimationSpeedRandom);
 
-        m_runEdgeTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, m_HopAnimationCurve, m_AudioManager.GetSoundBySoundObject(m_WalkSound));
-
         m_AnimatorStateMachine = new StateMachine<AnimalAnimationComponent>(new AnimalIdleAnimationState(m_AudioManager.GetSoundBySoundObject(m_GeneralCall), m_lowSound, m_highSound), this);
         m_AnimatorStateMachine.AddState(new AnimalStaggeredAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalWalkingAnimationState());
@@ -237,6 +235,7 @@ public class AnimalAnimationComponent : MonoBehaviour
 
 	void Start()
     {
+        m_runEdgeTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, m_HopAnimationCurve, m_AudioManager.GetSoundBySoundObject(m_WalkSound));
         m_AnimatorStateMachine.InitializeStateMachine();
         m_CurrentAnimationTime = UnityEngine.Random.Range(0.0f, 1.0f);
         m_ActiveController = m_AlertIdleEffectsController;
@@ -695,7 +694,7 @@ public class AnimalBornAnimationState : AStateBase<AnimalAnimationComponent>
     private readonly ValueBasedEdgeTrigger m_bornSoundTrigger;
     public AnimalBornAnimationState(Sound sound) 
     {
-        m_bornSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.0f, sound);
+        m_bornSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.1f, sound);
         AddTimers(1);
     }
 
@@ -715,15 +714,19 @@ public class AnimalAttackAnimationState : AStateBase<AnimalAnimationComponent>
     private ValueBasedEdgeTrigger m_AttackSoundTrigger;
     private EdgeTrigger m_EatSoundTrigger;
 
+    private Sound m_EatSound;
+    private Sound m_AttackSound;
     public AnimalAttackAnimationState(Sound eatSound, Sound attackSound) 
     {
         AddTimers(1);
-        m_EatSoundTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, Host.GetAttackPitchCurve, eatSound);
-        m_AttackSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, Host.GetAttackDamageTime, attackSound);
+        m_EatSound = eatSound;
+        m_AttackSound = attackSound;
     }
 
     public override void OnEnter()
     {
+        m_EatSoundTrigger = new EdgeTrigger(EdgeBehaviour.RisingEdge, Host.GetAttackPitchCurve, m_EatSound);
+        m_AttackSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, Host.GetAttackDamageTime, m_AttackSound);
         m_startQuat = Host.AnimTransform.localRotation;
     }
 

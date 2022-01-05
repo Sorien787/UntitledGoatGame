@@ -93,8 +93,8 @@ public class StateMachine<J>
 
     public void AddState<T>(T newState) where T : AStateBase<J> 
     {
-        m_States.Add(newState);
         newState.SetParent(this);
+        m_States.Add(newState);
     }
 
     public Type GetCurrentState() 
