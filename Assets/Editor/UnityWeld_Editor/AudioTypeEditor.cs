@@ -18,6 +18,8 @@ public class AudioTypeEditor : BaseBindingEditor
 
 	public override void OnInspectorGUI()
 	{
+
+		EditorGUI.BeginChangeCheck();
 		ShowViewModelTarget(ref m_TargetScript.GetViewModel());
 
 		var guiPreviouslyEnabled = GUI.enabled;
@@ -45,5 +47,12 @@ public class AudioTypeEditor : BaseBindingEditor
 			property => property.PropertyType == typeof(float)
 		);
 		GUI.enabled = guiPreviouslyEnabled;
+
+		bool wasChanged = EditorGUI.EndChangeCheck();
+		if (wasChanged)
+		{
+			EditorUtility.SetDirty(target);
+			AssetDatabase.SaveAssets();
+		}
 	}
 }

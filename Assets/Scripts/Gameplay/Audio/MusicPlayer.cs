@@ -12,9 +12,13 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 	[SerializeField] private float m_AudioFadeTime = 0.3f;
 	[SerializeField] private float m_AudioFadeVolume = 0.3f;
 
+	[SerializeField] private bool m_bRequireLevelStart = false;
+
 	void Awake() 
 	{
 		m_Manager.AddToLevelStarted(this);
+		if (!m_bRequireLevelStart)
+			m_AudioManager.Play(m_MusicIdentifier);
 	}
 
 	private IEnumerator m_CurrentCoroutine;
@@ -51,8 +55,10 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 
 	public void LevelStarted() 
 	{
-		m_AudioManager.Play(m_MusicIdentifier);
+
 		m_Manager.AddToPauseUnpause(this);
+		if (m_bRequireLevelStart)
+			m_AudioManager.Play(m_MusicIdentifier);
 	}
 
 	public void Pause()

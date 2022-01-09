@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "New Sound Object", fileName = "New Sound Object")]
 public class SoundObject : ScriptableObject
 {
-	public AudioClip clip;
+	public AudioClip GetAudioClip() 
+	{
+		if (m_clips.Count == 0)
+			return null;
+		int val = UnityEngine.Random.Range(0, m_clips.Count - 1);
+		return m_clips[val];
+	}
+
+	[SerializeField] private List<AudioClip> m_clips;
 
 	public AudioType m_AudioType;
 
@@ -26,4 +35,12 @@ public class SoundObject : ScriptableObject
 	public float volRandomize = 0.0f;
 
 	public bool loop = false;
+}
+
+[System.Serializable]
+public class ClipWeight
+{
+	[SerializeField] private AudioClip m_AudioClip;
+
+	[SerializeField] private uint m_RelativeWeight;
 }

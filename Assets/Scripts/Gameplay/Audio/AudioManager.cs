@@ -288,7 +288,6 @@ public class Sound
 		m_SoundObject = soundObject;
 		m_AudioSource = sourceToplayFrom;
 		m_AudioType = soundObject.m_AudioType;
-		m_AudioSource.clip = soundObject.clip;
 		SettingsManager manager = m_AudioType.GetViewModelAsSettingsManager();
 		bool isMuted = AudioManager.GetIsMuted(manager);
 		MuteSound(isMuted);
@@ -339,7 +338,7 @@ public class Sound
 	{
 		m_AudioSource.pitch = GetAudioPitch();
 		float volume = GetAudioVol();
-		m_AudioSource.PlayOneShot(m_SoundObject.clip, volume);
+		m_AudioSource.PlayOneShot(m_SoundObject.GetAudioClip(), volume);
 	}
 
 	public void Stop() 

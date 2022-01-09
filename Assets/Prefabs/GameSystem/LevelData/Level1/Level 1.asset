@@ -21,7 +21,7 @@ MonoBehaviour:
   - 100
   - 200
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 0
+  m_LevelCompleteTime: 40
   m_StarRating: 1
   m_AchievedScore: 0
   m_bHasEnteredLevel: 0

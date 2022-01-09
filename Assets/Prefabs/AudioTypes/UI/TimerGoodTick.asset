@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: TimerGoodTick
   m_EditorClassIdentifier: 
-  clip: {fileID: 0}
+  m_clips:
+  - {fileID: 8300000, guid: f6fb19b7916d5944c80659f2eb3afde4, type: 3}
   m_AudioType: {fileID: 11400000, guid: 67e0ea12f35d8934da86df0980e01ccd, type: 2}
   defaultVolume: 1
   defaultPitch: 1
   maxPitchModifier: 1
   maxVolumeModifier: 1
+  pitchRandomize: 0
+  volRandomize: 0
   loop: 0

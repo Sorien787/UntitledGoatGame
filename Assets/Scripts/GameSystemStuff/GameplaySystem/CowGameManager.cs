@@ -303,8 +303,8 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	private int m_NumObjectivesCompleted = 0;
 
 	public void OnCounterChanged(in int val){}
-	public void OnTimerTriggered(in Action totalTime, in int time){}
-	public void OnTimerRemoved(){}
+	public void OnObjectiveEnteredLoss(in Action totalTime, in int time){}
+	public void OnObjectiveLeftLoss(){}
 	public void InitializeData(LevelObjective objective) { }
 
 	public void OnObjectiveFailed()

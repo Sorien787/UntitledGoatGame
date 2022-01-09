@@ -23,6 +23,8 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 	[Header("Audio Settings")]
 	[SerializeField] private SoundObject m_EnterGoalZoneAudioIdentifier;
 	[SerializeField] private SoundObject m_ExitGoalZoneAudioIdentifier;
+	[SerializeField] private SoundObject m_EnterLossZoneAudioIdentifier;
+	[SerializeField] private SoundObject m_ExitLossZoneAudioIdentifier;
 
 	[Header("Animation Settings")]
 	[SerializeField] private float m_fSliderAcceleration;
@@ -88,8 +90,9 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 
 	private int m_fDesiredCounterVal = 0;
 
-	public void OnTimerTriggered(in Action callOnComplete, in int time)
+	public void OnObjectiveEnteredLoss(in Action callOnComplete, in int time)
 	{
+		m_AudioManager.PlayOneShot(m_EnterLossZoneAudioIdentifier);
 		m_CountdownTimer.ShowTimer();
 		m_CountdownTimer.StartTimerFromTime(time);
 		m_CountdownTimer.OnTimerComplete += callOnComplete;
@@ -111,8 +114,9 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 		PulseBackground(m_ExitGoalPulseColour, m_PulseStrengthByTimer.Evaluate(timerPercentage));
 	}
 
-	public void OnTimerRemoved()
+	public void OnObjectiveLeftLoss()
 	{
+		m_AudioManager.PlayOneShot(m_ExitLossZoneAudioIdentifier);
 		m_CountdownTimer.StopTimer();
 		m_SliderBackgroundImage.color = m_EnterGoalPulseColour;
 		LeanTween.color(m_SliderBackgroundRect, m_InitialBackgroundColor, 0.5f).setRecursive(false).setEaseOutCubic();

@@ -966,6 +966,10 @@ MonoBehaviour:
     type: 2}
   m_ExitGoalZoneAudioIdentifier: {fileID: 11400000, guid: 7e05103f74b79934bbfcb99479e64ee8,
     type: 2}
+  m_EnterLossZoneAudioIdentifier: {fileID: 11400000, guid: 7097f0ef8c7d8fe49adda9e4760a36cd,
+    type: 2}
+  m_ExitLossZoneAudioIdentifier: {fileID: 11400000, guid: 82c55467a4f70674aa0059e37823c8eb,
+    type: 2}
   m_fSliderAcceleration: 2
   m_EnterGoalPulseColour: {r: 0, g: 1, b: 0.29543853, a: 1}
   m_ExitGoalPulseColour: {r: 1, g: 0, b: 0, a: 1}
@@ -1011,6 +1015,8 @@ MonoBehaviour:
   sounds:
   - {fileID: 11400000, guid: a2e40d8a15bcc3c4289b751fa55d1c8e, type: 2}
   - {fileID: 11400000, guid: 7e05103f74b79934bbfcb99479e64ee8, type: 2}
+  - {fileID: 11400000, guid: 7097f0ef8c7d8fe49adda9e4760a36cd, type: 2}
+  - {fileID: 11400000, guid: 82c55467a4f70674aa0059e37823c8eb, type: 2}
 --- !u!222 &3535435492705572793
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1067,7 +1073,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1085,7 +1091,7 @@ AudioSource:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 1.0001221
       inSlope: 0
       outSlope: 0
       tangentMode: 0

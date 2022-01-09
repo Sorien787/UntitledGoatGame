@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
-  m_Name: AmbientLeaves
+  m_Name: EnterLoss
   m_EditorClassIdentifier: 
   m_clips:
-  - {fileID: 8300000, guid: 725ca202bfa583346a453eda5ac8f95e, type: 3}
-  m_AudioType: {fileID: 11400000, guid: 1002e9f493a64e144a30be50f2339024, type: 2}
+  - {fileID: 8300000, guid: 7af42da3f2ff8f94081ed95564530827, type: 3}
+  m_AudioType: {fileID: 11400000, guid: 67e0ea12f35d8934da86df0980e01ccd, type: 2}
   defaultVolume: 1
   defaultPitch: 1
   maxPitchModifier: 1

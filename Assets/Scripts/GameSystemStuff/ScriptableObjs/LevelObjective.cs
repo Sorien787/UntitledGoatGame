@@ -136,7 +136,7 @@ public class LevelObjective : ScriptableObject
 	private void StartFailureTimer()
 	{
 		m_ObjectiveListeners.ForEachListener( (IObjectiveListener listener) => {
-			listener.OnTimerTriggered(OnObjectiveFailed, m_TimerMaximum);
+			listener.OnObjectiveEnteredLoss(OnObjectiveFailed, m_TimerMaximum);
 		});
 	}
 
@@ -149,7 +149,7 @@ public class LevelObjective : ScriptableObject
 
 	private void HaltFailureTimer()
 	{
-		m_ObjectiveListeners.ForEachListener((IObjectiveListener listener) => listener.OnTimerRemoved());
+		m_ObjectiveListeners.ForEachListener((IObjectiveListener listener) => listener.OnObjectiveLeftLoss());
 	}
 
 	private void EnteredGoal()
@@ -206,9 +206,9 @@ public interface IObjectiveListener
 {
 	void OnCounterChanged(in int val);
 
-	void OnTimerTriggered( in Action totalTime, in int time);
+	void OnObjectiveEnteredLoss( in Action totalTime, in int time);
 
-	void OnTimerRemoved();
+	void OnObjectiveLeftLoss();
 
 	void OnObjectiveEnteredGoal();
 

@@ -67,7 +67,6 @@ public class LevelData : ScriptableObject
 	public void Reset()
 	{
 		m_nAchievedTime = 0.0f;
-		m_LevelCompleteTime = 0;
 		m_StarRating = StarRating.Zero;
 		m_AchievedScore = 0;
 		m_bHasEnteredLevel = false;

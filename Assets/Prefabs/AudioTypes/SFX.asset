@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SFX
   m_EditorClassIdentifier: 
   viewModelPropertyName: 
-  m_ViewModel: {fileID: 0}
+  m_ViewModel: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
