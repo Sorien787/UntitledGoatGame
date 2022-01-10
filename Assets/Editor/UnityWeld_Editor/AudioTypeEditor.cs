@@ -36,6 +36,8 @@ public class AudioTypeEditor : BaseBindingEditor
 		//{
 		//	string str = props[i].ToString();
 		//}
+
+		string oldVal = m_TargetScript.ViewModelPropertyName;
 		ShowViewModelPropertyMenu(
 			new GUIContent(
 				"View-model property",
@@ -46,9 +48,10 @@ public class AudioTypeEditor : BaseBindingEditor
 			m_TargetScript.ViewModelPropertyName,
 			property => property.PropertyType == typeof(float)
 		);
+		bool wasChanged = (oldVal != m_TargetScript.ViewModelPropertyName);
 		GUI.enabled = guiPreviouslyEnabled;
 
-		bool wasChanged = EditorGUI.EndChangeCheck();
+		wasChanged |= EditorGUI.EndChangeCheck();
 		if (wasChanged)
 		{
 			EditorUtility.SetDirty(target);

@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: Heavy
   m_EditorClassIdentifier: 
-  clip: {fileID: 0}
+  m_clips:
+  - {fileID: 8300000, guid: 1b28d0c51ad11414b82237216fb83c70, type: 3}
+  - {fileID: 8300000, guid: 0f322c87c2607304d917ce41c7f7f21c, type: 3}
+  - {fileID: 8300000, guid: 87ad8cb5f65da8745b7b7a695e1a1df4, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
   maxPitchModifier: 1
   maxVolumeModifier: 1
+  pitchRandomize: 0
+  volRandomize: 0
   loop: 0

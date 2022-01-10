@@ -108,11 +108,16 @@ public class AudioManager : MonoBehaviour
 [Serializable]
 public abstract class SoundTrigger 
 {
-	private readonly Sound m_Sound;
+	protected readonly Sound m_Sound;
 	public SoundTrigger(Sound sound) 
 	{
 		m_Sound = sound;
 	}
+	public void SetVolumeModifier(float volumeModifier)
+	{
+		m_Sound.SetVolume(volumeModifier);
+	}
+
 
 	protected void TriggerSound() 
 	{
@@ -159,10 +164,10 @@ public class RandomSoundTrigger : SoundTrigger
 	}
 }
 
-public enum EdgeBehaviour
+public enum EdgeBehaviour : int
 {
-	RisingEdge = 1,
-	FallingEdge = 2,
+	FallingEdge = 1,
+	RisingEdge = 2,
 	Both = 3
 }
 
@@ -171,8 +176,9 @@ public class EdgeTrigger : SoundTrigger
 {
 	[SerializeField] private EdgeBehaviour m_EdgeBehaviour;
 	private float m_LastValue = 0f;
-	private int m_lastEdgeValue;
+	private EdgeBehaviour m_lastEdgeValue;
 	private readonly AnimationCurve m_CurveTrigger;
+
 
 	public EdgeTrigger(EdgeBehaviour edgeBehaviour, AnimationCurve curveTrigger, Sound sound) : base(sound)
 	{
@@ -181,26 +187,27 @@ public class EdgeTrigger : SoundTrigger
 		m_LastValue = m_CurveTrigger.Evaluate(0);
 	}
 
-	private int GetEdgeBasedOnTime(in float time)
+
+	private EdgeBehaviour GetEdgeBasedOnTime(in float time)
 	{
 		float val = m_CurveTrigger.Evaluate(time);
-		int edgeValue = Mathf.FloorToInt( 2 + Mathf.Clamp(val - m_LastValue, -0.5f, 0.5f));
+		EdgeBehaviour edgeBehaviour = (val - m_LastValue > 0) ? EdgeBehaviour.RisingEdge : EdgeBehaviour.FallingEdge;
 		m_LastValue = val;
-		return edgeValue;
+		return edgeBehaviour;
 	}
 
 
 	public override void Tick(float tickVal)
 	{
-		int edgeValue = GetEdgeBasedOnTime(tickVal);
+		EdgeBehaviour edgeValue = GetEdgeBasedOnTime(tickVal);
 
 		if (edgeValue == m_lastEdgeValue)
 			return;
 
 		m_lastEdgeValue = edgeValue;
-		if (((int)m_EdgeBehaviour & m_lastEdgeValue) == 0)
+		if (((int)m_EdgeBehaviour & (int)m_lastEdgeValue) != 0)
 			return;
-
+		Debug.Log("Trigger sound " + m_Sound.GetAudioType.name + " with volume " + m_Sound.GetVolume);
 		TriggerSound();
 	}
 }
@@ -211,27 +218,27 @@ public class ValueBasedEdgeTrigger : SoundTrigger
 {
 	[SerializeField] private EdgeBehaviour m_EdgeBehaviour;
 	[SerializeField] private float m_TriggerValue = 0f;
-	private int m_lastEdgeValue;
+	private EdgeBehaviour m_lastEdgeValue;
 	public ValueBasedEdgeTrigger(EdgeBehaviour edgeBehaviour, float value, Sound sound) : base(sound)
 	{
 		m_EdgeBehaviour = edgeBehaviour;
 		m_TriggerValue = value;
 		m_lastEdgeValue = GetEdgeBasedOnTime(0);
 	}
-	private int GetEdgeBasedOnTime(in float time)
+	private EdgeBehaviour GetEdgeBasedOnTime(in float time)
 	{
-		return time > m_TriggerValue ? 1 : 2;
+		return time > m_TriggerValue ? EdgeBehaviour.RisingEdge : EdgeBehaviour.FallingEdge;
 	}
 
 	public override void Tick(float tickVal)
 	{
-		int edgeValue = GetEdgeBasedOnTime(tickVal);
+		EdgeBehaviour edgeValue = GetEdgeBasedOnTime(tickVal);
 
 		if (edgeValue == m_lastEdgeValue)
 			return;
 
 		m_lastEdgeValue = edgeValue;
-		if (((int)m_EdgeBehaviour & m_lastEdgeValue) == 0)
+		if (((int)m_EdgeBehaviour & (int)m_lastEdgeValue) == 0)
 			return;
 
 		TriggerSound();
@@ -283,6 +290,8 @@ public class Sound
 
 	private float m_fVolumeModifierInternal = 1.0f;
 	private float m_fPitchModifierInternal = 1.0f;
+
+	public float GetVolume => m_fVolumeModifierInternal;
 	public Sound(in SoundObject soundObject, in AudioSource sourceToplayFrom) 
 	{
 		m_SoundObject = soundObject;
@@ -326,7 +335,10 @@ public class Sound
 
 	private float GetAudioPitch() 
 	{
-		return (m_SoundObject.defaultPitch + (m_fPitchModifierInternal - 1) * m_SoundObject.maxPitchModifier);
+		float defaultPitch = m_SoundObject.defaultPitch;
+		float randomPitchAddition = UnityEngine.Random.Range(-m_SoundObject.pitchRandomize, m_SoundObject.pitchRandomize);
+		float pitchModifierInternal = (m_fPitchModifierInternal - 1) * m_SoundObject.maxPitchModifier;
+		return defaultPitch + randomPitchAddition + pitchModifierInternal;
 	}
 
 	public void Start() 
@@ -351,13 +363,11 @@ public class Sound
 	public void SetPitch(in float pitchPercent) 
 	{
 		m_fPitchModifierInternal = pitchPercent;
-		UpdateAudioPitch();
 	}
 
 	public void SetVolume(in float volumePercent) 
 	{
 		m_fVolumeModifierInternal = volumePercent;
-		UpdateAudioVolume();
 	}
 
 }

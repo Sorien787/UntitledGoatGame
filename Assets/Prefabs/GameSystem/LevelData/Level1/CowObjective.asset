@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: CowObjective
   m_EditorClassIdentifier: 
   m_HasMinimumFailure: 1
-  m_MinimumValue: 1
+  m_MinimumValue: 0
   m_HasMaximumFailure: 1
   m_MaximumValue: 20
-  m_MinimumGoal: 2
+  m_MinimumGoal: 12
   m_MaximumGoal: 18
   m_TimerMaximum: 40
   m_ObjectiveType: 0

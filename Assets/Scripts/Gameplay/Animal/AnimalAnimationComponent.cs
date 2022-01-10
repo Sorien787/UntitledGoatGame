@@ -117,8 +117,8 @@ public class AnimalAnimationComponent : MonoBehaviour
     private float m_fSizeVariationActual = 1.0f;
     private float m_fAnimationSpeedRandomMult;
 
-    public float GetCurrentHopHeight => m_HopHeightMultiplier * m_HopAnimationCurve.Evaluate((m_CurrentAnimationTime + m_Phase) % 1);
-    public float GetAnimationTime => (m_CurrentAnimationTime + m_Phase % 1);
+    public float GetCurrentHopHeight => m_HopHeightMultiplier * m_HopAnimationCurve.Evaluate(GetHopAnimationTime);
+    public float GetHopAnimationTime => (m_CurrentAnimationTime + m_Phase % 1);
     public float GetCurrentTilt => m_TiltSizeMultiplier * m_TiltAnimationCurve.Evaluate(m_CurrentAnimationTime);
     public float GetCurrentForwardBackward => m_ForwardBackwardMovementMultiplier * m_ForwardBackwardAnimationCurve.Evaluate(m_CurrentAnimationTime);
     public float GetAttackDamageTime => m_AnimalComponent.GetAttackDamageTime;
@@ -451,7 +451,8 @@ public class AnimalAnimationComponent : MonoBehaviour
         float multiplier = Mathf.Sign(currentSpeed - m_MaximumRunAnimationSpeed);
         windup = Mathf.Clamp(windup + multiplier * Time.deltaTime, 0.0f, WalkWindup);
 
-        m_runEdgeTrigger.Tick(m_CurrentAnimationTime);
+        m_runEdgeTrigger.SetVolumeModifier(windup);
+        m_runEdgeTrigger.Tick(GetHopAnimationTime);
 
         float bounceMult = windup / WalkWindup;
         AnimTransform.rotation = currentQuat * Quaternion.Euler(yawSize * bounceMult, 0, bounceMult * tiltSize);
@@ -743,8 +744,9 @@ public class AnimalAttackAnimationState : AStateBase<AnimalAnimationComponent>
 			float hopAmount = Host.GetAttackHopCurve.Evaluate(animTime);
 
             m_AttackSoundTrigger.Tick(animTime);
+            m_EatSoundTrigger.Tick(animTime);
 
-			Quaternion targetQuat = lookQuat * Quaternion.Euler(pitchAng, 0, tiltAng);
+            Quaternion targetQuat = lookQuat * Quaternion.Euler(pitchAng, 0, tiltAng);
 			Host.AnimTransform.localRotation = Quaternion.RotateTowards(Host.AnimTransform.localRotation, targetQuat, Host.AnimRotationSpeed);
 
 			Vector3 targetPos = m_startQuat * (new Vector3(0, hopAmount, forwardAmount));

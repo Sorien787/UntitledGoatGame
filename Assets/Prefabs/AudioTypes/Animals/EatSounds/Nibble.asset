@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: Nibble
   m_EditorClassIdentifier: 
-  clip: {fileID: 0}
+  m_clips:
+  - {fileID: 8300000, guid: a64ec679cb46c014f900f9b8cedf781b, type: 3}
+  - {fileID: 8300000, guid: 885ffd8a37f68e44b9ca91f18e898f99, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
