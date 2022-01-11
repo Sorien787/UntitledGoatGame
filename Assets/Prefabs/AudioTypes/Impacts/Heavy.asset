@@ -21,6 +21,6 @@ MonoBehaviour:
   defaultPitch: 1
   maxPitchModifier: 1
   maxVolumeModifier: 1
-  pitchRandomize: 0
+  pitchRandomize: 0.166
   volRandomize: 0
   loop: 0

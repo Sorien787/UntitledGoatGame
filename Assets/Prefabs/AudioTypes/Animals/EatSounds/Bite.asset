@@ -13,13 +13,12 @@ MonoBehaviour:
   m_Name: Bite
   m_EditorClassIdentifier: 
   m_clips:
-  - {fileID: 8300000, guid: a64ec679cb46c014f900f9b8cedf781b, type: 3}
-  - {fileID: 8300000, guid: 885ffd8a37f68e44b9ca91f18e898f99, type: 3}
+  - {fileID: 8300000, guid: 3829f8759eb223d42bda14f868e1c519, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
-  defaultPitch: 1
+  defaultPitch: 1.237
   maxPitchModifier: 1
   maxVolumeModifier: 1
-  pitchRandomize: 0.315
+  pitchRandomize: 0.133
   volRandomize: 0.144
   loop: 0

@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 	[SerializeField] private CharacterController m_CharacterController = null;
 	[SerializeField] private Transform m_tBodyTransform = null;
 	[SerializeField] private Transform m_tGroundTransform = null;
+    [SerializeField] private AudioManager m_AudioManager = null;
 
 	[SerializeField] private PlayerCameraComponent m_CameraComponent;
 	[SerializeField] private CowGameManager m_Manager;
@@ -35,6 +36,11 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 	[SerializeField] private ControlBinding m_RightBinding;
 	[SerializeField] private ControlBinding m_BackBinding;
 	[SerializeField] private ControlBinding m_JumpBinding;
+
+    [SerializeField] private SoundObject m_ImpactSoundObject;
+    [SerializeField] private SoundObject m_FootStepSoundObject;
+    [SerializeField] private SoundObject m_JumpSoundObject;
+    [SerializeField] private SoundObject m_ImpactLightSoundObject;
 
     public event Action OnSuccessfulJump;
     public event Action<float> OnHitGround;
@@ -96,6 +102,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
         if (Mathf.Abs(speed) > firstKey) 
         {
             float impactVal = m_ImpactStrengthByImpactSpeed.Evaluate(speed);
+            m_AudioManager.PlayOneShot(m_ImpactSoundObject);
             GameObject resultObject = Instantiate(m_GroundImpactEffectsPrefab, m_tGroundTransform.position, m_tGroundTransform.rotation);
             resultObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(impactVal);
         }
@@ -154,6 +161,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
             m_CurrentMoving = Vector3.SmoothDamp(m_CurrentMoving, playerInputMoveDir * m_fSpeed * currentMultiplier, ref m_MoveAcceleration, 0.1f);
             if (!m_bWasGroundedLastFrame) 
             {
+                m_AudioManager.PlayOneShot(m_ImpactLightSoundObject);
                 OnHitGround?.Invoke(m_CharacterController.velocity.y);
             }
         }
@@ -173,6 +181,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 
         if (m_JumpBinding.IsBindingPressed() && m_CharacterController.isGrounded) 
         {
+            m_AudioManager.PlayOneShot(m_JumpSoundObject);
             OnSuccessfulJump?.Invoke();
             m_vVelocity.y = Mathf.Sqrt(m_fJumpHeight * -2f * currentMultiplier * m_fGravity);
         }    

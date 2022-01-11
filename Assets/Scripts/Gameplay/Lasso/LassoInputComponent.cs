@@ -140,6 +140,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	[SerializeField] private SoundObject m_throwSoundRef;
 	[SerializeField] private SoundObject m_returnSoundRef;
 	[SerializeField] private SoundObject m_spinSoundRef;
+	[SerializeField] private SoundObject m_pullSoundRef;
 	[SerializeField] private SoundObject m_tugSoundRef;
 
 	private void Awake()
@@ -502,7 +503,7 @@ namespace LassoStates
 
 		public LassoSpinningState(Sound lassoSwingSound)
 		{
-			m_LassoSwingSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 1f, lassoSwingSound);
+			m_LassoSwingSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.01f, lassoSwingSound);
 			AddTimers(1);
 		}
 
@@ -510,7 +511,7 @@ namespace LassoStates
 		{
 			Host.StartSwingingObject();
 			m_CurrentInitializeTime = Host.TimeBeforeUserCanThrow;
-			m_fCurrentAngle = 0.0f;
+			m_fCurrentAngle = 2 * Mathf.PI;
 			Host.SetLoopLineRenderer(true);
 			Host.SetRopeLineRenderer(true);
 			Host.SetTrajectoryRenderer(true);
@@ -570,10 +571,15 @@ namespace LassoStates
 			Host.RenderLoop(r, actualSwingCentre_worldSpace, normA, normB);
 
 			m_fCurrentAngle += Host.SpinSpeedProfile.Evaluate(time) * Time.deltaTime;
-			m_fCurrentAngle %= 360.0f;
+			if (m_fCurrentAngle > 2 * Mathf.PI)
+			{
+				m_LassoSwingSoundTrigger.GetSound.SetPitch(spinStr);
+				m_LassoSwingSoundTrigger.GetSound.PlayOneShot();
 
-			m_LassoSwingSoundTrigger.Tick(m_fCurrentAngle);
-			m_LassoSwingSoundTrigger.GetSound.SetPitch(spinStr);
+			}
+			m_fCurrentAngle %= (2 * Mathf.PI);
+			Debug.Log(m_fCurrentAngle);
+
 
 			if (m_CurrentInitializeTime > 0)
 			{
@@ -677,7 +683,8 @@ namespace LassoStates
 			m_fCurrentAngle = UnityEngine.Random.Range(0.0f, 360.0f);
 			m_fRandomSizeMult = UnityEngine.Random.Range(0.7f, 1.3f);
 			m_fRandomRotationSpeedMult = UnityEngine.Random.Range(0.7f, 1.3f) * Mathf.Sign(UnityEngine.Random.Range(-1.0f, 1.0f));
-			m_ThrowSound.Start();
+			m_ThrowSound.SetPitch(1.0f);
+			m_ThrowSound.PlayOneShot();
 			Host.SetRopeLineRenderer(true);
 			Host.SetLoopLineRenderer(true);
 			AddTimers(1);
@@ -775,7 +782,8 @@ namespace LassoStates
 
 			if (m_TriggerBinding.GetBindingDown() && m_fTimeSinceClicked > 0.4f)
 			{
-				m_lassoSound.Start();
+				m_lassoSound.SetPitch(1 + (m_fTotalCurrentForce / Host.MaxForceForPull) / 3f);
+				m_lassoSound.PlayOneShot();
 				Host.GetThrowableObject.TuggedByLasso();
 				m_fCurrentJerkTime = Host.JerkTimeForPull;
 				float fForceIncrease = Host.ForceIncreasePerPull.Evaluate(m_fTotalCurrentForce / Host.MaxForceForPull);
@@ -811,7 +819,9 @@ namespace LassoStates
 		public override void OnEnter()
 		{
 			m_LassoSpeed = 0.0f;
-			m_lassoReturnSound.Start();
+			m_lassoReturnSound.PlayOneShot();
+			Host.SetRopeLineRenderer(true);
+			Host.SetLoopLineRenderer(true);
 		}
 
 		public override void OnExit()

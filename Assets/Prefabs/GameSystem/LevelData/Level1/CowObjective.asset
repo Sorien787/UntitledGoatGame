@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32254537a617ea04899db5f9eec96f93, type: 3}
   m_Name: CowObjective
   m_EditorClassIdentifier: 
-  m_HasMinimumFailure: 1
+  m_HasMinimumFailure: 0
   m_MinimumValue: 0
   m_HasMaximumFailure: 1
   m_MaximumValue: 20

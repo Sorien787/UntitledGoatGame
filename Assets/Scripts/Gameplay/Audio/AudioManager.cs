@@ -185,6 +185,7 @@ public class EdgeTrigger : SoundTrigger
 		m_EdgeBehaviour = edgeBehaviour;
 		m_CurveTrigger = curveTrigger;
 		m_LastValue = m_CurveTrigger.Evaluate(0);
+		m_EdgeBehaviour = GetEdgeBasedOnTime(0.001f);
 	}
 
 
@@ -233,12 +234,11 @@ public class ValueBasedEdgeTrigger : SoundTrigger
 	public override void Tick(float tickVal)
 	{
 		EdgeBehaviour edgeValue = GetEdgeBasedOnTime(tickVal);
-
 		if (edgeValue == m_lastEdgeValue)
 			return;
 
 		m_lastEdgeValue = edgeValue;
-		if (((int)m_EdgeBehaviour & (int)m_lastEdgeValue) == 0)
+		if (((int)m_EdgeBehaviour & (int)edgeValue) == 0)
 			return;
 
 		TriggerSound();

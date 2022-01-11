@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
-  m_Name: Light
+  m_Name: Small
   m_EditorClassIdentifier: 
-  clip: {fileID: 0}
+  m_clips:
+  - {fileID: 8300000, guid: 337aadabdfdf436468a6c61f5310c3ed, type: 3}
+  - {fileID: 8300000, guid: 87b92f8528dee5d4f87e19934b69a199, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
   maxPitchModifier: 1
   maxVolumeModifier: 1
+  pitchRandomize: 0
+  volRandomize: 0
   loop: 0

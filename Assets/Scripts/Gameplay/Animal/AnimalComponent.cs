@@ -806,7 +806,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalEvadingState)).AddOnExit(OnTargetInvalidated));
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalWrangledState)).AddOnExit(OnTargetInvalidated));
 
-        m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallState), typeof(AnimalStaggeredState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
+        m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallState), typeof(AnimalLassoThrownState), typeof(AnimalStaggeredState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
 
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
