@@ -220,6 +220,12 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		m_PauseListeners.Add(pausable);
 
 	}
+
+	public void OnBeginExitLevel(float transitionTime) 
+	{
+		m_LevelListeners.ForEachListener((ILevelListener listener) => { listener.OnExitLevel(transitionTime); });
+	}
+
 	public void RemoveFromPauseUnpause(IPauseListener pausable)
 	{
 		m_PauseListeners.Remove(pausable);
@@ -545,6 +551,8 @@ public interface ILevelListener
 	void LevelStarted();
 	void LevelFinished();
 	void PlayerPerspectiveBegin();
+
+	void OnExitLevel(float transitionTime);
 }
 #endregion
 

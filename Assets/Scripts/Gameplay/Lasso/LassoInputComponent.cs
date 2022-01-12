@@ -578,7 +578,6 @@ namespace LassoStates
 
 			}
 			m_fCurrentAngle %= (2 * Mathf.PI);
-			Debug.Log(m_fCurrentAngle);
 
 
 			if (m_CurrentInitializeTime > 0)

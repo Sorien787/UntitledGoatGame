@@ -215,7 +215,7 @@ public class AnimalMovementComponent : MonoBehaviour
     Transform targetTransform;
     //////////////////////////////////////////////////////////////////////////////////////////////
     // function chooses a destination within range m_fMaximumRunDistance directly away from objectTransform on the navmesh
-    public bool RunTowardsObject(Transform tRunTowardTransform, float runDistance, float distanceFrom = 0f) 
+    public bool MoveTowardsObject(Transform tRunTowardTransform, float runDistance, float distanceFrom = 0f) 
     {
         enabled = true;
         m_fCurrentTimeStuck = 0.0f;

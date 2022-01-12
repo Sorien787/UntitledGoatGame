@@ -24,7 +24,19 @@ public class PlayerBeaconComponent : MonoBehaviour, ILevelListener
         }
     }
 
-	public void LevelStarted() { }
 
-	public void LevelFinished() { }
+	public void LevelFinished()
+	{
+
+	}
+
+	public void OnExitLevel(float transitionTime)
+	{
+
+	}
+
+	public void LevelStarted()
+	{
+
+	}
 }

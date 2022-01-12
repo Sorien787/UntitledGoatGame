@@ -998,6 +998,11 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	public void PlayerPerspectiveBegin(){}
 
 	public void OnStopFalling(){}
+
+	public void OnExitLevel(float transitionTime)
+	{
+
+	}
 	#endregion
 }
 
@@ -1258,23 +1263,23 @@ public class AnimalBreedingState : AStateBase<AnimalComponent>
 
 public class AnimalBreedingChaseState : AStateBase<AnimalComponent> 
 {
-    private readonly AnimalAnimationComponent animalAnimator;
-    private readonly AnimalMovementComponent animalMovement;
+    private readonly AnimalAnimationComponent m_animalAnimator;
+    private readonly AnimalMovementComponent m_animalMovement;
 
     public AnimalBreedingChaseState(AnimalMovementComponent animalMovement, AnimalAnimationComponent animalAnimator)
     {
-        this.animalMovement = animalMovement;
-        this.animalAnimator = animalAnimator;
+        this.m_animalMovement = animalMovement;
+        this.m_animalAnimator = animalAnimator;
         AddTimers(1);
     }
 
     public override void OnEnter()
     {
-		animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetBreedingChaseDistance, 0.8f * Host.GetBreedingStartDistance);
-		animalAnimator.SetRunAnimation();
-        animalMovement.SetRunning();
+		m_animalMovement.MoveTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetBreedingChaseDistance, 0.8f * Host.GetBreedingStartDistance);
+		m_animalAnimator.SetWalkAnimation();
+        m_animalMovement.SetWalking();
 
-		Host.SetManagedByAgent(true);
+        Host.SetManagedByAgent(true);
 		Host.DisablePhysics();
         StartTimer(0);
 	}
@@ -1282,12 +1287,12 @@ public class AnimalBreedingChaseState : AStateBase<AnimalComponent>
     {
 		if (GetTimerVal(0) > Host.GetBreedCheckInterval)
 		{
-			animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetBreedingChaseDistance, 0.8f * Host.GetBreedingStartDistance);
+			m_animalMovement.MoveTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetBreedingChaseDistance, 0.8f * Host.GetBreedingStartDistance);
 			ClearTimer(0);
 		}
-		if (animalMovement.IsStuck())
+		if (m_animalMovement.IsStuck())
 		{
-			animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetBreedingChaseDistance, 0.8f * Host.GetBreedingStartDistance);
+			m_animalMovement.MoveTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetBreedingChaseDistance, 0.8f * Host.GetBreedingStartDistance);
 			SetTimer(0, Host.GetBreedCheckInterval / 2f);
 		}
 	}
@@ -1401,7 +1406,7 @@ public class AnimalPredatorChaseState : AStateBase<AnimalComponent>
 
     public override void OnEnter()
     {
-        m_animalMovement.RunTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius);
+        m_animalMovement.MoveTowardsObject(Host.GetTargetEntity.GetTrackingTransform, Host.GetHuntDistance, Host.GetAttackRange + Host.GetTargetEntity.GetTrackableRadius);
         m_animalAnimator.SetRunAnimation();
         if (Host.IsTargetStatic)
             m_animalMovement.SetWalking();
@@ -1419,12 +1424,12 @@ public class AnimalPredatorChaseState : AStateBase<AnimalComponent>
 
 		if (GetTimerVal(0) > Host.GetHuntCheckInterval)
         {
-            m_animalMovement.RunTowardsObject(targetTransform.GetTrackingTransform, moveDist, attackDist);
+            m_animalMovement.MoveTowardsObject(targetTransform.GetTrackingTransform, moveDist, attackDist);
 			ClearTimer(0);
 		}
         else if (m_animalMovement.IsStuck())
         {
-            m_animalMovement.RunTowardsObject(targetTransform.GetTrackingTransform, Host.GetHuntDistance, attackDist);
+            m_animalMovement.MoveTowardsObject(targetTransform.GetTrackingTransform, Host.GetHuntDistance, attackDist);
             SetTimer(0, Host.GetHuntCheckInterval / 2f);
         }
 		else 

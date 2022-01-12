@@ -69,13 +69,13 @@ public class AudioManager : MonoBehaviour
 
 	public void SetPitch(SoundObject soundIdentifier, float newPitch) 
 	{
-		ApplyToSound(soundIdentifier, (Sound sound) => sound.SetPitch(newPitch));
+		ApplyToSound(soundIdentifier, (Sound sound) => { sound.SetPitch(newPitch); sound.UpdateAudioVolume(); });
 	
 	}
 
 	public void SetVolume(SoundObject soundIdentifier, float volume) 
 	{
-		ApplyToSound(soundIdentifier, (Sound sound) => sound.SetVolume(volume));
+		ApplyToSound(soundIdentifier, (Sound sound) => { sound.SetVolume(volume); sound.UpdateAudioVolume(); });
 	}
 
 	public void StopPlaying(SoundObject soundIdentifier)
@@ -343,6 +343,8 @@ public class Sound
 
 	public void Start() 
 	{
+		m_AudioSource.clip = m_SoundObject.GetAudioClip();
+		m_AudioSource.volume = GetAudioVol();
 		m_AudioSource.Play();
 	}
 
@@ -369,5 +371,4 @@ public class Sound
 	{
 		m_fVolumeModifierInternal = volumePercent;
 	}
-
 }

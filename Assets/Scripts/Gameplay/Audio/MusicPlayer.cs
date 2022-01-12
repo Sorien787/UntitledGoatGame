@@ -16,6 +16,7 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 
 	void Awake() 
 	{
+		StartFade(1.0f, 1.0f);
 		m_Manager.AddToLevelStarted(this);
 		if (!m_bRequireLevelStart)
 			m_AudioManager.Play(m_MusicIdentifier);
@@ -23,14 +24,16 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 
 	private IEnumerator m_CurrentCoroutine;
 	float m_CurrentVolume = 0.0f;
-	private IEnumerator FadeMusic(SoundObject fadeObject, float target, float time) 
+	private IEnumerator FadeMusic(SoundObject fadeObject, float target, float timeToChange) 
 	{
 		float start = m_CurrentVolume;
-		while (m_CurrentVolume < time)
+		float currentTime = 0.0f;
+		while (currentTime < timeToChange)
 		{
 
-			m_CurrentVolume += Time.deltaTime;
-			float val = Mathf.Lerp(start, target, m_CurrentVolume / time);
+			currentTime += Time.deltaTime;
+			float val = Mathf.Lerp(start, target, currentTime / timeToChange);
+			m_CurrentVolume = val;
 			m_AudioManager.SetVolume(fadeObject, val);
 			yield return null;
 		}
@@ -40,6 +43,7 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 		if (m_CurrentCoroutine != null)
 			StopCoroutine(m_CurrentCoroutine);
 		m_CurrentCoroutine = FadeMusic(m_MusicIdentifier, target, time);
+		StartCoroutine(m_CurrentCoroutine);
 	}
 
 	void OnDestroy() 
@@ -55,7 +59,6 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 
 	public void LevelStarted() 
 	{
-
 		m_Manager.AddToPauseUnpause(this);
 		if (m_bRequireLevelStart)
 			m_AudioManager.Play(m_MusicIdentifier);
@@ -71,5 +74,10 @@ public class MusicPlayer : MonoBehaviour, ILevelListener, IPauseListener
 	public void Unpause()
 	{
 		StartFade(1.0f, m_AudioFadeTime);
+	}
+
+	public void OnExitLevel(float transitionTime)
+	{
+		StartFade(0.0f, transitionTime);
 	}
 }

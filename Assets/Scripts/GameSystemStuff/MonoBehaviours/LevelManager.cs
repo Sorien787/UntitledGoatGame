@@ -229,6 +229,7 @@ public class LevelManager : MonoBehaviour
 
 	private IEnumerator BeginSceneTransition(Action queuedOnFinish)
 	{
+		m_Manager.OnBeginExitLevel(m_fTransitionTime);
 		m_LevelTransitionAnimator.Play("TransitionOut", -1);
 		yield return new WaitForSeconds(m_fTransitionTime);
 		queuedOnFinish();
