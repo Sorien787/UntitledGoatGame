@@ -71,10 +71,6 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
     public void StopThrowingObject() 
     {
-		m_Listeners.ForEachListener((IFreeFallListener listener) =>
-		{
-			listener.OnStopFalling();
-		});
 		StopThrowingInternal();
     }
 
@@ -104,7 +100,6 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 			m_Listeners.ForEachListener((IFreeFallListener listener) => 
 			{
 				listener.OnCollide(pos, norm, go);
-				listener.OnStopFalling();
 			});
             m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
             m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
@@ -195,6 +190,4 @@ public struct ProjectileParams
 public interface IFreeFallListener
 {
 	void OnCollide(Vector3 position, Vector3 rotation, GameObject go);
-
-	void OnStopFalling();
 }

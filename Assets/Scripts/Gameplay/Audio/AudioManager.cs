@@ -208,7 +208,7 @@ public class EdgeTrigger : SoundTrigger
 		m_lastEdgeValue = edgeValue;
 		if (((int)m_EdgeBehaviour & (int)m_lastEdgeValue) != 0)
 			return;
-		Debug.Log("Trigger sound " + m_Sound.GetAudioType.name + " with volume " + m_Sound.GetVolume);
+	
 		TriggerSound();
 	}
 }

@@ -112,7 +112,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	private CanvasGroup m_CanGrabCanvasGroup;
 	private Collider[] m_EndColliders;
 	private PlayerComponent m_PlayerComponent;
-	private IThrowableObjectComponent m_PlayerThrowableComponent;
+	private ThrowablePlayerComponent m_PlayerThrowableComponent;
 	private FreeFallTrajectoryComponent m_LassoFreeFallComponent;
 	private Transform m_LassoLoopTransform;
 	private PlayerMovement m_PlayerMovementComponent;
@@ -155,6 +155,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 		GetLassoBody = m_LassoEndPoint.GetComponent<Rigidbody>();
 		
 		m_PlayerThrowableComponent.OnThrown += (ProjectileParams pparams) => OnThrown();
+		m_PlayerThrowableComponent.OnPlayerCanUseLasso += OnStopFalling;
 		m_LassoFreeFallComponent.AddListener(this);
 
         GetThrowableObject = m_LassoEndTransform.GetComponent<ThrowableObjectComponent>();
@@ -174,13 +175,13 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 
         m_StateMachine.AddTransition(typeof(LassoReturnState), typeof(LassoIdleState), () => Vector3.SqrMagnitude(GetEndTransform.position - m_LassoGrabPoint.position) < 1.0f, () => SetLassoAsChildOfPlayer(true));
         // for if we're spinning and want to cancel 
-        m_StateMachine.AddTransition(typeof(LassoSpinningState), typeof(LassoIdleState), () => m_CancelBinding.GetBindingUp());
+        m_StateMachine.AddTransition(typeof(LassoSpinningState), typeof(LassoIdleState), () => m_CancelBinding.GetBindingUp() || m_bPlayerThrown);
         // for if we're spinning and want to throw
         m_StateMachine.AddTransition(typeof(LassoSpinningState), typeof(LassoThrowingState), () => m_TriggerBinding.GetBindingUp(), () => { ProjectLasso(); SetLassoAsChildOfPlayer(false);});
         // for if we're spinning an animal and want to cancel
         m_StateMachine.AddTransition(typeof(LassoAnimalSpinningState), typeof(LassoIdleState), () => m_CancelBinding.GetBindingUp(), () => DetachFromObject());
         // for if we're throwing and want to cancel
-        m_StateMachine.AddTransition(typeof(LassoThrowingState), typeof(LassoReturnState), () => (m_CancelBinding.GetBindingUp() || Vector3.SqrMagnitude(GetEndTransform.position - m_LassoGrabPoint.position) > LassoLength * LassoLength), () => { m_LassoEndTransform.GetComponent<FreeFallTrajectoryComponent>().StopThrowingObject(); } );
+        m_StateMachine.AddTransition(typeof(LassoThrowingState), typeof(LassoReturnState), () => (m_CancelBinding.GetBindingUp() || m_bPlayerThrown || Vector3.SqrMagnitude(GetEndTransform.position - m_LassoGrabPoint.position) > LassoLength * LassoLength), () => { m_LassoEndTransform.GetComponent<FreeFallTrajectoryComponent>().StopThrowingObject(); } );
         // for if we've decided we want to unattach to our target
         m_StateMachine.AddTransition(typeof(LassoAnimalAttachedState), typeof(LassoReturnState), () => m_CancelBinding.GetBindingUp() || m_bPlayerThrown, () => DetachFromObject());
 
@@ -188,7 +189,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
         // for if the cow has reached us
         m_StateMachine.AddTransition(typeof(LassoAnimalAttachedState), typeof(LassoAnimalSpinningState), () => m_bCanPickUpObject && m_TriggerBinding.GetBindingDown());
         // for if we want to throw the animal
-        m_StateMachine.AddTransition(typeof(LassoAnimalSpinningState), typeof(LassoIdleState), () => (!m_TriggerBinding.IsBindingPressed() && !SpinningIsInitializing), () => { ProjectObject(); SetLassoAsChildOfPlayer(true); });
+        m_StateMachine.AddTransition(typeof(LassoAnimalSpinningState), typeof(LassoIdleState), () => ((!m_TriggerBinding.IsBindingPressed() && !SpinningIsInitializing)), () => { ProjectObject(); SetLassoAsChildOfPlayer(true); });
         // instant transition back to idle state
         m_StateMachine.InitializeStateMachine();
 

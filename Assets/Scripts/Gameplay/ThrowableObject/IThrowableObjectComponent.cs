@@ -179,14 +179,6 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         hazard.SetHazardSubtype(entityType.GetEntityInformation);
     }
 
-    protected void OnObjectLanded()
-    {
-        if (m_CausesImpacts)
-        {
-
-        }
-    }
-
     public abstract float GetMass();
 
     public float GetGravityMultiplier => m_GravityMultiplier;

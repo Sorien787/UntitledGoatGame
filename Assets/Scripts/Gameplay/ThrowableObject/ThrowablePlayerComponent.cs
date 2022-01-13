@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class ThrowablePlayerComponent : IThrowableObjectComponent
 {
 	[SerializeField] private float m_ObjectMass;
@@ -14,17 +14,20 @@ public class ThrowablePlayerComponent : IThrowableObjectComponent
 
 	private bool m_bWasThrown = false;
 
+	public Action OnPlayerCanUseLasso;
+
 	public override void ThrowObject(in ProjectileParams pParams)
 	{
+		Debug.Log("!");
 		base.ThrowObject(pParams);
 		StartCoroutine(OnThrownRoutine());
 	}
 
 	private IEnumerator OnThrownRoutine() 
 	{
-		
+		Debug.Log("!!");
 		yield return new WaitForSeconds(0.2f);
-		OnObjectLanded();
+		OnPlayerCanUseLasso();
 	}
 
 	public override void ApplyForceToObject(Vector3 force)

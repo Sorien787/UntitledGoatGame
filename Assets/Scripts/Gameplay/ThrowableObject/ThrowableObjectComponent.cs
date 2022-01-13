@@ -65,9 +65,4 @@ public class ThrowableObjectComponent : IThrowableObjectComponent, IHealthListen
 	{
 		CollisionEvent(position, rotation, go);
 	}
-
-	public void OnStopFalling()
-	{
-		OnObjectLanded();
-	}
 }
