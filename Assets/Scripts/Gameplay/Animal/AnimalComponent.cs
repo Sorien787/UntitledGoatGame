@@ -83,6 +83,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     private bool  m_bWasUsingNavmeshAgent = false;
     private Vector3 m_CachedTargetDirection = Vector3.zero;
     private bool  m_bHasAttackBeenTriggered = false;
+    private bool  m_bIsSpinning = false;
     private bool  m_bIsWrangled = false;
     private bool  m_bIsInTractorBeam = false;
     private bool  m_bIsDead = false;
@@ -195,12 +196,15 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private void OnReleasedByLasso()
     {
+        m_bIsSpinning = false;
         m_AnimalBodyCollider.enabled = true;
         m_bIsWrangled = false;
+        m_AnimalAnimator.OnDroppedByLasso();
     }
 
 	private void OnThrownByLasso(ProjectileParams projectileParams)
     {
+        m_bIsSpinning = false;
         m_AnimalBodyCollider.enabled = true;
         m_bIsWrangled = false;
         m_StateMachine.RequestTransition(typeof(AnimalLassoThrownState));
@@ -237,6 +241,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         m_AnimalBodyCollider.enabled = false;
         m_bIsWrangled = true;
+        m_bIsSpinning = true;
         DisablePhysics();
         m_AnimalAnimator.SetIdleAnimation();
         m_AnimalMainTransform.rotation = Quaternion.identity;
@@ -887,7 +892,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 	private bool ShouldEnterWrangled() 
     {
-        if (m_bIsWrangled && !m_bIsInTractorBeam && !IsStaggered()) 
+        if (m_bIsWrangled && !m_bIsInTractorBeam && !IsStaggered() && !m_bIsSpinning) 
         {
             SetRelevantTargetAnimal(m_Manager.GetPlayer);
             return true;

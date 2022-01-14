@@ -185,6 +185,13 @@ public class AnimalMovementComponent : MonoBehaviour
         enabled = true;
         m_fCurrentTimeStuck = 0.0f;
         Vector3 displacement = m_tObjectTransform.position - tRunAwayTransform.position;
+        if (displacement.sqrMagnitude < 0.1f) 
+        {
+            Vector2 vec = UnityEngine.Random.insideUnitCircle;
+            displacement.x = vec.x;
+            displacement.z = vec.y;
+            displacement.y = 0;
+        }
         float distance = displacement.magnitude;
         Vector3 direction = displacement / distance;
 

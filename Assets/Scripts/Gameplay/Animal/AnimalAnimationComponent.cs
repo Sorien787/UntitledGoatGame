@@ -300,6 +300,11 @@ public class AnimalAnimationComponent : MonoBehaviour
 		}
     }
 
+    public void OnDroppedByLasso() 
+    {
+        m_AnimatorStateMachine.RequestTransition(typeof(AnimalWalkingAnimationState));
+    }
+
     public void HasSeenFood() 
     {
         if (TrySetAnimalMood(AnimalMood.Hunting))

@@ -599,13 +599,13 @@ namespace LassoStates
 
 	public class LassoAnimalSpinningState : AStateBase<LassoInputComponent>
 	{
-		float m_CurrentAngle;
+		float m_fCurrentAngle;
 		float m_CurrentInitializeTime = 0.0f;
 		private readonly ValueBasedEdgeTrigger m_LassoSwingSoundTrigger;
 
 		public LassoAnimalSpinningState(Sound lassoSwingSound) 
 		{
-			m_LassoSwingSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 1f, lassoSwingSound);
+			m_LassoSwingSoundTrigger = new ValueBasedEdgeTrigger(EdgeBehaviour.RisingEdge, 0.01f, lassoSwingSound);
 			AddTimers(1);
 		}
 
@@ -614,7 +614,7 @@ namespace LassoStates
 			Host.StartSwingingObject();
 			Host.SetTrajectoryRenderer(true);
 			m_CurrentInitializeTime = Host.TimeBeforeUserCanThrow;
-			m_CurrentAngle = 0.0f;
+			m_fCurrentAngle = 0.0f;
 			Host.SetRopeLineRenderer(true);
 			Host.GetThrowableObject.StartedSpinning();
 			Host.TriggerPowerBarAnimIn();
@@ -638,17 +638,24 @@ namespace LassoStates
 			float r = Host.SpinSizeProfile.Evaluate(time);
 			float height = Host.SpinHeightProfile.Evaluate(time);
 
-			Host.GetThrowableObject.GetMainTransform.position = Host.GetSwingingTransform.position + new Vector3(r * Mathf.Cos(m_CurrentAngle), height, r * Mathf.Sin(m_CurrentAngle));
+			Host.GetThrowableObject.GetMainTransform.position = Host.GetSwingingTransform.position + new Vector3(r * Mathf.Cos(m_fCurrentAngle), height, r * Mathf.Sin(m_fCurrentAngle));
 			Vector3 forward = Host.GetLassoGrabPoint.position - Host.GetThrowableObject.GetAttachmentTransform.position;
 			Host.GetThrowableObject.GetMainTransform.rotation = Quaternion.LookRotation(forward.normalized, Vector3.up);
 			Host.SetSpinStrength(spinStr);
 			Host.RenderRope();
 			Host.RenderTrajectory();
 
-			m_CurrentAngle += (Host.SpinSpeedProfile.Evaluate(time) * Time.deltaTime);
-			m_CurrentAngle %= 360f;
+			m_fCurrentAngle += Host.SpinSpeedProfile.Evaluate(time) * Time.deltaTime;
+			if (m_fCurrentAngle > 2 * Mathf.PI)
+			{
+				m_LassoSwingSoundTrigger.GetSound.SetPitch(spinStr);
+				m_LassoSwingSoundTrigger.GetSound.PlayOneShot();
 
-			m_LassoSwingSoundTrigger.Tick(m_CurrentAngle);
+			}
+			m_fCurrentAngle %= (2 * Mathf.PI);
+
+
+			m_LassoSwingSoundTrigger.Tick(m_fCurrentAngle);
 			m_LassoSwingSoundTrigger.GetSound.SetPitch(spinStr);
 
 			if (m_CurrentInitializeTime > 0)
