@@ -85,7 +85,7 @@ public class StateMachine<J>
     private readonly Dictionary<string, Action> m_StateMachineCallbacks = new Dictionary<string, Action>();
     private readonly List<IStateTransition> m_AnyTransitions = new List<IStateTransition>();
 
-    private readonly Stack<IStateGroup> m_CurrentStateGroupQueue = new Stack<IStateGroup>(new[] { new BaseStateGroup() });
+    private readonly HashSet<IStateGroup> m_CurrentStateGroupQueue = new HashSet<IStateGroup>();
     private static readonly List<IStateTransition> m_EmptyTransitionsList = new List<IStateTransition>();
 	private AStateBase<J> m_CurrentState;
     private List<IStateTransition> m_SpecificTransitions;
@@ -188,19 +188,15 @@ public class StateMachine<J>
                     IStateGroup stateGroup = m_StateGroups[j];
                     if (stateGroup.CheckIfShouldEnterStateGroupForTransition(newState)) 
                     {
-                        m_CurrentStateGroupQueue.Push(stateGroup);
+                        m_CurrentStateGroupQueue.Add(stateGroup);
                         m_StateGroups.RemoveAt(j);
                         break;
                     }
                 }
-                while (true)
+                foreach(IStateGroup stateGroup in m_CurrentStateGroupQueue)
                 {
-                    if (m_CurrentStateGroupQueue.Peek().CheckIfShouldExitStateGroupForTransition(newState))
-                    {
-                        m_StateGroups.Add(m_CurrentStateGroupQueue.Pop());
-                        continue;
-                    }
-                    break;
+                    stateGroup.CheckIfShouldExitStateGroupForTransition(newState);
+
                 }
                 m_CurrentState.OnExit();
                 m_CurrentState = m_States[i];

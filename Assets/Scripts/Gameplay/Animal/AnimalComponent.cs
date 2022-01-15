@@ -752,6 +752,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_AnimalHealthComponent = GetComponent<HealthComponent>();
         m_ThrowableComponent = GetComponent<ThrowableObjectComponent>();
         DisableImpactFX();
+        DisableDraggingFX();
 
         m_ThrowableComponent.OnTuggedByLasso += OnPulledByLasso;
         m_ThrowableComponent.OnStartSpinning += OnStartedLassoSpinning;
@@ -812,6 +813,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalWrangledState)).AddOnExit(OnTargetInvalidated));
 
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallState), typeof(AnimalLassoThrownState), typeof(AnimalStaggeredState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
+
+        m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalWrangledRunState), typeof(AnimalWrangledAttackState), typeof(AnimalWrangledState), typeof(AnimalFreeFallState), typeof(AnimalStaggeredState), typeof(AnimalLassoThrownState)).AddOnEnter(EnableDraggingFX).AddOnExit(DisableDraggingFX));
 
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
@@ -880,9 +883,19 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_ThrowableComponent.EnableImpacts(true);
     }
 
+    private void EnableDraggingFX() 
+    {
+        m_ThrowableComponent.EnableDragging(true);
+    }
+
     private void DisableImpactFX() 
     {
         m_ThrowableComponent.EnableImpacts(false);
+    }
+
+    private void DisableDraggingFX() 
+    {
+        m_ThrowableComponent.EnableDragging(false);
     }
 
 	private void OnDestroy()

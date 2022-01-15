@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
 		foreach (SoundObject sound in sounds) 
 		{
 			AudioSource source = gameObject.AddComponent<AudioSource>();
+			source.loop = sound.loop;
 			source.rolloffMode = AudioRolloffMode.Linear;
 			source.maxDistance = 40.0f;
 			Sound newSound = new Sound(sound, source);
@@ -141,6 +142,7 @@ public class RandomSoundTrigger : SoundTrigger
 	{
 		m_MinimumTime = minTime;
 		m_MaximumTime = maxTime;
+		ResetTriggerTime();
 
 	}
 

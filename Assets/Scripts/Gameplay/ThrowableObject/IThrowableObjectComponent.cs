@@ -79,7 +79,13 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         m_bImpactsDisabled = !isEnabled;
     }
 
+    public void EnableDragging(bool isEnabled) 
+    {
+        m_bDraggingDisabled = !isEnabled;
+    }
+
     private bool m_bImpactsDisabled = false;
+    private bool m_bDraggingDisabled = false;
 
     float m_fImpactFXCooldown = 0.0f;
 
@@ -89,7 +95,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
         if (!m_CausesDragging)
             return;
-        bool m_bShouldParticleFXBeActive = m_Entity.GetVelocity.sqrMagnitude > (m_SpeedForDragFX * m_SpeedForDragFX) && m_Entity.IsGrounded;
+        bool m_bShouldParticleFXBeActive = !m_bDraggingDisabled && m_Entity.GetVelocity.sqrMagnitude > (m_SpeedForDragFX * m_SpeedForDragFX) && m_Entity.IsGrounded;
         if (m_bShouldParticleFXBeActive != m_bParticleFXActive)
         {
             m_bParticleFXActive = m_bShouldParticleFXBeActive;
