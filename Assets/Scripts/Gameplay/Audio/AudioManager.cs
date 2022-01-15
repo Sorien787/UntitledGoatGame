@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-[RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
 	[SerializeField] private SettingsManager m_Settings;
@@ -12,11 +11,13 @@ public class AudioManager : MonoBehaviour
 
 	void Awake()
 	{
-		AudioSource source = GetComponent<AudioSource>();
 		m_Settings.PropertyChanged += OnPropertyChanged;
 
 		foreach (SoundObject sound in sounds) 
 		{
+			AudioSource source = gameObject.AddComponent<AudioSource>();
+			source.rolloffMode = AudioRolloffMode.Linear;
+			source.maxDistance = 40.0f;
 			Sound newSound = new Sound(sound, source);
 			m_SoundDict.Add(sound, newSound);
 		}

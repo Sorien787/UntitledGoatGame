@@ -13,8 +13,9 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 	[SerializeField] private Animator m_CameraAnimator;
 	[SerializeField] private PlayerMovement m_PlayerMovement;
 	[SerializeField] private LassoInputComponent m_LassoStart;
+    [SerializeField] private AudioManager m_AudioManager = default;
 
-	[Header("--- Cam Shake ---")]
+    [Header("--- Cam Shake ---")]
 	[SerializeField] private EZCameraShake.CameraShaker m_CameraShaker;
 	[SerializeField] private AnimationCurve m_GroundImpactSpeedSize;
     [SerializeField] private AnimationCurve m_ThrowForceCamShake;
@@ -27,8 +28,9 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
     [SerializeField] private AnimationCurve m_FOVForceAnimator;
     [SerializeField] private AnimationCurve m_FOVThrowAnimator;
     [SerializeField] private AnimationCurve m_FOVThrowPulseAnimator;
+    [SerializeField] private SoundObject m_StepSoundObject;
 
-	[Header("--- Anim Strings ---")]
+    [Header("--- Anim Strings ---")]
 	[SerializeField] private string m_JumpString;
 	[SerializeField] private string m_GroundedAnimString;
 	[SerializeField] private string m_MovementSpeedAnimString;
@@ -71,7 +73,10 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
     {
         m_CameraAnimator.SetBool(m_JumpString, true);
     }
-
+    private void OnNotHitGround() 
+    {
+        m_CameraAnimator.SetBool(m_GroundedAnimString, false);
+    }
     private void OnHitGround(float impactSpeed) 
     {
         m_CameraAnimator.SetBool(m_JumpString, false);
@@ -107,7 +112,13 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
     {
 		currentMovement = Mathf.SmoothDamp(currentMovement, speed, ref currentMovementAcceleration, 0.15f);
         m_CameraAnimator.SetFloat(m_MovementSpeedAnimString, currentMovement);
+        m_AudioManager.SetVolume(m_StepSoundObject, currentMovement);
     }
+
+	public void OnStep()
+	{
+        m_AudioManager.PlayOneShot(m_StepSoundObject);
+	}
 
 	Vector3 current = Vector3.zero;
 	Vector3 velocity = Vector3.zero;
@@ -165,6 +176,7 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 
         m_Manager.AddToPauseUnpause(this);
         m_PlayerMovement.OnHitGround += OnHitGround;
+        m_PlayerMovement.OnNotHitGround += OnNotHitGround;
         m_PlayerMovement.OnSuccessfulJump += OnJumped;
         m_PlayerMovement.OnSetMovementSpeed += OnSetMovementSpeed;
 		m_PlayerMovement.OnMovingInput += OnMovingInput;
@@ -172,10 +184,12 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
     public void Pause()
     {
         enabled = false;
+        m_CameraAnimator.enabled = false;
     }
 
     public void Unpause()
     {
+        m_CameraAnimator.enabled = true;
         enabled = true;
     }
 
