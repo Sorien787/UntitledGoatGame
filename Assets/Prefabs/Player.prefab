@@ -395,6 +395,7 @@ GameObject:
   - component: {fileID: 3338445512843362041}
   - component: {fileID: 3338445512843362046}
   - component: {fileID: 3338445512843362047}
+  - component: {fileID: 6391705157905206663}
   m_Layer: 13
   m_Name: LassoEndPoint
   m_TagString: Untagged
@@ -454,6 +455,8 @@ MonoBehaviour:
   m_GroundImpactLayermask:
     serializedVersion: 2
     m_Bits: 3328
+  m_ThrowinSound: {fileID: 11400000, guid: c0a5f93b4885b1049b8b9257f0030c28, type: 2}
+  m_Audio: {fileID: 6391705157905206663}
 --- !u!114 &3338445512843362047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,6 +514,21 @@ MonoBehaviour:
   m_MainTransform: {fileID: 3338445512843362043}
   m_FreeFallComponent: {fileID: 3338445512843362046}
   m_MassMultiplier: 1
+--- !u!114 &6391705157905206663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3338445512843361988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1405774d9b92bc94eaae0536c8f0c058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Settings: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}
+  sounds:
+  - {fileID: 11400000, guid: c0a5f93b4885b1049b8b9257f0030c28, type: 2}
 --- !u!1 &3338445513005957707
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,7 +813,7 @@ MonoBehaviour:
   m_LassoStartTransform: {fileID: 3338445513214232704}
   m_LassoEndTransform: {fileID: 3338445512843362043}
   m_SwingPointTransform: {fileID: 3338445513598138996}
-  m_ProjectionPoint: {fileID: 3338445513951230523}
+  m_ProjectionPoint: {fileID: 8749822810503830141}
   m_LassoGrabPoint: {fileID: 3338445513539745685}
   m_LassoNormalContainerTransform: {fileID: 3338445514369759825}
   m_HandRopeLineRenderer: {fileID: 3338445514006639550}
@@ -1165,13 +1183,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3338445513951230468}
-  m_LocalRotation: {x: -0.14193791, y: -0, z: -0, w: 0.9898756}
-  m_LocalPosition: {x: -0.39999938, y: -0.18299975, z: 0.7400005}
+  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: -0.39999938, y: -0.142, z: 0.736}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8749822810503830141}
   m_Father: {fileID: 4954449043776117430}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -16.32, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
 --- !u!1 &3338445513980101068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,3 +1986,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerCamera: {fileID: 2735400669585439901}
+--- !u!1 &7209135089049568951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8749822810503830141}
+  - component: {fileID: 7561988592381331480}
+  m_Layer: 0
+  m_Name: RealLassoFollow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8749822810503830141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209135089049568951}
+  m_LocalRotation: {x: 0.14193791, y: -0, z: -0, w: 0.9898756}
+  m_LocalPosition: {x: -2.052797, y: 4.6527896, z: 2.0848784}
+  m_LocalScale: {x: 1, y: 0.8333332, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3338445513951230523}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7561988592381331480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209135089049568951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43656354a1f78d14885cce00130a6d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fRotationFollowTime: 0.15
+  m_fPositionFollowTime: 0
+  m_GameManager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}

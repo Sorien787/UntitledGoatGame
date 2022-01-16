@@ -136,7 +136,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 		}
 		else
 		{
-			m_bIgnoredFirstCollisionEvent = false;
+			m_bIgnoredFirstCollisionEvent = true;
 		}
 	}
 

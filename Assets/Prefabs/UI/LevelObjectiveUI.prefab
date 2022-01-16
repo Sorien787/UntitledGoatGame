@@ -1377,6 +1377,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 112993437bb2c3442b99e51953232497,
         type: 2}
+    - target: {fileID: 5180011089108255889, guid: 12044b67e0016a94c994db5f44d13b54,
+        type: 3}
+      propertyPath: m_bAffectedByPause
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7097643374194794427, guid: 12044b67e0016a94c994db5f44d13b54,
         type: 3}
       propertyPath: m_Name

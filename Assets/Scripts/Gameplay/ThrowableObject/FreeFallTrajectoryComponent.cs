@@ -87,10 +87,10 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
         }
     }
 
-	private void OnTriggerStay(Collider other)
-	{
-		OnCollide(other.transform.position, Vector3.zero, other.gameObject);
-	}
+	//private void OnTriggerStay(Collider other)
+	//{
+	//	OnCollide(other.transform.position, Vector3.zero, other.gameObject);
+	//}
 
 	private void OnCollisionEnter(Collision collision)
     {

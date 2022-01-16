@@ -92,6 +92,15 @@ public class SettingsManager : ScriptableObject, INotifyPropertyChanged
 		set { m_InvertY = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("InvertY")); }
 	}
 
+	[SerializeField] private bool m_ViewBobbing = false;
+	[Binding]
+	public bool ViewBobbing
+	{
+		get => m_ViewBobbing;
+		set { m_ViewBobbing = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewBobbing")); }
+	}
+
+
 	[Header("=== Screen Settings ===")]
 	[SerializeField] private FullScreenMode m_DisplayMode = FullScreenMode.FullScreenWindow;
 	[Binding]

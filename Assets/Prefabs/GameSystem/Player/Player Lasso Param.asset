@@ -15,7 +15,7 @@ MonoBehaviour:
   m_LassoReturnAcceleration: 2.784
   m_MaxLassoReturnSpeed: 14.07
   m_LassoLength: 27.19
-  m_GrabDistance: 2.015
+  m_GrabDistance: 2.365
   m_ThrowForceCurve:
     serializedVersion: 2
     m_Curve:
@@ -29,8 +29,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.0533109
     - serializedVersion: 3
-      time: 1.0013311
-      value: 151.39478
+      time: 1.0055873
+      value: 301.13904
       inSlope: -1.5576267
       outSlope: -1.5576267
       tangentMode: 0
@@ -54,8 +54,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.114166334
     - serializedVersion: 3
-      time: 0.98659295
-      value: 445.20224
+      time: 1.0041711
+      value: 471.3933
       inSlope: -94.9837
       outSlope: -94.9837
       tangentMode: 0
@@ -78,8 +78,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.078044154
     - serializedVersion: 3
-      time: 1.0010902
-      value: 296.54306
+      time: 1.0053626
+      value: 261.2647
       inSlope: -0.009797131
       outSlope: -0.009797131
       tangentMode: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.13090128
     - serializedVersion: 3
-      time: 0.99977386
-      value: 1.0023165
+      time: 1.0040158
+      value: 1.1240206
       inSlope: 2.2738378
       outSlope: 2.2738378
       tangentMode: 0
@@ -166,17 +166,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.29074752
     - serializedVersion: 3
-      time: 0.69922787
-      value: 0.75049174
-      inSlope: -0.75269544
-      outSlope: -0.75269544
+      time: 0.67469174
+      value: 0.69246256
+      inSlope: -1.4677167
+      outSlope: -1.4677167
       tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.99016833
-      value: 0.65823823
+      time: 1.0024364
+      value: 0.3514908
       inSlope: 0
       outSlope: 0
       tangentMode: 136

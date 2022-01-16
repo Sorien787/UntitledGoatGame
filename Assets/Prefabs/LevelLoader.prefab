@@ -3766,6 +3766,12 @@ MonoBehaviour:
   m_TimerFadeTime: 0.8
   m_FinalTimerTickString: Begin
   m_bAffectedByPause: 0
+  m_PitchModifierByTimerTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &7402815415580992526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4898,6 +4904,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TextPulseOpacityByTimer.m_Curve.Array.data[0].outSlope
       value: -0.14826722
+      objectReference: {fileID: 0}
+    - target: {fileID: 5180011089108255889, guid: 12044b67e0016a94c994db5f44d13b54,
+        type: 3}
+      propertyPath: m_bAffectedByPause
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7097643374194794427, guid: 12044b67e0016a94c994db5f44d13b54,
         type: 3}

@@ -27,10 +27,11 @@ MonoBehaviour:
   m_MusicVol: 0.40205413
   m_UISFXVol: 0.5982576
   m_bIsMuted: 1
-  m_MouseSensitivity: 1.1391447
+  m_MouseSensitivity: 0.9
   m_InvertY: 0
+  m_ViewBobbing: 1
   m_DisplayMode: 0
-  m_FoV: 42.35
+  m_FoV: 67.78
   m_Bloom: 1
   m_AmbientOcclusion: 1
   m_MotionBlur: 0

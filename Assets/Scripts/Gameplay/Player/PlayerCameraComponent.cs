@@ -111,10 +111,10 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
     public void OnSetMovementSpeed(float speed) 
     {
 		currentMovement = Mathf.SmoothDamp(currentMovement, speed, ref currentMovementAcceleration, 0.15f);
-        m_CameraAnimator.SetFloat(m_MovementSpeedAnimString, currentMovement);
+        m_CameraAnimator.SetFloat(m_MovementSpeedAnimString, currentMovement * (m_SettingsManager.ViewBobbing ? 1 : 0.001f));
         m_AudioManager.SetVolume(m_StepSoundObject, currentMovement);
     }
-
+    private bool m_bViewBobbingEnabled = false;
 	public void OnStep()
 	{
         m_AudioManager.PlayOneShot(m_StepSoundObject);

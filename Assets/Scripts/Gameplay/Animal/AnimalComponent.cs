@@ -838,14 +838,15 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
         m_StateMachine.AddAnyTransition(typeof(AnimalFreeFallState), ShouldStartStaggering);
+
         m_StateMachine.AddTransition(typeof(AnimalThrowingState), typeof(AnimalFreeFallState), () => !m_bIsWrangled);
         m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalStaggeredState), () => m_bShouldStagger);
         m_StateMachine.AddTransition(typeof(AnimalStaggeredState), typeof(AnimalIdleState), () => !m_bShouldStagger);
         m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalAbductedAndWrangledState), () => m_bIsInTractorBeam);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalAbductedAndWrangledState), () => m_bIsWrangled);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalFreeFallState), () => !m_bIsInTractorBeam);
-        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalFreeFallState), () => !m_bIsWrangled && CanLeaveFreeFall() && m_bShouldStagger);
-        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalIdleState), () => !m_bIsWrangled && CanLeaveFreeFall() && !m_bShouldStagger);
+        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalFreeFallState), () => !m_bIsWrangled && m_bShouldStagger);
+        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalIdleState), () => !m_bIsWrangled && !m_bShouldStagger);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalFreeFallState), () => !m_bIsInTractorBeam);
         m_StateMachine.AddTransition(typeof(AnimalGrowingState), typeof(AnimalIdleState), () => m_StateMachine.TimeBeenInstate() > m_BornTime);
 
@@ -903,6 +904,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         if (m_bIsWrangled && !m_bIsInTractorBeam && !IsStaggered() && !m_bIsSpinning) 
         {
+            m_StateMachine.RequestTransition(typeof(AnimalIdleState));
             SetRelevantTargetAnimal(m_Manager.GetPlayer);
             return true;
         }
@@ -911,7 +913,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private bool ShouldStartStaggering() 
     {
-        return m_bShouldStagger && !IsStaggered();
+        return m_bShouldStagger && !IsStaggered() && !m_bIsWrangled;
     }
 
     private bool ShouldEnterAbducted() 
