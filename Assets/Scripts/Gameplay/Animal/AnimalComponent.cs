@@ -21,6 +21,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     [SerializeField] protected Collider m_AnimalBodyCollider = default;
 	[SerializeField] private OverlaySelectable m_Overlay = default;
     [SerializeField] private Collider m_AnimalGroundCollider = default;
+    [SerializeField] private PhysicalEntity m_AnimalPhysicalEntity = default;
 
     [Header("Stagger parameters")]
     [SerializeField] AnimationCurve m_StaggerTimeByImpactMomentum = default;
@@ -94,6 +95,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	{
         private bool m_bCooldownComplete = true;
         public bool IsCooldownComplete => m_bCooldownComplete;
+
         public IEnumerator SetCooldownEnumerator(float cooldown)
 		{
             m_bCooldownComplete = false;
@@ -131,7 +133,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 	public void OnPulledByLasso()
     {
-        m_AnimalAnimator.WasPulled();
+        if (!IsStaggered())
+            m_AnimalAnimator.WasPulled();
     }
 
     public void DisableGroundCollider() 
@@ -154,21 +157,21 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         EntityTypeComponent hazardTypeComponent = hazard.GetTypeComponent;
         Type currentState = m_StateMachine.GetCurrentState();
 
-        if (currentState != typeof(AnimalFreeFallState) || 
-            currentState != typeof(AnimalStaggeredState) || 
-            currentState != typeof(AnimalLassoThrownState) || 
-            currentState != typeof(AnimalFreeFallState) || 
-            currentState != typeof(AnimalGrowingState) ||
-            currentState != typeof(AnimalWrangledAttackState) ||
+        if (currentState != typeof(AnimalFreeFallState) && 
+            currentState != typeof(AnimalStaggeredState) &&
+            currentState != typeof(AnimalLassoThrownState) &&
+            currentState != typeof(AnimalFreeFallState) &&
+            currentState != typeof(AnimalGrowingState) &&
+            currentState != typeof(AnimalWrangledAttackState) &&
             currentState != typeof(AnimalWrangledRunState)) 
         {
-            m_StateMachine.RequestTransition(typeof(AnimalIdleState));
+			m_StateMachine.RequestTransition(typeof(AnimalIdleState));
 
-            m_AnimalAnimator.IsScared();
-            SetRelevantTargetAnimal(hazardTypeComponent);
-            
-            m_StateMachine.RequestTransition(typeof(AnimalEvadingState));
-        }
+			m_AnimalAnimator.IsScared();
+			SetRelevantTargetAnimal(hazardTypeComponent);
+
+			m_StateMachine.RequestTransition(typeof(AnimalEvadingState));
+		}
         
 	}
 
@@ -207,6 +210,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_bIsSpinning = false;
         m_AnimalBodyCollider.enabled = true;
         m_bIsWrangled = false;
+        m_AnimalAnimator.OnThrownByLasso();
         m_StateMachine.RequestTransition(typeof(AnimalLassoThrownState));
     }
 
@@ -316,12 +320,14 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         m_AnimalRigidBody.isKinematic = true;
         m_AnimalRigidBody.useGravity = false;
+        m_AnimalRigidBody.freezeRotation = false;
     }
 
 	public void SetGeneralPhysics() 
     {
         m_AnimalRigidBody.isKinematic = false;
         m_AnimalRigidBody.useGravity = true;
+        m_AnimalRigidBody.freezeRotation = false;
     }
 
 	public void SetAbductionPhysics()
@@ -669,11 +675,29 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 		return Vector3.up;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// Free Fall Data
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Free Fall Data
+    /// 
+    float m_fTimeStill = 0.0f;
 	protected bool CanLeaveFreeFall()
     {
-        return m_AnimalRigidBody.velocity.magnitude < 0.2f && m_AnimalMovement.IsNearNavMesh();
+        float vel = m_AnimalPhysicalEntity.GetVelocity.magnitude;
+        if (vel > 0.2f) 
+        {
+            m_fTimeStill = 0.0f;
+            return false;
+        }
+
+        m_fTimeStill += Time.deltaTime;
+
+        if (m_fTimeStill < 1.0f)
+            return false;
+
+        if (!m_AnimalMovement.IsNearNavMesh())
+            return false;
+
+
+        return true;
     }
 
     #endregion
@@ -751,8 +775,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_EntityInformation = GetComponent<EntityTypeComponent>();
         m_AnimalHealthComponent = GetComponent<HealthComponent>();
         m_ThrowableComponent = GetComponent<ThrowableObjectComponent>();
-        DisableImpactFX();
-        DisableDraggingFX();
 
         m_ThrowableComponent.OnTuggedByLasso += OnPulledByLasso;
         m_ThrowableComponent.OnStartSpinning += OnStartedLassoSpinning;
@@ -812,10 +834,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalEvadingState)).AddOnExit(OnTargetInvalidated));
         m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalWrangledState)).AddOnExit(OnTargetInvalidated));
 
-        m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallState), typeof(AnimalLassoThrownState), typeof(AnimalStaggeredState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
-
-        m_StateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalWrangledRunState), typeof(AnimalWrangledAttackState), typeof(AnimalWrangledState), typeof(AnimalFreeFallState), typeof(AnimalStaggeredState), typeof(AnimalLassoThrownState)).AddOnEnter(EnableDraggingFX).AddOnExit(DisableDraggingFX));
-
+       
         m_StateMachine.AddAnyTransition(typeof(AnimalAbductedState), ShouldEnterAbducted);
         m_StateMachine.AddAnyTransition(typeof(AnimalWrangledState), ShouldEnterWrangled);
         m_StateMachine.AddAnyTransition(typeof(AnimalFreeFallState), ShouldStartStaggering);
@@ -873,29 +892,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         if (m_bIsDead)
             return;
         m_EntityInformation.RemoveFromTrackable();
-    }
-
-
-
-
-    private void EnableImpactFX() 
-    {
-        m_ThrowableComponent.EnableImpacts(true);
-    }
-
-    private void EnableDraggingFX() 
-    {
-        m_ThrowableComponent.EnableDragging(true);
-    }
-
-    private void DisableImpactFX() 
-    {
-        m_ThrowableComponent.EnableImpacts(false);
-    }
-
-    private void DisableDraggingFX() 
-    {
-        m_ThrowableComponent.EnableDragging(false);
     }
 
 	private void OnDestroy()
@@ -1219,7 +1215,6 @@ public class AnimalStaggeredState : AStateBase<AnimalComponent>
     public override void OnEnter()
     {
         StartTimer(0);
-        animalAnimator.SetIdleAnimation();
         animalAnimator.SetStaggeredAnimation();
 
 		Host.SetGeneralPhysics();
@@ -1332,6 +1327,7 @@ public class AnimalFreeFallState : AStateBase<AnimalComponent>
 
 		animalAnimator.SetFreeFallAnimation();
     }
+
 }
 
 public class AnimalAbductedState : AStateBase<AnimalComponent>

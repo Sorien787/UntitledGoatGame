@@ -302,7 +302,8 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 		GetThrowableObject.ThrowObject(m_projectileParams);
 		float throwForce = m_projectileParams.m_fThrowSpeed / GetThrowableObject.GetMass();
 		OnThrowObject?.Invoke(throwForce);
-		DetachFromObject();
+		m_AudioManager.PlayOneShot(m_throwSoundRef);
+		ClearCachedData();
 	}
 
 	private void ProjectLasso()
@@ -323,9 +324,8 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 		}
 	}
 
-	private void DetachFromObject()
+	private void ClearCachedData() 
 	{
-		GetThrowableObject.Released();
 		GetThrowableObject.OnDestroyed -= OnThrowableObjectDestroyed;
 		GetThrowableObject.GetMainTransform.SetParent(null);
 		m_LassoEndTransform.position = GetThrowableObject.GetAttachmentTransform.position;
@@ -333,6 +333,12 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 		m_LassoEndTransform.SetParent(m_LassoNormalContainerTransform);
 		GetEndTransform = m_LassoEndTransform;
 		m_bIsAttachedToObject = false;
+	}
+
+	private void DetachFromObject()
+	{
+		GetThrowableObject.Released();
+		ClearCachedData();
 	}
 
 	private float GetForceFromSwingTime()

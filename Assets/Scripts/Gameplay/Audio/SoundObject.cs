@@ -34,6 +34,9 @@ public class SoundObject : ScriptableObject
 	[Range(0.0f, 1f)]
 	public float volRandomize = 0.0f;
 
+	[Range(0.0f, 100f)]
+	public float distance = 20f;
+
 	public bool loop = false;
 }
 

@@ -86,6 +86,7 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private Transform m_tAnimationTransform;
     [SerializeField] private Transform m_tParentObjectTransform;
     [SerializeField] private Transform m_tScaleObjectTransform;
+    [SerializeField] private IThrowableObjectComponent m_Throwable;
     [SerializeField] private Rigidbody m_vCowRigidBody;
     [SerializeField] private NavMeshAgent m_Agent;
     [SerializeField] private Transform m_ConfusionEffectTiltTransform;
@@ -215,8 +216,12 @@ public class AnimalAnimationComponent : MonoBehaviour
         m_AnimatorStateMachine.AddState(new AnimalBreedingAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalBornAnimationState(m_AudioManager.GetSoundBySoundObject(m_BornSound)));
         m_AnimatorStateMachine.AddState(new AnimalCapturedPulledState(m_AudioManager.GetSoundBySoundObject(m_CapturedPullSound)));
-        m_AnimalComponent = GetComponent<AnimalComponent>();
 
+        m_AnimatorStateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalCapturedPulledState), typeof(AnimalFreeFallAnimationState), typeof(AnimalIdleAnimationState), typeof(AnimalStaggeredAnimationState)).AddOnEnter(EnableDraggingFX).AddOnExit(DisableDraggingFX));
+        m_AnimatorStateMachine.AddStateGroup(StateGroup.Create(typeof(AnimalFreeFallAnimationState), typeof(AnimalIdleAnimationState), typeof(AnimalStaggeredAnimationState)).AddOnEnter(EnableImpactFX).AddOnExit(DisableImpactFX));
+        m_AnimalComponent = GetComponent<AnimalComponent>();
+        DisableImpactFX();
+        DisableDraggingFX();
         m_fSizeVariationActual = (1 + UnityEngine.Random.Range(-m_SizeVariation, m_SizeVariation));
     }
 
@@ -227,7 +232,29 @@ public class AnimalAnimationComponent : MonoBehaviour
         m_CurrentAnimationTime = (m_CurrentAnimationTime + (Time.fixedDeltaTime * m_fAnimationSpeedRandomMult) / m_TotalAnimationTime) % 1;
 	}
 
-	private void Update()
+
+    private void EnableImpactFX()
+    {
+        m_Throwable.EnableImpacts(true);
+    }
+
+    private void EnableDraggingFX()
+    {
+        m_Throwable.EnableDragging(true);
+    }
+
+    private void DisableImpactFX()
+    {
+        m_Throwable.EnableImpacts(false);
+    }
+
+    private void DisableDraggingFX()
+    {
+        m_Throwable.EnableDragging(false);
+    }
+
+
+    private void Update()
 	{
         m_debugTextComponent?.AddLine(string.Format("current animal animation state: {0}", m_AnimatorStateMachine.GetCurrentState().ToString()));
     }
@@ -305,6 +332,12 @@ public class AnimalAnimationComponent : MonoBehaviour
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalWalkingAnimationState));
     }
 
+    public void OnThrownByLasso() 
+    {
+        m_AnimatorStateMachine.RequestTransition(typeof(AnimalIdleAnimationState));
+        m_AudioManager.PlayOneShot(m_DamagedCall);
+    }
+
     public void HasSeenFood() 
     {
         if (TrySetAnimalMood(AnimalMood.Hunting))
@@ -327,11 +360,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     {
         m_TotalAnimationTime = m_WalkAnimationTime;
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalWalkingAnimationState));
-    }
-
-    private void DeathAnimationFinished()   
-    {
-        Destroy(m_tParentObjectTransform.gameObject);
     }
 
     public void SetRunAnimation() 

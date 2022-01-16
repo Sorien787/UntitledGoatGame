@@ -102,12 +102,14 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             if (m_bParticleFXActive)
             {
                 m_DragFX.TurnOnAllSystems();
+                m_AudioManager.SetVolume(m_DragSoundObject, 1);
                 m_AudioManager.Play(m_DragSoundObject);
             }
             else
             {
                 m_DragFX.TurnOffAllSystems();
                 m_AudioManager.StopPlaying(m_DragSoundObject);
+                m_AudioManager.SetVolume(m_DragSoundObject, 1);
             }
         }
         if (m_bParticleFXActive)
@@ -122,6 +124,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     public virtual void ThrowObject(in ProjectileParams pParams)
     {
+        m_bIsWrangled = false;
         OnThrown?.Invoke(pParams);
     }
     

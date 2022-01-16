@@ -79,13 +79,13 @@ public interface IStateGroup
 public class StateMachine<J>
 {
     private readonly List<AStateBase<J>> m_States = new List<AStateBase<J>>();
-    private readonly List<IStateGroup> m_StateGroups = new List<IStateGroup>();
+    private readonly List<IStateGroup> m_UnenteredStateGroups = new List<IStateGroup>();
     private readonly Dictionary<Type, List<IStateTransition>> m_StateTransitions = new Dictionary<Type, List<IStateTransition>>();
     private readonly Dictionary<string, object> m_StateMachineParams = new Dictionary<string, object>();
     private readonly Dictionary<string, Action> m_StateMachineCallbacks = new Dictionary<string, Action>();
     private readonly List<IStateTransition> m_AnyTransitions = new List<IStateTransition>();
 
-    private readonly HashSet<IStateGroup> m_CurrentStateGroupQueue = new HashSet<IStateGroup>();
+    private readonly HashSet<IStateGroup> m_CurrentEnteredStateGroups = new HashSet<IStateGroup>();
     private static readonly List<IStateTransition> m_EmptyTransitionsList = new List<IStateTransition>();
 	private AStateBase<J> m_CurrentState;
     private List<IStateTransition> m_SpecificTransitions;
@@ -106,11 +106,11 @@ public class StateMachine<J>
     {
         if (newStateGroup.CheckIfShouldEnterStateGroupForTransition(m_CurrentState.GetType())) 
         {
-            m_CurrentStateGroupQueue.Push(newStateGroup);
+            m_CurrentEnteredStateGroups.Add(newStateGroup);
         }
 		else 
         {
-            m_StateGroups.Add(newStateGroup);
+            m_UnenteredStateGroups.Add(newStateGroup);
         }
     }
 
@@ -183,21 +183,28 @@ public class StateMachine<J>
                 {
                     m_SpecificTransitions = m_EmptyTransitionsList;
                 }
-                for(int j = 0; j < m_StateGroups.Count; j++) 
+                for (int j = 0; j < m_UnenteredStateGroups.Count; j++)
                 {
-                    IStateGroup stateGroup = m_StateGroups[j];
-                    if (stateGroup.CheckIfShouldEnterStateGroupForTransition(newState)) 
-                    {
-                        m_CurrentStateGroupQueue.Add(stateGroup);
-                        m_StateGroups.RemoveAt(j);
-                        break;
-                    }
+                    IStateGroup stateGroup = m_UnenteredStateGroups[j];
+                    if (!stateGroup.CheckIfShouldEnterStateGroupForTransition(newState))
+                        continue;
+                    m_CurrentEnteredStateGroups.Add(stateGroup);
+                    m_UnenteredStateGroups.RemoveAt(j);
+                    j--;
                 }
-                foreach(IStateGroup stateGroup in m_CurrentStateGroupQueue)
+                List<IStateGroup> stateGroupsToRemove = new List<IStateGroup>();
+                foreach (IStateGroup stateGroup in m_CurrentEnteredStateGroups)
                 {
-                    stateGroup.CheckIfShouldExitStateGroupForTransition(newState);
+                    if (!stateGroup.CheckIfShouldExitStateGroupForTransition(newState))
+                        continue;
+                    stateGroupsToRemove.Add(stateGroup);
+                }
+                foreach (IStateGroup stateGroup in stateGroupsToRemove) 
+                {
+                    m_CurrentEnteredStateGroups.Remove(stateGroup);
+                    m_UnenteredStateGroups.Add(stateGroup);
+                }
 
-                }
                 m_CurrentState.OnExit();
                 m_CurrentState = m_States[i];
                 m_timeInState = Time.time;
@@ -213,7 +220,7 @@ public class StateMachine<J>
         m_timeInState += deltaTime;
         for (int i = 0; i < m_AnyTransitions.Count; i++) 
         {
-            if (m_AnyTransitions[i].TypeToTransitionTo != m_CurrentState.GetType() && m_AnyTransitions[i].AttemptTransition)
+            if (!m_AnyTransitions[i].TypeToTransitionTo.IsAssignableFrom(m_CurrentState.GetType()) && m_AnyTransitions[i].AttemptTransition)
             {
                 RequestTransition(m_AnyTransitions[i].TypeToTransitionTo);
                 m_CurrentState.Tick();

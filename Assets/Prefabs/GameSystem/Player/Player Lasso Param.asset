@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a70ddf5251721468313a3d95844ad4, type: 3}
   m_Name: Player Lasso Param
   m_EditorClassIdentifier: 
-  m_LassoReturnAcceleration: 2.52
-  m_MaxLassoReturnSpeed: 12.5
-  m_LassoLength: 19.74
+  m_LassoReturnAcceleration: 2.784
+  m_MaxLassoReturnSpeed: 14.07
+  m_LassoLength: 27.19
   m_GrabDistance: 2.015
   m_ThrowForceCurve:
     serializedVersion: 2
@@ -40,7 +40,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_MaxForceForPull: 1845
+  m_MaxForceForPull: 2000
   m_ForceIncreasePerPull:
     serializedVersion: 2
     m_Curve:
@@ -113,7 +113,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_JerkTimeForPull: 0.241
+  m_JerkTimeForPull: 0.282
   m_LassoRelaxTime: 5.44
   m_TimeBeforeUserCanThrow: 0.2
   m_MaxTimeSpinning: 1.535

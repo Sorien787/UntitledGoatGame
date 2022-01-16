@@ -13,6 +13,8 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
     [SerializeField] private List<GameObject> m_listOfObjsToChangeLayer = new List<GameObject>();
     [SerializeField] private int m_ThrownLayer = 0;
     [SerializeField] private LayerMask m_GroundImpactLayermask;
+    [SerializeField] private SoundObject m_ThrowinSound;
+    [SerializeField] private AudioManager m_Audio;
 
     private bool m_bIsFalling = false;
     private ProjectileParams projectile;
@@ -59,8 +61,9 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
         m_rMovingBody.position = projectile.EvaluatePosAtTime(0.0f);
         m_rMovingBody.rotation = projectile.EvaluateRotAtTime(0.0f);
 		m_positionLastFrame = m_rMovingBody.position;
+        m_Audio.Play(m_ThrowinSound);
 
-		foreach (GameObject go in m_listOfObjsToChangeLayer) 
+        foreach (GameObject go in m_listOfObjsToChangeLayer) 
         {
             m_ObjectsToChangeBack.Add(new Tuple<GameObject, int>(go, go.layer));
             go.layer = m_ThrownLayer;
@@ -72,6 +75,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
     public void StopThrowingObject() 
     {
 		StopThrowingInternal();
+        m_Audio.StopPlaying(m_ThrowinSound);
     }
 
     private void StopThrowingInternal() 
@@ -88,7 +92,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 		OnCollide(other.transform.position, Vector3.zero, other.gameObject);
 	}
 
-	private void OnCollisionStay(Collision collision)
+	private void OnCollisionEnter(Collision collision)
     {
         OnCollide(collision.GetContact(0).point, collision.GetContact(0).normal, collision.gameObject);
     }
@@ -97,7 +101,9 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 	{   
 		if (m_bIsFalling)
         {
-			m_Listeners.ForEachListener((IFreeFallListener listener) => 
+            m_rMovingBody.velocity = projectile.EvaluateVelocityAtTime(m_fCurrentTime);
+            m_rMovingBody.angularVelocity = projectile.m_vRotAxis * projectile.m_fAngVel;
+            m_Listeners.ForEachListener((IFreeFallListener listener) => 
 			{
 				listener.OnCollide(pos, norm, go);
 			});

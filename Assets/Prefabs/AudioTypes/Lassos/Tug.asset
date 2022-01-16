@@ -23,4 +23,5 @@ MonoBehaviour:
   maxVolumeModifier: 1
   pitchRandomize: 0.071
   volRandomize: 0
+  distance: 16.1
   loop: 0

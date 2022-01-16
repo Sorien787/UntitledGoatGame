@@ -98,16 +98,16 @@ public class AnimalMovementComponent : MonoBehaviour
 
     public void RunInDirection(Vector3 dir) 
     {
-        if (!m_PhysicalEntity.IsGrounded)
-        {
-            m_AnimalRigidBody.freezeRotation = false;
-            return;
-        }
-		else 
-        {
-            m_AnimalRigidBody.freezeRotation = true;
-        }
-        Vector3 targetUp = m_PhysicalEntity.GetGroundedNorm;
+		if (!m_PhysicalEntity.IsGrounded)
+		{
+			m_AnimalRigidBody.freezeRotation = false;
+			return;
+		}
+		else
+		{
+			m_AnimalRigidBody.freezeRotation = true;
+		}
+		Vector3 targetUp = m_PhysicalEntity.GetGroundedNorm;
         Vector3 targetForward = Vector3.ProjectOnPlane(dir, targetUp).normalized;
         Vector3 currentVelocity = (m_AnimalRigidBody.position - m_vPositionLastFrame)/Time.deltaTime;
         float percentageTowardsGoalVelocity = Mathf.Clamp(Vector3.Dot(targetForward, currentVelocity) / m_RunSpeed, 0, 2f);

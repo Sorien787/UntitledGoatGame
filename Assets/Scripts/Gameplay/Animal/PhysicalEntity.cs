@@ -21,12 +21,17 @@ public class PhysicalEntity : MonoBehaviour, IPauseListener
 	{
         m_Body = GetComponent<Rigidbody>();
         m_PhysTransform = transform;
+        m_FullAngFriction = m_Body.angularDrag;
+        m_FullFriction = m_Body.drag;
         m_Manager.AddToPauseUnpause(this);
     }
 
+    private float m_FullFriction;
+    private float m_FullAngFriction;
+
 	private void Update()
     {
-        m_bIsGrounded = Physics.OverlapSphereNonAlloc(m_PhysTransform.position, 0.5f, m_colliderResults, m_Manager.GetGroundLayer()) > 0;
+        //m_bIsGrounded = Physics.OverlapSphereNonAlloc(m_PhysTransform.position, 0.5f, m_colliderResults, m_Manager.GetGroundLayer()) > 0;
     }
 
     public void Pause()
@@ -37,6 +42,8 @@ public class PhysicalEntity : MonoBehaviour, IPauseListener
             m_cachedVelocity = m_Body.velocity;
             m_cachedAngVelocity = m_Body.angularVelocity;
             m_Body.isKinematic = true;
+            m_Body.drag = 0.5f;
+            m_Body.angularDrag = 0.5f;
         }
     }
 
@@ -72,6 +79,9 @@ public class PhysicalEntity : MonoBehaviour, IPauseListener
                 m_LastGroundedPosition /= collision.contactCount;
 
                 m_bIsGrounded = true;
+
+                m_Body.drag = m_FullFriction;
+                m_Body.angularDrag = m_FullAngFriction;
             }
 
 
@@ -82,6 +92,8 @@ public class PhysicalEntity : MonoBehaviour, IPauseListener
         if (m_Manager.IsGroundLayer(collision.gameObject.layer))
         {
             m_bIsGrounded = false;
+            m_Body.drag = 0.5f;
+            m_Body.angularDrag = 0.5f;
         }
     }
 

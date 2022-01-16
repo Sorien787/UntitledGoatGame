@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
 			AudioSource source = gameObject.AddComponent<AudioSource>();
 			source.loop = sound.loop;
 			source.rolloffMode = AudioRolloffMode.Linear;
-			source.maxDistance = 40.0f;
+			source.maxDistance = sound.distance;
 			Sound newSound = new Sound(sound, source);
 			m_SoundDict.Add(sound, newSound);
 		}

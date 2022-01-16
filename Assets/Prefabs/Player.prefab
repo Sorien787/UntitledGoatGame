@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2735400669585439890}
   - component: {fileID: 7223935999242473423}
   m_Layer: 13
-  m_Name: CamContainer
+  m_Name: CamWalkAnimator
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -426,7 +426,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3338445512843361988}
   serializedVersion: 2
-  m_Mass: 9.51
+  m_Mass: 7.03
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -759,7 +759,6 @@ GameObject:
   - component: {fileID: 3338445513214232711}
   - component: {fileID: 3338445513214232709}
   - component: {fileID: 3338445513214232710}
-  - component: {fileID: 4648307587165715665}
   m_Layer: 13
   m_Name: LassoObject
   m_TagString: Untagged
@@ -854,102 +853,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dde579c0715a55a4797cc21450bd0b7b, type: 2}
   - {fileID: 11400000, guid: 7292b50582ad3ec4d823101fc2ba3333, type: 2}
   - {fileID: 11400000, guid: 2ac6413e92e6f8c47a3f20aeb4c6cdd1, type: 2}
---- !u!82 &4648307587165715665
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3338445513214232705}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &3338445513539745686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1507,7 +1410,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3338445514369759839}
-  m_LocalRotation: {x: -0, y: -0.23458841, z: -0, w: 0.97209483}
+  m_LocalRotation: {x: 0, y: -0.2345908, z: 0, w: 0.97209424}
   m_LocalPosition: {x: -10.19, y: 14.33, z: -20.33}
   m_LocalScale: {x: 1, y: 1.2, z: 1}
   m_Children:
@@ -2007,6 +1910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4954449043776117430}
   - component: {fileID: 6720601248745293316}
+  - component: {fileID: 1306559532}
   m_Layer: 13
   m_Name: CamAnimatorContainer
   m_TagString: Untagged
@@ -2050,3 +1954,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1306559532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5119073327394425658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4268842673c6574394c13ae1c4ecd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerCamera: {fileID: 2735400669585439901}
