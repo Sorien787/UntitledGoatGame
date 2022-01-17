@@ -14,6 +14,7 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 	[SerializeField] private PlayerMovement m_PlayerMovement;
 	[SerializeField] private LassoInputComponent m_LassoStart;
     [SerializeField] private AudioManager m_AudioManager = default;
+    [SerializeField] private Transform m_CameraLookRotatorTransform = default;
 
     [Header("--- Cam Shake ---")]
 	[SerializeField] private EZCameraShake.CameraShaker m_CameraShaker;
@@ -41,12 +42,20 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 	[SerializeField] private float m_fMouseSensitivityMultiplier = 100.0f;
 
 	private float m_fCamPoint;
-    float m_fTargetFOV;
-    float m_fCurrentFOV;
+    private float m_fTargetFOV;
+    private  float m_fCurrentFOV;
     private Transform m_tCamTransform;
     private Transform m_tFocusTransform;
     private StateMachine<PlayerCameraComponent> m_CameraStateMachine;
     private Type m_CachedType;
+
+    private float m_CurrentTime = 0.0f;
+    private float currentMovement = 0.0f;
+    private float currentMovementAcceleration = 0.0f;
+    private Vector3 currentVelocity = Vector3.zero;
+    private Vector3 targetVelocity = Vector3.zero;
+    private float m_fTimeToFocus = 1.0f;
+    private Quaternion m_CurrentQuatVelocity = Quaternion.identity;
 
     private void OnSetPullStrength(float force, float yankSize) 
     {
@@ -55,18 +64,21 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 
     private void OnSetPullingObject(ThrowableObjectComponent pullingObject) 
     {
-        SetFocusedTransform(pullingObject.GetCameraFocusTransform);
+        SetFocusedTransform(pullingObject.GetCameraFocusTransform, typeof(ObjectFocusLook), 0.5f);
     }
 
     private void OnStoppedPullingObject() 
     {
         ClearFocusedTransform();
     }
-    public void SetFocusedTransform(Transform focusTransform) 
+
+    public void SetFocusedTransform(Transform focusTransform, Type stateToTransitionTo, float focusTime) 
     {
+        m_fTimeToFocus = focusTime;
+        m_CurrentQuatVelocity = Quaternion.identity;
         m_tFocusTransform = focusTransform;
-        m_CameraStateMachine.RequestTransition(typeof(ObjectFocusLook));
-        m_CachedType = typeof(ObjectFocusLook);
+        m_CameraStateMachine.RequestTransition(stateToTransitionTo);
+        m_CachedType = stateToTransitionTo;
     }
 
     private void OnJumped() 
@@ -93,7 +105,7 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
         StartCoroutine(AnimCoroutine(throwForce));
 	}
 
-    private float m_CurrentTime = 0.0f;
+
     private IEnumerator AnimCoroutine(float throwForce) 
     {
         m_CurrentTime = 0.0f;
@@ -106,27 +118,23 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
         m_fTargetFOV = m_fDefaultFOV;
     }
 
-	float currentMovement = 0.0f;
-	float currentMovementAcceleration = 0.0f;
     public void OnSetMovementSpeed(float speed) 
     {
 		currentMovement = Mathf.SmoothDamp(currentMovement, speed, ref currentMovementAcceleration, 0.15f);
         m_CameraAnimator.SetFloat(m_MovementSpeedAnimString, currentMovement * (m_SettingsManager.ViewBobbing ? 1 : 0.001f));
         m_AudioManager.SetVolume(m_StepSoundObject, currentMovement);
     }
-    private bool m_bViewBobbingEnabled = false;
 	public void OnStep()
 	{
         m_AudioManager.PlayOneShot(m_StepSoundObject);
 	}
 
-	Vector3 current = Vector3.zero;
-	Vector3 velocity = Vector3.zero;
+
 	public void OnMovingInput(Vector3 input)
 	{
-		current = Vector3.SmoothDamp(current, input, ref velocity, 0.1f);
-		m_CameraAnimator.SetFloat(m_LRTiltAnimString, current.x);
-		m_CameraAnimator.SetFloat(m_FBTiltAnimString, current.z);
+		currentVelocity = Vector3.SmoothDamp(currentVelocity, input, ref targetVelocity, 0.1f);
+		m_CameraAnimator.SetFloat(m_LRTiltAnimString, currentVelocity.x);
+		m_CameraAnimator.SetFloat(m_FBTiltAnimString, currentVelocity.z);
 	}
 
     public void ClearFocusedTransform() 
@@ -164,6 +172,7 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
 
         m_CameraStateMachine = new StateMachine<PlayerCameraComponent>(new PlayerControlledLook(), this);
         m_CameraStateMachine.AddState(new ObjectFocusLook());
+        m_CameraStateMachine.AddState(new ObjectFocusLookWithControls());
         m_CameraStateMachine.AddState(new CameraIdleState());
         m_tCamTransform = transform;
 		m_fDefaultFOV = m_SettingsManager.FoV;
@@ -205,6 +214,19 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
         m_PlayerCamera.fieldOfView = m_fCurrentFOV;
     }
 
+    public void AlignBodyAndTiltAndResetCameraLook() 
+    {
+        Quaternion m_TotalQuat = m_CameraLookRotatorTransform.rotation;
+        float elevationAng = m_TotalQuat.eulerAngles.x;
+        float yawAng = m_TotalQuat.eulerAngles.y;
+
+        m_tBodyTransform.rotation = Quaternion.Euler(0, yawAng, 0);
+        m_tCamTransform.rotation = Quaternion.Euler(elevationAng, 0, 0);
+        m_CameraLookRotatorTransform.localRotation = Quaternion.Euler(0, 0, 0);
+
+    }
+
+
     public void ProcessMouseInput() 
     {
         float mouseX = Input.GetAxis("Mouse X") * m_fMouseSensitivityMultiplier * m_SettingsManager.MouseSensitivity * Time.deltaTime;
@@ -223,12 +245,19 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
         // rotate body by z in plane towards object
         // rotate cam around x towards object
         Vector3 lookDir = m_tFocusTransform.position - m_tCamTransform.position;
+        Vector3 right = Vector3.Cross(lookDir, Vector3.up);
+        Vector3 up = Vector3.Cross(right, lookDir);
+        Quaternion targetCamQuat = Quaternion.LookRotation(lookDir, up);
 
-        Quaternion targetCamQuat = Quaternion.FromToRotation(m_tCamTransform.forward, Vector3.ProjectOnPlane(lookDir, m_tCamTransform.right)) * m_tCamTransform.rotation;
-        m_tCamTransform.rotation = Quaternion.RotateTowards(m_tCamTransform.rotation, targetCamQuat, 60.0f * Time.deltaTime);
+        Quaternion currentCamQuat = m_CameraLookRotatorTransform.rotation;
+        Quaternion rotationThisFrame = UnityUtils.UnityUtils.SmoothDampQuat(currentCamQuat, targetCamQuat, ref m_CurrentQuatVelocity, m_fTimeToFocus);
+        m_CameraLookRotatorTransform.rotation = rotationThisFrame;
 
-        Quaternion targetBodyQuat = Quaternion.FromToRotation(m_tBodyTransform.forward, Vector3.ProjectOnPlane(lookDir, Vector3.up)) * m_tBodyTransform.rotation;
-        m_tBodyTransform.rotation = Quaternion.RotateTowards(m_tBodyTransform.rotation, targetBodyQuat, 60.0f * Time.deltaTime);
+        //Quaternion targetCamQuat = Quaternion.FromToRotation(m_tCamTransform.forward, Vector3.ProjectOnPlane(lookDir, m_tCamTransform.right)) * m_tCamTransform.rotation;
+        //m_tCamTransform.rotation = Quaternion.RotateTowards(m_tCamTransform.rotation, targetCamQuat, 60.0f * Time.deltaTime);
+
+        //Quaternion targetBodyQuat = Quaternion.FromToRotation(m_tBodyTransform.forward, Vector3.ProjectOnPlane(lookDir, Vector3.up)) * m_tBodyTransform.rotation;
+        //m_tBodyTransform.rotation = Quaternion.RotateTowards(m_tBodyTransform.rotation, targetBodyQuat, 60.0f * Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -254,7 +283,28 @@ public class ObjectFocusLook : AStateBase<PlayerCameraComponent>
 		Host.ProcessLookTowardsTransform();
 		Host.ProcessTargetFOV();
     }
+
+	public override void OnExit()
+	{
+        Host.AlignBodyAndTiltAndResetCameraLook();
+	}
 }
+
+public class ObjectFocusLookWithControls : AStateBase<PlayerCameraComponent>
+{
+    public override void Tick()
+    {
+        Host.ProcessMouseInput();
+        Host.ProcessLookTowardsTransform();
+        Host.ProcessTargetFOV();
+    }
+
+	public override void OnExit()
+	{
+        Host.AlignBodyAndTiltAndResetCameraLook();
+    }
+}
+
 
 public class CameraIdleState : AStateBase <PlayerCameraComponent>
 {

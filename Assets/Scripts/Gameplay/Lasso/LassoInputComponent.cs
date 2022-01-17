@@ -20,6 +20,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	[SerializeField] private LineRenderer m_HandRopeLineRenderer;
 	[SerializeField] private LineRenderer m_LassoSpinningLoopLineRenderer;
 	[SerializeField] private LineRenderer m_TrajectoryLineRenderer;
+	[SerializeField] private Marker m_Marker;
 
 	[Header("Gameplay References")]
 	[SerializeField] private GameObject m_LassoEndPoint;
@@ -28,6 +29,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
     [SerializeField] private AudioManager m_AudioManager;
 	[SerializeField] private UIObjectReference m_PowerBarObjectReference;
 	[SerializeField] private UIObjectReference m_CanGrabUIReference;
+	[SerializeField] private LayerMask m_TrajectoryRendererLayerMaskCollider;
 
 	[Header("Game System References")]
 	[SerializeField] private ControlBinding m_TriggerBinding;
@@ -111,11 +113,9 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	private ProjectileParams m_projectileParams;
 	private CanvasGroup m_CanGrabCanvasGroup;
 	private Collider[] m_EndColliders;
-	private PlayerComponent m_PlayerComponent;
 	private ThrowablePlayerComponent m_PlayerThrowableComponent;
 	private FreeFallTrajectoryComponent m_LassoFreeFallComponent;
 	private Transform m_LassoLoopTransform;
-	private PlayerMovement m_PlayerMovementComponent;
 
 	#endregion
 
@@ -125,6 +125,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	{
 		m_PowerBarAnimator = m_Manager.GetUIElementFromReference(m_PowerBarObjectReference).GetComponent<Animator>();
 		m_CanGrabCanvasGroup = m_Manager.GetUIElementFromReference(m_CanGrabUIReference).GetComponent<CanvasGroup>();
+		m_Marker.transform.parent = null;
 	}
 
 	private void OnDestroy()
@@ -147,8 +148,6 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
     {
 		m_EndColliders = m_LassoEndPoint.GetComponentsInChildren<Collider>();
 		m_PlayerThrowableComponent = m_PlayerObject.GetComponent<ThrowablePlayerComponent>();
-		m_PlayerMovementComponent = m_PlayerObject.GetComponent<PlayerMovement>();
-		m_PlayerComponent = m_PlayerObject.GetComponent<PlayerComponent>();
 
 		m_LassoFreeFallComponent = m_LassoEndPoint.GetComponent<FreeFallTrajectoryComponent>();
 		m_LassoLoopTransform = m_LassoEndPoint.transform;
@@ -403,12 +402,6 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 		m_LassoSpinningLoopLineRenderer.enabled = enabled;
 	}
 
-	public void SetTrajectoryRenderer(bool enabled)
-	{
-		m_TrajectoryLineRenderer.positionCount = 0;
-		m_TrajectoryLineRenderer.enabled = enabled;
-	}
-
 	public void RenderThrownLoop()
     {
         Vector3 displacement = GetEndTransform.position - GetLassoGrabPoint.position;
@@ -479,19 +472,82 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
         }
     }
 
+	public void SetTrajectoryRenderer(bool enabled)
+	{
+		m_fRenderTrajectoryTime = 0.0f;
+		m_TrajectoryLineRenderer.positionCount = 0;
+		m_TrajectoryLineRenderer.enabled = enabled;
+		ClearProjectedLandingMarker();
+	}
+
+	private bool m_bWasMarkerBeingShown = false;
+
+	private void ClearProjectedLandingMarker() 
+	{
+		if (m_bIsFollowingMarker)
+		{
+			//m_PlayerCam.ClearFocusedTransform();
+			m_bIsFollowingMarker = false;
+		}
+
+		if (!m_bWasMarkerBeingShown)
+			return;
+		m_bWasMarkerBeingShown = false;
+
+		m_Marker.Disable();
+	}
+
+	private void SetProjectedLandingMarker(Vector3 landingSpot, Vector3 landingNormal) 
+	{
+		m_Marker.SetPosition(landingSpot);
+		m_Marker.SetRotation(landingNormal);
+
+		if (m_fRenderTrajectoryTime > 1.0f && !m_bIsFollowingMarker && m_bWasMarkerBeingShown) 
+		{
+			m_bIsFollowingMarker = true;
+			//m_PlayerCam.SetFocusedTransform(m_Marker.GetTransform, typeof(ObjectFocusLookWithControls), 0.2f);
+		}
+
+		if (m_bWasMarkerBeingShown)
+			return;
+		m_bWasMarkerBeingShown = true;
+		m_Marker.Enable();
+
+	}
+
+
+	private float m_fRenderTrajectoryTime = 0.0f;
+	private bool m_bIsFollowingMarker = false;
 	public void RenderTrajectory() 
     {
+		m_fRenderTrajectoryTime += Time.deltaTime;
+		float timeToProjectForwards = 2.0f;
         m_projectileParams = new ProjectileParams(GetThrowableObject, GetForceFromSwingTime(), m_ProjectionPoint.forward, m_LassoGrabPoint.position);
         int posCount = 40;
-        m_TrajectoryLineRenderer.positionCount = posCount;
-        for (int i = 0; i < posCount; i++) 
-        {
-            float time = (float)i /20;
-            
-            m_TrajectoryLineRenderer.SetPosition(i, m_projectileParams.EvaluatePosAtTime(time));
-        }
+		Vector3 oldPosition = m_projectileParams.EvaluatePosAtTime(0);
 
-    }
+        m_TrajectoryLineRenderer.positionCount = posCount;
+		m_TrajectoryLineRenderer.SetPosition(0, oldPosition);
+		int realPosCount = 1;
+        while (realPosCount < posCount) 
+        {
+
+			float time = ((float)realPosCount / posCount )* timeToProjectForwards;
+			Vector3 newPosition = m_projectileParams.EvaluatePosAtTime(time);
+			m_TrajectoryLineRenderer.SetPosition(realPosCount, newPosition);
+			realPosCount++;
+			Vector3 oldToNew = newPosition - oldPosition;
+			if (Physics.Raycast(oldPosition, oldToNew.normalized, out RaycastHit hit, oldToNew.magnitude, m_TrajectoryRendererLayerMaskCollider, QueryTriggerInteraction.Ignore))
+			{
+				SetProjectedLandingMarker(hit.point, hit.normal);
+				break;
+			}
+			oldPosition = newPosition;
+        }
+		if (realPosCount == posCount)
+			ClearProjectedLandingMarker();
+		m_TrajectoryLineRenderer.positionCount = realPosCount;
+	}
 
 	#endregion
 }
