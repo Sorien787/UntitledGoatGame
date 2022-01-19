@@ -8,8 +8,8 @@ public class InanimateObjectComponent : MonoBehaviour, IFreeFallListener
     private StateMachine<InanimateObjectComponent> m_StateMachine;
 
     [Header("Object References")]
-    [SerializeField] private ThrowableObjectComponent m_throwableObjectComponent;
-    [SerializeField] private FreeFallTrajectoryComponent m_freeFallTrajectoryComponent;
+    [SerializeField] protected ThrowableObjectComponent m_throwableObjectComponent;
+    [SerializeField] protected FreeFallTrajectoryComponent m_freeFallTrajectoryComponent;
     [SerializeField] private Rigidbody m_objectRigidBody;
 
 
@@ -26,6 +26,15 @@ public class InanimateObjectComponent : MonoBehaviour, IFreeFallListener
         m_StateMachine = new StateMachine<InanimateObjectComponent>(new IObjectPhysicalizedState(), this);
 
         m_StateMachine.AddState(new IObjectControlledState());
+    }
+
+    protected virtual void Start() 
+    {
+        InitializeMachine();
+    }
+
+    protected void InitializeMachine() 
+    {
         m_StateMachine.InitializeStateMachine();
     }
 
