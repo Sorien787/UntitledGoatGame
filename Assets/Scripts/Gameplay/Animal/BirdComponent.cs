@@ -17,7 +17,8 @@ public class BirdComponent : InanimateObjectComponent
     private RoostComponent m_CurrentRoost;
     public bool TryFindRoostingSpot() 
     {
-        return m_Manager.GetRoostingSpot(ref m_CurrentRoost);
+		return false;
+        //return m_Manager.GetRoostingSpot(ref m_CurrentRoost);
     }
     public void ClearRoostingSpot() 
     {
@@ -37,13 +38,17 @@ public class BirdComponent : InanimateObjectComponent
 
 		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(BirdRoostingState), typeof(BirdLimpState)).AddOnExit(ClearRoostingSpot));
 
-		m_StateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), );
-		m_StateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdTakeoffState), );
+		m_StateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), ShouldTakeOff);
+		m_StateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdTakeoffState), ShouldTakeOff);
 
         m_StateMachine.InitializeStateMachine();
     }
 
 
+	private bool ShouldTakeOff() 
+	{
+		return false;
+	}
 
     private void OnStopDoingBirdBehaviour() 
     {
@@ -74,7 +79,7 @@ public class BirdComponent : InanimateObjectComponent
 	}
 	public Vector3 GetNewPatrolDestination()
 	{
-
+		return Vector3.zero;
 	}
 
 	public void OnReachedPatrolWaypoint() 

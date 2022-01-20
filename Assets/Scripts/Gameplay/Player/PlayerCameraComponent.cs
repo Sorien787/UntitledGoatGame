@@ -81,16 +81,21 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
         m_CachedType = stateToTransitionTo;
     }
 
+    bool m_bIsOnGround = false;
+
     private void OnJumped() 
     {
         m_CameraAnimator.SetBool(m_JumpString, true);
+
     }
     private void OnNotHitGround() 
     {
+        m_bIsOnGround = false;
         m_CameraAnimator.SetBool(m_GroundedAnimString, false);
     }
     private void OnHitGround(float impactSpeed) 
     {
+        m_bIsOnGround = true;
         m_CameraAnimator.SetBool(m_JumpString, false);
         m_CameraAnimator.SetBool(m_GroundedAnimString, true);
 
@@ -126,7 +131,8 @@ public class PlayerCameraComponent : MonoBehaviour, IPauseListener
     }
 	public void OnStep()
 	{
-        m_AudioManager.PlayOneShot(m_StepSoundObject);
+        if (m_bIsOnGround)
+            m_AudioManager.PlayOneShot(m_StepSoundObject);
 	}
 
 

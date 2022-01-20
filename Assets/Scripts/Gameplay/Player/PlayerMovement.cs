@@ -38,24 +38,30 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 	[SerializeField] private ControlBinding m_JumpBinding;
 
     [SerializeField] private SoundObject m_ImpactSoundObject;
-    [SerializeField] private SoundObject m_FootStepSoundObject;
     [SerializeField] private SoundObject m_JumpSoundObject;
     [SerializeField] private SoundObject m_ImpactLightSoundObject;
+
+    [SerializeField] private AnimationCurve m_angleWalkCurve;
+    [SerializeField] private float m_angleAtMaxSlide = 10.0f;
+    [SerializeField] private AnimationCurve m_slidingSpeedCurve;
 
     public event Action OnSuccessfulJump;
     public event Action<float> OnHitGround;
     public event Action OnNotHitGround;
     public event Action<float> OnSetMovementSpeed;
 	public event Action<Vector3> OnMovingInput;
-    private Vector3 m_vVelocity;
-    float m_fCurrentSpinningMassSpeedDecrease = 1.0f;
-    float m_fCurrentSpinningStrengthSpeedDecrease = 1.0f;
-    float m_fCurrentDraggingSpeedDecrease = 1.0f;
+    private Vector3 m_externalVelocity;
+    private bool m_bWasGroundedLastFrame = false;
+    private Vector3 m_PositionLastFrame = Vector3.zero;
+    private Vector3 m_MoveAcceleration = Vector3.zero;
+    private Vector3 m_CurrentMoving = Vector3.zero;
+    private Vector3 m_LastGroundedNormal = Vector3.up;
+    private bool m_bIsSliding = false;
+    private float m_fCurrentSpinningMassSpeedDecrease = 1.0f;
+    private float m_fCurrentSpinningStrengthSpeedDecrease = 1.0f;
+    private float m_fCurrentDraggingSpeedDecrease = 1.0f;
     private float m_fSpeed;
-
-    bool m_bHasJumped = false;
-
-    bool m_bIsGrounded;
+    private bool m_bIsGrounded;
 
     // Start is called before the first frame update
     void Start()
@@ -124,23 +130,33 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
     {
         m_fCurrentDraggingSpeedDecrease = 1.0f;
     }
-    bool m_bWasGroundedLastFrame = false;
-    Vector3 positionLastFrame;
+
     // Update is called once per frame
 
     void OnThrown(ProjectileParams throwDetails) 
     {
-        m_vVelocity = throwDetails.EvaluateVelocityAtTime(0);
+        m_externalVelocity = throwDetails.EvaluateVelocityAtTime(0);
     }
 
-    Vector3 m_MoveAcceleration = Vector3.zero;
-    Vector3 m_CurrentMoving = Vector3.zero;
 
-    void FixedUpdate()
+    private float m_fJumpCooldown = 0.0f;
+    [SerializeField] [Range(0.0f, 45.0f)] private float m_SlopeLimit = 20.0f;
+
+    void OnControllerColliderHit(ControllerColliderHit hit) 
     {
-        float currentMultiplier = m_fCurrentSpinningMassSpeedDecrease * m_fCurrentSpinningStrengthSpeedDecrease * m_fCurrentDraggingSpeedDecrease;
-        m_fSpeed = m_fMaxSpeed * currentMultiplier;
-        m_bIsGrounded = Physics.CheckSphere(m_tGroundTransform.position, m_fGroundDistance, groundMask);
+        m_LastGroundedNormal = hit.normal;
+    }
+
+	private void OnDrawGizmosSelected()
+	{
+        Gizmos.DrawWireSphere(m_tGroundTransform.position, m_fGroundDistance);
+	}
+
+	void FixedUpdate()
+    {
+        float swingingMultiplier = m_fCurrentSpinningMassSpeedDecrease * m_fCurrentSpinningStrengthSpeedDecrease * m_fCurrentDraggingSpeedDecrease;
+        m_fSpeed = m_fMaxSpeed * swingingMultiplier;
+        m_bIsGrounded = Physics.CheckSphere(m_tGroundTransform.position, m_fGroundDistance, groundMask) || m_CharacterController.isGrounded;
 
 		float forwardSpeed = m_ForwardBinding.GetBindingVal() - m_BackBinding.GetBindingVal();
 		float sideSpeed = m_RightBinding.GetBindingVal() - m_LeftBinding.GetBindingVal();
@@ -152,13 +168,20 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 
 		OnMovingInput?.Invoke(new Vector3(forwardSpeed, 0, sideSpeed));
 
+        float angleInternal = Vector3.Angle(Vector3.up, m_LastGroundedNormal);
+        float angleMultiplier = 1.0f;
+        if (angleInternal > m_SlopeLimit)
+            angleMultiplier = m_angleWalkCurve.Evaluate((angleInternal - m_SlopeLimit) / m_angleAtMaxSlide);
 
-		if (m_CharacterController.isGrounded)
+        if (m_bIsGrounded)
         {
-			Vector3 horizontalVelocity = Vector3.ProjectOnPlane(m_vVelocity, Vector3.up) / 1.1f;
-			m_vVelocity.x = horizontalVelocity.x;
-			m_vVelocity.z = horizontalVelocity.z;
-            m_CurrentMoving = Vector3.SmoothDamp(m_CurrentMoving, playerInputMoveDir * m_fSpeed * currentMultiplier, ref m_MoveAcceleration, 0.1f);
+			Vector3 horizontalVelocity = Vector3.ProjectOnPlane(m_externalVelocity, Vector3.up) / 1.1f;
+			m_externalVelocity.x = horizontalVelocity.x;
+			m_externalVelocity.z = horizontalVelocity.z;
+
+
+
+            m_CurrentMoving = Vector3.SmoothDamp(m_CurrentMoving, playerInputMoveDir * m_fSpeed * swingingMultiplier * angleMultiplier, ref m_MoveAcceleration, 0.1f);
             if (!m_bWasGroundedLastFrame) 
             {
                 m_AudioManager.PlayOneShot(m_ImpactLightSoundObject);
@@ -171,26 +194,40 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
             {
                 OnNotHitGround?.Invoke();
             }
-            m_CurrentMoving = Vector3.SmoothDamp(m_CurrentMoving, playerInputMoveDir * m_fSpeed * currentMultiplier, ref m_MoveAcceleration, 0.5f);
-            m_vVelocity.y += m_fGravity * Time.fixedDeltaTime;
+            m_CurrentMoving = Vector3.SmoothDamp(m_CurrentMoving, playerInputMoveDir * m_fSpeed * swingingMultiplier * angleMultiplier, ref m_MoveAcceleration, 0.5f);
+            m_externalVelocity.y += m_fGravity * Time.fixedDeltaTime;
         }
 
-        m_bWasGroundedLastFrame = m_CharacterController.isGrounded;
+        m_bWasGroundedLastFrame = m_bIsGrounded;
 
-
-
-        if (m_JumpBinding.IsBindingPressed() && m_CharacterController.isGrounded) 
+        if (m_JumpBinding.IsBindingPressed() && m_bIsGrounded && m_fJumpCooldown == 0.0f) 
         {
             m_AudioManager.PlayOneShot(m_JumpSoundObject);
+            m_fJumpCooldown += 0.3f;
             OnSuccessfulJump?.Invoke();
-            m_vVelocity.y = Mathf.Sqrt(m_fJumpHeight * -2f * currentMultiplier * m_fGravity);
-        }    
+            m_externalVelocity.y = Mathf.Sqrt(angleMultiplier * m_fJumpHeight * -2f * swingingMultiplier * m_fGravity);
+        }
 
-        m_CharacterController.Move(m_CurrentMoving * Time.fixedDeltaTime + m_vVelocity * Time.fixedDeltaTime);
+        m_fJumpCooldown = Mathf.Max(0, m_fJumpCooldown - Time.deltaTime);
+
+        float angle = Vector3.Angle(Vector3.up, m_LastGroundedNormal);
+        m_bIsSliding = (angle >= m_SlopeLimit) && m_bIsGrounded;
+
+        if (m_bIsSliding) 
+        {
+            float slidingSpeed = m_slidingSpeedCurve.Evaluate((angleInternal - m_SlopeLimit) / m_angleAtMaxSlide);
+            m_externalVelocity += new Vector3(m_LastGroundedNormal.x, 0, m_LastGroundedNormal.z) * slidingSpeed;
+        }
+
+        m_CharacterController.Move(m_CurrentMoving * Time.fixedDeltaTime + m_externalVelocity * Time.fixedDeltaTime);
+
+
+
+ 
 
         Vector3 posThisFrame = m_tBodyTransform.position;
-        Vector3 movementThisFrame = posThisFrame - positionLastFrame;
-        positionLastFrame = posThisFrame;
+        Vector3 movementThisFrame = posThisFrame - m_PositionLastFrame;
+        m_PositionLastFrame = posThisFrame;
 
         OnSetMovementSpeed?.Invoke(Mathf.Clamp01(movementThisFrame.magnitude / (Time.deltaTime * m_fSpeed)));
     }

@@ -1718,10 +1718,59 @@ MonoBehaviour:
   m_JumpBinding: {fileID: 11400000, guid: 97c000695a42e784b80e19c298772b58, type: 2}
   m_ImpactSoundObject: {fileID: 11400000, guid: b82f8c7b26ab9de4e8c0cf09e4da4569,
     type: 2}
-  m_FootStepSoundObject: {fileID: 0}
   m_JumpSoundObject: {fileID: 11400000, guid: 4ca40283eff70e2449c536bec87c60b6, type: 2}
   m_ImpactLightSoundObject: {fileID: 11400000, guid: 749a97d8e036fed4987023af5d473fe9,
     type: 2}
+  m_angleWalkCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0084925685
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99974954
+      value: 0.0033508074
+      inSlope: -1.9631267
+      outSlope: -1.9631267
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0575564
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_angleAtMaxSlide: 20
+  m_slidingSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0042462847
+      value: -0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0061911
+      value: 0.98227024
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_SlopeLimit: 35.66
 --- !u!143 &3338445514369759838
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1735,7 +1784,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 2.32
   m_Radius: 0.5
-  m_SlopeLimit: 35.22
+  m_SlopeLimit: 61.14
   m_StepOffset: 0.19
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0

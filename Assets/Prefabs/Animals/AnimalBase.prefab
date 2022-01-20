@@ -14846,6 +14846,7 @@ MonoBehaviour:
   m_AnimalBodyCollider: {fileID: 0}
   m_Overlay: {fileID: 8990483345826721983}
   m_AnimalGroundCollider: {fileID: 8616337804491610657}
+  m_AnimalPhysicalEntity: {fileID: 5535792141253275086}
   m_StaggerTimeByImpactMomentum:
     serializedVersion: 2
     m_Curve:
@@ -15639,6 +15640,8 @@ MonoBehaviour:
   m_GroundImpactLayermask:
     serializedVersion: 2
     m_Bits: 2100480
+  m_ThrowinSound: {fileID: 0}
+  m_Audio: {fileID: 0}
 --- !u!114 &5028166405719411816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16384,6 +16387,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bdfc6d217a5724b49855f2fee00b8d05, type: 2}
   - {fileID: 11400000, guid: e19551a612622944ab2d3836bbe57ab4, type: 2}
   - {fileID: 11400000, guid: 51ada9095f30c4948bef3f8c6f1fae3d, type: 2}
+  - {fileID: 11400000, guid: c0a5f93b4885b1049b8b9257f0030c28, type: 2}
 --- !u!1 &6794715446821761566
 GameObject:
   m_ObjectHideFlags: 0
