@@ -29,7 +29,9 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
     [SerializeField] private AnimationCurve m_ImpactStrengthByImpactSpeed;
 	[SerializeField] private LassoInputComponent m_LassoComponent;
 	[SerializeField] private GameObject m_GroundImpactEffectsPrefab;
-
+    [SerializeField] private ParticleEffectsController m_DragEffectsManager;
+    [SerializeField] private ImpactEffectStrengthManager m_DragEffectsStrengthManager;
+    
 	[Header("Control Bindings")]
 	[SerializeField] private ControlBinding m_ForwardBinding;
 	[SerializeField] private ControlBinding m_LeftBinding;
@@ -39,6 +41,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 
     [SerializeField] private SoundObject m_ImpactSoundObject;
     [SerializeField] private SoundObject m_JumpSoundObject;
+    [SerializeField] private SoundObject m_DragSoundObject;
     [SerializeField] private SoundObject m_ImpactLightSoundObject;
 
     [SerializeField] private AnimationCurve m_angleWalkCurve;
@@ -85,11 +88,13 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
     public void Pause()
     {
         enabled = false;
+        m_AudioManager.StopPlaying(m_DragSoundObject);
     }
 
     public void Unpause()
     {
         enabled = true;
+        m_AudioManager.Play(m_DragSoundObject);
     }
 
     void OnIsSpinningObject(ThrowableObjectComponent throwableObject) 
@@ -140,6 +145,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 
 
     private float m_fJumpCooldown = 0.0f;
+    private bool m_bWasSlidingLastFrame = false;
     [SerializeField] [Range(0.0f, 45.0f)] private float m_SlopeLimit = 20.0f;
 
     void OnControllerColliderHit(ControllerColliderHit hit) 
@@ -151,7 +157,11 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
 	{
         Gizmos.DrawWireSphere(m_tGroundTransform.position, m_fGroundDistance);
 	}
-
+    private float m_currentEffectsStrength = 0.0f;
+    private float m_effectChangeTime = 0.6f;
+    private float m_effectChangeVelocity = 0.0f;
+    private const float m_slideFXThreshold = 0.1f;
+    private bool m_bShowingSlidingFX = false;
 	void FixedUpdate()
     {
         float swingingMultiplier = m_fCurrentSpinningMassSpeedDecrease * m_fCurrentSpinningStrengthSpeedDecrease * m_fCurrentDraggingSpeedDecrease;
@@ -213,17 +223,34 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
         float angle = Vector3.Angle(Vector3.up, m_LastGroundedNormal);
         m_bIsSliding = (angle >= m_SlopeLimit) && m_bIsGrounded;
 
+        float val = Mathf.Clamp01((angleInternal - m_SlopeLimit) / m_angleAtMaxSlide);
+        m_currentEffectsStrength = Mathf.SmoothDamp(m_currentEffectsStrength, val, ref m_effectChangeVelocity, m_effectChangeTime);
         if (m_bIsSliding) 
         {
-            float slidingSpeed = m_slidingSpeedCurve.Evaluate((angleInternal - m_SlopeLimit) / m_angleAtMaxSlide);
-            m_externalVelocity += new Vector3(m_LastGroundedNormal.x, 0, m_LastGroundedNormal.z) * slidingSpeed;
+            m_externalVelocity += new Vector3(m_LastGroundedNormal.x, 0, m_LastGroundedNormal.z) * m_slidingSpeedCurve.Evaluate(val);
         }
 
-        m_CharacterController.Move(m_CurrentMoving * Time.fixedDeltaTime + m_externalVelocity * Time.fixedDeltaTime);
-
-
-
+        m_bShowingSlidingFX = (angleInternal - m_SlopeLimit) / m_angleAtMaxSlide > m_slideFXThreshold;
+        m_AudioManager.SetVolume(m_DragSoundObject, m_currentEffectsStrength);
+        m_DragEffectsStrengthManager.SetParamsOfObject(m_currentEffectsStrength);
+        if (m_bShowingSlidingFX) 
+        {
  
+
+            if (!m_bWasSlidingLastFrame) 
+            {
+                m_DragEffectsManager.TurnOnAllSystems();
+            }
+        }
+		else 
+        {
+            if (m_bWasSlidingLastFrame) 
+            {
+                m_DragEffectsManager.TurnOffAllSystems();
+            }
+        }
+        m_bWasSlidingLastFrame = m_bShowingSlidingFX;
+        m_CharacterController.Move(m_CurrentMoving * Time.fixedDeltaTime + m_externalVelocity * Time.fixedDeltaTime);
 
         Vector3 posThisFrame = m_tBodyTransform.position;
         Vector3 movementThisFrame = posThisFrame - m_PositionLastFrame;

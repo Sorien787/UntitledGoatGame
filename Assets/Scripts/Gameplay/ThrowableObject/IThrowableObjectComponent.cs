@@ -16,6 +16,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
     [SerializeField] private AnimationCurve m_ImpactMagnitudeByImpactMomentum;
     [SerializeField] private AnimationCurve m_HazardRadiusByImpactMomentum;
     [SerializeField] private AnimationCurve m_HazardLifetimeByImpactMomentum;
+    [SerializeField] private AnimationCurve m_DragSoundBySpeed;
 
     [Header("External References")]
     [SerializeField] private GameObject m_HazardRef = null;
@@ -46,6 +47,11 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
 	private Transform m_DragFXTransform;
 
+    private bool m_bImpactsDisabled = false;
+    private bool m_bDraggingDisabled = false;
+
+    float m_fImpactFXCooldown = 0.0f;
+
     virtual protected void Awake()
 	{
         if (m_DragFX) 
@@ -70,6 +76,7 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
             }
 		    else 
             {
+                m_AudioManager.Play(m_DragSoundObject);
                 m_SpeedForDragFX = m_DragAnimationCurve.keys[0].time;
             }
     }
@@ -84,10 +91,9 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
         m_bDraggingDisabled = !isEnabled;
     }
 
-    private bool m_bImpactsDisabled = false;
-    private bool m_bDraggingDisabled = false;
-
-    float m_fImpactFXCooldown = 0.0f;
+    float m_dragFXScalar = 0.0f;
+    float m_dragFXScalarVelocity = 0.0f;
+    [SerializeField] private float m_fMaxSpeedForSoundVal = 0.0f;
 
     virtual protected void Update() 
     {
@@ -95,21 +101,26 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
         if (!m_CausesDragging)
             return;
-        bool m_bShouldParticleFXBeActive = !m_bDraggingDisabled && m_Entity.GetVelocity.sqrMagnitude > (m_SpeedForDragFX * m_SpeedForDragFX) && m_Entity.IsGrounded;
+
+
+        float velocity = m_Entity.GetVelocity.magnitude;
+      
+        
+        bool m_bShouldParticleFXBeActive = !m_bDraggingDisabled && velocity > m_SpeedForDragFX && m_Entity.IsGrounded;
+        float scalar = m_bShouldParticleFXBeActive ? 1 : 0;
+        m_dragFXScalar = Mathf.SmoothDamp(m_dragFXScalar, scalar * m_DragSoundBySpeed.Evaluate(Mathf.Clamp01((velocity - m_SpeedForDragFX) / (m_fMaxSpeedForSoundVal))), ref m_dragFXScalarVelocity, 0.2f);
+
+        m_AudioManager.SetVolume(m_DragSoundObject, m_dragFXScalar);
         if (m_bShouldParticleFXBeActive != m_bParticleFXActive)
         {
             m_bParticleFXActive = m_bShouldParticleFXBeActive;
             if (m_bParticleFXActive)
             {
                 m_DragFX.TurnOnAllSystems();
-                m_AudioManager.SetVolume(m_DragSoundObject, 1);
-                m_AudioManager.Play(m_DragSoundObject);
             }
             else
             {
                 m_DragFX.TurnOffAllSystems();
-                m_AudioManager.StopPlaying(m_DragSoundObject);
-                m_AudioManager.SetVolume(m_DragSoundObject, 1);
             }
         }
         if (m_bParticleFXActive)

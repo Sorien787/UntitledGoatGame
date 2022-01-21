@@ -15,13 +15,18 @@ public class AudioManager : MonoBehaviour
 
 		foreach (SoundObject sound in sounds) 
 		{
-			AudioSource source = gameObject.AddComponent<AudioSource>();
-			source.loop = sound.loop;
-			source.rolloffMode = AudioRolloffMode.Linear;
-			source.maxDistance = sound.distance;
-			Sound newSound = new Sound(sound, source);
-			m_SoundDict.Add(sound, newSound);
+			AddSoundToDict(sound);
 		}
+	}
+
+	private void AddSoundToDict(SoundObject sound) 
+	{
+		AudioSource source = gameObject.AddComponent<AudioSource>();
+		source.loop = sound.loop;
+		source.rolloffMode = AudioRolloffMode.Linear;
+		source.maxDistance = sound.distance;
+		Sound newSound = new Sound(sound, source);
+		m_SoundDict.Add(sound, newSound);
 	}
 
 	public Sound GetSoundBySoundObject(SoundObject soundObject) 
@@ -87,6 +92,9 @@ public class AudioManager : MonoBehaviour
 
 	public void ApplyToSound(in SoundObject sound, in Action<Sound> soundAction) 
 	{
+		if (!m_SoundDict.ContainsKey(sound))
+			AddSoundToDict(sound);
+
 		if (m_SoundDict.TryGetValue(sound, out Sound value))
 		{
 			soundAction.Invoke(value);
@@ -316,7 +324,7 @@ public class Sound
 		float defaultVolume = m_SoundObject.defaultVolume;                   // never changes - static val
 		float randomVolumeAddition = UnityEngine.Random.Range(-m_SoundObject.volRandomize, m_SoundObject.volRandomize);// random addition
 		float volumeModifierInternal = (m_fVolumeModifierInternal - 1) * m_SoundObject.maxVolumeModifier;// volume modifier - left is percentage, right is amount the percentage affects
-		return volumeValMod * (defaultVolume + randomVolumeAddition + volumeModifierInternal);	
+		return volumeValMod * defaultVolume * (1 + randomVolumeAddition + volumeModifierInternal);	
 	}
 
 	public void MuteSound(bool mute)

@@ -101,9 +101,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private ParticleEffectsController m_AlertIdleEffectsController;
     private ParticleEffectsController m_ActiveController;
 
-    [SerializeField] private ParticleEffectsController m_FreeFallingParticleController;
-    [SerializeField] private ParticleEffectsController m_BashedParticleController;
-
     [SerializeField] private AudioManager m_AudioManager;
     [SerializeField] private CowGameManager m_Manager;
     [SerializeField] private PhysicalEntity m_PhysicalEntity;
@@ -210,7 +207,7 @@ public class AnimalAnimationComponent : MonoBehaviour
         m_AnimatorStateMachine.AddState(new AnimalStaggeredAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalWalkingAnimationState(m_runEdgeTrigger, m_AudioManager.GetSoundBySoundObject(m_GeneralCall), m_lowSound, m_highSound));
         m_AnimatorStateMachine.AddState(new AnimalCapturedAnimationState(m_runEdgeTrigger));
-        m_AnimatorStateMachine.AddState(new AnimalFreeFallAnimationState(m_FreeFallingParticleController));
+        m_AnimatorStateMachine.AddState(new AnimalFreeFallAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalAttackAnimationState(m_AudioManager.GetSoundBySoundObject(m_EatSound)));
         m_AnimatorStateMachine.AddState(new AnimalDamagedAnimationState(m_AudioManager.GetSoundBySoundObject(m_DamagedCall)));
         m_AnimatorStateMachine.AddState(new AnimalBreedingAnimationState());
@@ -572,47 +569,11 @@ public class AnimalBreedingAnimationState : AStateBase<AnimalAnimationComponent>
 }
 
 public class AnimalFreeFallAnimationState : AStateBase<AnimalAnimationComponent>
-{
-    private readonly ParticleEffectsController dragController;
-    bool m_bGroundedStateLastFrame;
-    public AnimalFreeFallAnimationState(ParticleEffectsController dragController)
-    {
-        this.dragController = dragController;
-    }
-
-	public override void OnEnter()
-	{
-        m_bGroundedStateLastFrame = Host.AnimalPhysEnt.IsGrounded;
-        if (m_bGroundedStateLastFrame) dragController.TurnOnAllSystems();
-    }
-	public override void Tick()
-	{
-		if (Host.AnimalPhysEnt.IsGrounded != m_bGroundedStateLastFrame) 
-        {
-            m_bGroundedStateLastFrame = Host.AnimalPhysEnt.IsGrounded;
-            if (m_bGroundedStateLastFrame) dragController.TurnOnAllSystems();
-            else dragController.TurnOffAllSystems();
-        }
-
-        if (Host.AnimalPhysEnt.IsGrounded) 
-        {
-            dragController.SetWorldPos(Host.AnimalPhysEnt.GetGroundedPos);
-            dragController.SetLookDirection(Host.AnimalPhysEnt.GetGroundedNorm);
-        }
-	}
-
-
-	public override void OnExit()
-	{
-        dragController.TurnOffAllSystems();
-    }
-}
+{}
 
 public class AnimalStaggeredAnimationState : AStateBase<AnimalAnimationComponent>
 {
-    private readonly AnimalAnimationComponent animator;
-
-    public override void OnEnter()
+     public override void OnEnter()
     {
 		Host.TriggerConfuseAnim();
     }

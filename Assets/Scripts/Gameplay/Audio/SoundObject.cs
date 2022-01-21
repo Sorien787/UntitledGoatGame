@@ -16,16 +16,16 @@ public class SoundObject : ScriptableObject
 
 	public AudioType m_AudioType;
 
-	[Range(0.1f, 2f)]
+	[Range(0.1f, 4f)]
 	public float defaultVolume = 1.0f;
 
-	[Range(0.1f, 2f)]
+	[Range(0.1f, 4f)]
 	public float defaultPitch = 1.0f;
 
-	[Range(0.1f, 2f)]
+	[Range(0.1f, 4f)]
 	public float maxPitchModifier = 1.0f;
 
-	[Range(0.1f, 2f)]
+	[Range(0.1f, 4f)]
 	public float maxVolumeModifier = 1.0f;
 
 	[Range(0.0f, 1f)]
