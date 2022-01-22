@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class RoostComponent : MonoBehaviour
 {
-    [SerializeField] private Transform m_Transform;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	private EntityTypeComponent m_EntityType;
+	private Transform m_Transform;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void Awake()
+	{
+		m_Transform = transform;
+		m_EntityType = GetComponent<EntityTypeComponent>();
+	}
 
-    public Vector3 GetRoostingLocation => m_Transform.position;
+	private void Start()
+	{
+		m_EntityType.AddToTrackable();
+	}
+	public Vector3 GetRoostingLocation => m_Transform.position;
 }

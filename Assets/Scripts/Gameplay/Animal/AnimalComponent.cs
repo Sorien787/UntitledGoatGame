@@ -296,7 +296,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 			m_TotalStaggerTime = Mathf.Max(m_StaggerTimeByImpactMomentum.Evaluate(momentum.magnitude), m_TotalStaggerTime);
             m_bShouldStagger = true;
         }
-		m_AnimalRigidBody.velocity += GetGroundDir() * momentum.magnitude / m_AnimalRigidBody.mass;
+		m_AnimalRigidBody.velocity +=  momentum / m_AnimalRigidBody.mass;
 	}
 	#endregion
 
@@ -949,7 +949,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
 	public void OnEntityDied(GameObject go1, GameObject go2, DamageType type)
 	{
-        m_EntityInformation.OnKilled();
+        m_EntityInformation.OnRemovedFromGame();
 
         switch (type)
         {

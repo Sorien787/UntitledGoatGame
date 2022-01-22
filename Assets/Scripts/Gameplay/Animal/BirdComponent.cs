@@ -7,29 +7,37 @@ using BirdStates;
 [RequireComponent(typeof(FlightComponent))]
 [RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(EntityTypeComponent))]
-public class BirdComponent : InanimateObjectComponent
+public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthListener
 {
+	[Header("References")]
     [SerializeField] private CowGameManager m_Manager;
-	[SerializeField] private EntityTypeComponent m_EntityInformation;
-    [SerializeField] private StateMachine<BirdComponent> m_StateMachine;
-    [SerializeField] private FlightComponent m_FlightComponent;
-	[SerializeField] private float m_FlyTimeMin;
-	[SerializeField] private float m_FlyTimeMax;
-	[SerializeField] private float m_ScaredDistance;
-	[SerializeField] float m_PatrolDistanceMin;
-	[SerializeField] float m_PatrolDistanceMax;
-	[SerializeField] private AudioManager m_AudioManager;
-
-	private Transform m_Transform;
-
-
-
 	[SerializeField] private SoundObject m_TakeoffSoundEffect;
 	[SerializeField] private SoundObject m_FlapSoundEffect;
 
-    // Start is called before the first frame update
-    private RoostComponent m_CurrentRoost;
-	bool m_bIsDead = false;
+	[Header("Anim Params")]
+	[SerializeField] private float m_DeathDuration = 1.0f;
+	[SerializeField] private float m_SizeVariation = 0.0f;
+	[SerializeField] private AnimationCurve m_DeathSizeAnimationCurve = default;
+
+	[Header("Gameplay Params")]
+	[SerializeField] private float m_ScaredDistance;
+	[SerializeField] float m_PatrolDistanceMin;
+	[SerializeField] float m_PatrolDistanceMax;
+	[SerializeField] private float m_FlyTimeMin;
+	[SerializeField] private float m_FlyTimeMax;
+
+	private StateMachine<BirdComponent> m_BirdStateMachine;
+	private EntityTypeComponent m_EntityInformation;
+	private Transform m_Transform;
+	private HealthComponent m_HealthComponent;
+	private FlightComponent m_FlightComponent;
+	private AudioManager m_AudioManager;
+
+
+
+	private float m_DeathAnimTime = 0.0f;
+	private float m_SizeMult;
+	private RoostComponent m_CurrentRoost;
     public bool TryFindRoostingSpot() 
     {
         return m_Manager.GetRoostingSpot(m_Transform.position, ref m_CurrentRoost);
@@ -39,33 +47,50 @@ public class BirdComponent : InanimateObjectComponent
 		m_Manager.RoostCleared(m_CurrentRoost);
         m_CurrentRoost = null;
     }
-	private void Awake()
+	protected override void Awake()
 	{
-		m_EntityInformation.RemoveFromTrackable();
+		base.Awake();
+
+		m_SizeMult = 1.0f + UnityEngine.Random.Range(-m_SizeVariation, m_SizeVariation);
+
+
+		m_EntityInformation = GetComponent<EntityTypeComponent>();
+		m_Transform = GetComponent<Transform>();
+		m_HealthComponent = GetComponent<HealthComponent>();
+		m_FlightComponent = GetComponent<FlightComponent>();
+		m_AudioManager = GetComponent<AudioManager>();
+		m_Manager.AddToPauseUnpause(this);
 		m_Transform = transform;
         m_throwableObjectComponent.OnWrangled += OnStopDoingBirdBehaviour;
+		m_throwableObjectComponent.EnableImpacts(false);
+		m_throwableObjectComponent.EnableDragging(false);
+		m_HealthComponent.AddListener(this);
+		m_Transform.localScale = Vector3.one * m_SizeMult;
 	}
+
 
 	public void OnHitByObject() 
 	{
-
+		OnStopDoingBirdBehaviour();
 	}
 	protected override void Start()
     {
-        m_StateMachine = new StateMachine<BirdComponent>(new BirdFlyingState(), this);
-        m_StateMachine.AddState(new BirdLimpState());
-        m_StateMachine.AddState(new BirdRoostingState());
-        m_StateMachine.AddState(new BirdTakeoffState());
-        m_StateMachine.AddState(new BirdLandingState());
+		m_EntityInformation.RemoveFromTrackable();
+		m_BirdStateMachine = new StateMachine<BirdComponent>(new BirdFlyingState(), this);
+        m_BirdStateMachine.AddState(new BirdLimpState());
+        m_BirdStateMachine.AddState(new BirdRoostingState());
+        m_BirdStateMachine.AddState(new BirdTakeoffState());
+        m_BirdStateMachine.AddState(new BirdLandingState());
+		m_BirdStateMachine.AddState(new BirdSearchingState());
 
-		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState)).AddOnExit(ClearRoostingSpot));
-		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState), typeof(BirdTakeoffState)).AddOnEnter(StartFlyingSound).AddOnExit(StopFlyingSound));
+		m_BirdStateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState)).AddOnExit(ClearRoostingSpot));
+		m_BirdStateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState), typeof(BirdTakeoffState)).AddOnEnter(StartFlyingSound).AddOnExit(StopFlyingSound));
 
-		m_StateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), ShouldTakeOff);
-		m_StateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdTakeoffState), ShouldTakeOff);
-		m_StateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdRoostingState), HasReachedRoost);
+		m_BirdStateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), ShouldTakeOff);
+		m_BirdStateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdTakeoffState), ShouldTakeOff);
+		m_BirdStateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdRoostingState), HasReachedRoost);
 
-        m_StateMachine.InitializeStateMachine();
+        m_BirdStateMachine.InitializeStateMachine();
     }
 
 	private void StartFlyingSound() 
@@ -91,7 +116,7 @@ public class BirdComponent : InanimateObjectComponent
 
 	public void ShouldHoldPosition(bool hold)
 	{
-		m_FlightComponent.SetHold(true);
+		m_FlightComponent.SetHold(hold);
 	}
 
 	private bool ShouldTakeOff() 
@@ -104,6 +129,8 @@ public class BirdComponent : InanimateObjectComponent
     private void OnStopDoingBirdBehaviour() 
     {
 		m_throwableObjectComponent.OnWrangled -= OnStopDoingBirdBehaviour;
+		m_throwableObjectComponent.EnableImpacts(true);
+		m_throwableObjectComponent.EnableDragging(true);
 		m_EntityInformation.AddToTrackable();
         enabled = false;
         InitializeMachine();
@@ -112,7 +139,7 @@ public class BirdComponent : InanimateObjectComponent
     // Update is called once per frame
     void Update()
     {
-        m_StateMachine.Tick(Time.deltaTime);
+        m_BirdStateMachine.Tick(Time.deltaTime);
     }
 
 	public float GetRoamTimeMin => m_FlyTimeMin;
@@ -152,6 +179,48 @@ public class BirdComponent : InanimateObjectComponent
 		Vector3 newWorldPosition = new Vector3(limitedPlanarPosition.x, height, limitedPlanarPosition.y);
 		return newWorldPosition;
 	}
+	private bool m_bIsActive = true;
+	public void Pause()
+	{
+		enabled = false;
+	}
+
+	public void Unpause()
+	{
+		if (m_bIsActive)
+			enabled = true;
+	}
+
+	public void OnEntityTakeDamage(GameObject go1, GameObject go2, DamageType type)
+	{
+
+	}
+
+	IEnumerator PredatorEatCoroutine()
+	{
+		while (m_DeathAnimTime < m_DeathDuration)
+		{
+			m_DeathAnimTime += Time.deltaTime;
+			float deathSize = m_DeathSizeAnimationCurve.Evaluate(m_DeathAnimTime / m_DeathDuration) * m_SizeMult;
+			m_Transform.localScale = Vector3.one * deathSize;
+			yield return null;
+
+		}
+		m_HealthComponent.RemoveListener(this);
+		Destroy(gameObject);
+	}
+
+	public void OnEntityHealthPercentageChange(float currentHealthPercentage)
+	{
+
+	}
+
+	public void OnEntityDied(GameObject go1, GameObject go2, DamageType type)
+	{
+		m_EntityInformation.OnRemovedFromGame();
+
+		StartCoroutine(PredatorEatCoroutine());
+	}
 }
 namespace BirdStates 
 {
@@ -168,7 +237,7 @@ namespace BirdStates
 		public override void OnEnter()
 		{
 			m_fTimeToPatrolFor = UnityEngine.Random.Range(Host.GetRoamTimeMin, Host.GetRoamTimeMax);
-			StopTimer(1);
+			StartTimer(0);
 			Host.SetTargetSpeedAtPathEnd(1000.0f);
 			Host.SetOnReachedDestination(OnReachedPatrolWaypoint);
 			Host.SetDestination(Host.GetNewPatrolDestination());
@@ -208,7 +277,25 @@ namespace BirdStates
 	public class BirdRoostingState : AStateBase<BirdComponent>
 	{ }
 	public class BirdTakeoffState : AStateBase<BirdComponent>
-	{ }
+	{
+		public override void OnEnter()
+		{
+			Host.SetTargetSpeedAtPathEnd(1000.0f);
+			Host.SetOnReachedDestination(OnReachedSky);
+			Host.SetDestination(Host.GetNewPatrolDestination());
+		}
+
+		private void OnReachedSky() 
+		{
+			RequestTransition<BirdFlyingState>();
+		}
+
+		public override void OnExit()
+		{
+			Host.SetOnReachedDestination(null);
+		}
+
+	}
 	public class BirdLandingState : AStateBase<BirdComponent>
 	{
 		public override void OnEnter()

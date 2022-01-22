@@ -439,9 +439,8 @@ public class AnimalAnimationComponent : MonoBehaviour
             ScaleTransform.localScale = Vector3.one * deathSize;
             yield return null;
         }
-
-
     }
+
     public void OnDead() 
     {
         m_AnimatorStateMachine.RequestTransition(typeof(AnimalIdleAnimationState));

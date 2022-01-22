@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
-  m_Name: LevelMusic
+  m_Name: BirdTakeoff
   m_EditorClassIdentifier: 
-  m_clips:
-  - {fileID: 8300000, guid: 2e8aa6733e752324e989240d205fc662, type: 3}
-  m_AudioType: {fileID: 11400000, guid: 62455d868a967574bb1fae413e913495, type: 2}
+  m_clips: []
+  m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
   maxPitchModifier: 1
@@ -22,4 +21,4 @@ MonoBehaviour:
   pitchRandomize: 0
   volRandomize: 0
   distance: 20
-  loop: 1
+  loop: 0

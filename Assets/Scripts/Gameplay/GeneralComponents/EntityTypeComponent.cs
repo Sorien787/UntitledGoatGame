@@ -52,7 +52,7 @@ public class EntityTypeComponent : MonoBehaviour
         m_Listeners.Clear();
     }
 
-	public void OnKilled() 
+	public void OnRemovedFromGame() 
     {
         m_Manager.OnEntityKilled(this);
         HashSet<IEntityTrackingListener> tempListeners = new HashSet<IEntityTrackingListener>(m_Listeners);

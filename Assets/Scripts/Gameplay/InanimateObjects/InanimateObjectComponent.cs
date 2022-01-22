@@ -13,7 +13,7 @@ public class InanimateObjectComponent : MonoBehaviour, IFreeFallListener
     [SerializeField] private Rigidbody m_objectRigidBody;
 
 
-    private void Awake()
+    protected virtual void Awake()
 	{
         m_throwableObjectComponent.OnWrangled += () => m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
         m_throwableObjectComponent.OnStartSpinning += () => m_StateMachine.RequestTransition(typeof(IObjectControlledState));

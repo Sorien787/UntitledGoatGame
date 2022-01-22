@@ -59,7 +59,7 @@ public class HazardComponent : MonoBehaviour
 	private IEnumerator StartDestroyTimer() 
     {
         yield return new WaitForSecondsRealtime(m_HazardLifetime);
-        m_EntityTypeComponent.OnKilled();
+        m_EntityTypeComponent.OnRemovedFromGame();
         Destroy(gameObject);
     }
 }

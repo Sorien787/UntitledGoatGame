@@ -17,6 +17,8 @@ public class PhysicalEntity : MonoBehaviour, IPauseListener
     private Vector3 m_cachedVelocity = Vector3.zero;
     private Vector3 m_cachedAngVelocity = Vector3.zero;
 
+    [SerializeField] private bool m_bManualGroundedUpdate = true;
+
 	private void Awake()
 	{
         m_Body = GetComponent<Rigidbody>();

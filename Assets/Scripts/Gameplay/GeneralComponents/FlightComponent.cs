@@ -30,6 +30,7 @@ public class FlightComponent : MonoBehaviour, IPauseListener
         m_Body = GetComponent<Rigidbody>();
         m_Transform = transform;
         UpdateAction = HasReachedDestination;
+        position = m_Transform.position;
         m_Manager.AddToPauseUnpause(this);
     }
 
@@ -101,6 +102,8 @@ public class FlightComponent : MonoBehaviour, IPauseListener
 
     Vector3 accelDirection = Vector3.zero;
 
+    Vector3 velocity = Vector3.zero;
+    Vector3 position = Vector3.zero;
     private void MovingToDestination() 
     {
         Vector3 offsetFromDestination = m_Destination - m_Transform.position;
@@ -110,40 +113,52 @@ public class FlightComponent : MonoBehaviour, IPauseListener
         Vector3 normalizedTargetDirection = offsetFromDestination.normalized;
 
 
-
-        Vector3 velParallel = normalizedTargetDirection * Vector3.Dot(normalizedTargetDirection, m_Body.velocity);
-        Vector3 velPerpendicular = m_Body.velocity - velParallel;
-        Vector3 acceleration = Vector3.zero;
+        Vector3 currentVelocity = m_Body.velocity;
+        Vector3 velParallel = normalizedTargetDirection * Vector3.Dot(normalizedTargetDirection, currentVelocity);
+        Vector3 velPerpendicular = currentVelocity - velParallel;
+        Vector3 velocityChangeThisFrame = Vector3.zero;
 
 
 
 
             // slow down in that direction
-        acceleration -= velPerpendicular.normalized * Mathf.Min(m_MaximumAcceleration * Time.fixedDeltaTime, velPerpendicular.magnitude);
+        velocityChangeThisFrame -= velPerpendicular.normalized * Mathf.Clamp(m_MaximumAcceleration * Time.fixedDeltaTime, 0.0f, velPerpendicular.magnitude);
 
         // if we need to slow down to reach target
-        float distanceToAccelerate = (m_FinalSpeed * m_FinalSpeed - velParallel.sqrMagnitude) / (2 * m_MaximumAcceleration);
-        if (Vector3.Dot(normalizedTargetDirection, m_Body.velocity) > 0 && distanceToAccelerate * distanceToAccelerate > offsetFromDestination.sqrMagnitude)
+        float desiredSpeedChange = m_FinalSpeed - currentVelocity.magnitude;
+
+
+        float distanceToDecellerate = 0.0f;
+        float USqMinusVSq = velParallel.sqrMagnitude - m_FinalSpeed * m_FinalSpeed;
+        if (USqMinusVSq > 0)     
+        {
+            distanceToDecellerate = USqMinusVSq / (2 * m_MaximumAcceleration);
+        }
+
+        if (Vector3.Dot(normalizedTargetDirection, currentVelocity) > 0 && distanceToDecellerate * distanceToDecellerate > offsetFromDestination.sqrMagnitude)
         {
             // slow down
-            acceleration -= normalizedTargetDirection * Mathf.Min(m_MaximumAcceleration * Time.fixedDeltaTime, (velParallel.magnitude - m_FinalSpeed));
+            float currentDesired = m_MaximumAcceleration * Time.fixedDeltaTime;
+            float clamped = Mathf.Clamp(m_MaximumAcceleration * Time.fixedDeltaTime, 0.0f, Mathf.Abs(velParallel.magnitude - m_FinalSpeed));
+            Vector3 addition = normalizedTargetDirection * clamped;
+            velocityChangeThisFrame -= addition;
         }
         // if we're over max speed
         else if (velParallel.sqrMagnitude > m_CruiseSpeed * m_CruiseSpeed)
         {
-            acceleration -= normalizedTargetDirection * Mathf.Min(m_MaximumAcceleration * Time.fixedDeltaTime, (velParallel.magnitude - m_CruiseSpeed));
+            velocityChangeThisFrame -= normalizedTargetDirection * Mathf.Clamp(m_MaximumAcceleration * Time.fixedDeltaTime, 0.0f, Mathf.Abs(velParallel.magnitude - m_CruiseSpeed));
         }
         // if we're under max speed
         else if (velParallel.sqrMagnitude < m_CruiseSpeed * m_CruiseSpeed)
         {
-            acceleration += normalizedTargetDirection * Mathf.Min(m_MaximumAcceleration * Time.fixedDeltaTime, (m_CruiseSpeed - velParallel.magnitude));
+            velocityChangeThisFrame += normalizedTargetDirection * Mathf.Clamp(m_MaximumAcceleration * Time.fixedDeltaTime, 0.0f, Mathf.Abs(m_CruiseSpeed - velParallel.magnitude));
         }
 
-        accelDirection = acceleration.normalized;
+        accelDirection = velocityChangeThisFrame.normalized;
 
-        m_Body.velocity += acceleration;
+        m_Body.velocity += velocityChangeThisFrame;
 
-        m_bHasStopped = m_Body.velocity.sqrMagnitude < m_StoppedTolerance * m_StoppedTolerance;
+        m_bHasStopped = currentVelocity.sqrMagnitude < m_StoppedTolerance * m_StoppedTolerance;
 
         if (!m_bHoldCommand && offsetFromDestination.sqrMagnitude < m_DistanceTolerance * m_DistanceTolerance) 
         {
@@ -197,7 +212,7 @@ public class FlightComponent : MonoBehaviour, IPauseListener
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         UpdateAction();
     }

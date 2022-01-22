@@ -527,7 +527,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	public float GetMapRadius => GetCurrentLevel.GetLevelRadius;
 	public bool GetRoostingSpot(in Vector3 currentPos, ref RoostComponent roost) 
 	{
-		bool isFound = GetClosestTransformMatchingList(currentPos, out EntityToken token);
+		bool isFound = GetClosestTransformMatchingList(currentPos, out EntityToken token, false, m_RoostType);
 		if (!isFound)
 			return false;
 		roost = token.GetEntityTransform.GetComponent<RoostComponent>();
