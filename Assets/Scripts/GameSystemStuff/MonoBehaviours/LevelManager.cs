@@ -16,7 +16,10 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private float m_DebugCountdownTimerTime;
 	[SerializeField] private float m_DefaultCountdownTimerTime;
 	[Header("Level parameters")]
-	[SerializeField] private int m_LevelNumber;
+	[SerializeField] private int m_LevelNumber = 0;
+	[SerializeField] private float m_LevelRadius = 40.0f;
+	[SerializeField] private float m_FlightMin = 40.0f;
+	[SerializeField] private float m_FlightMax = 50.0f;
 
 	[Header("Object references")]
 	[SerializeField] private CowGameManager m_Manager;
@@ -47,6 +50,11 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private ControlBinding m_ShowHungerBinding;
 	#endregion
 
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawSphere(Vector3.zero, m_LevelRadius);
+	}
+
 	// private params for internal use
 	#region PrivateParams
 	private LevelData m_LevelData;
@@ -59,6 +67,9 @@ public class LevelManager : MonoBehaviour
 	#region Properties
 	public int GetLevelNumber => m_LevelNumber;
 
+	public float GetLevelRadius => m_LevelRadius;
+	public float GetFlightMin => m_FlightMin;
+	public float GetFlightMax => m_FlightMax;
 
 	public Transform GetCamTransform { get; private set; }
 

@@ -9,6 +9,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	[SerializeField] private EntityInformation m_PlayerEntityInformation;
 	[SerializeField] private LayerMask m_TerrainLayerMask;
 	[SerializeField] private EntityInformation m_HazardType;
+	[SerializeField] private EntityInformation m_RoostType;
 	[SerializeField] private RestartState m_RestartState;
 
 	[SerializeField] private List<LevelData> m_LevelData = new List<LevelData>();
@@ -22,13 +23,6 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	// Enums for defining entity state, restart state, etc.
 	#region EnumDefinitions
-	public enum EntityState
-	{
-		Free,
-		Hunted,
-		Abducted
-	}
-
 	public enum RestartState
 	{
 		Default,
@@ -386,11 +380,12 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	public void OnEntityStartTracking(EntityTypeComponent entity) 
 	{
-		for (int i = 0; i < m_EntityCache[entity.GetEntityInformation].Count; i++)
+		List<EntityToken> tokens = m_EntityCache[entity.GetEntityInformation];
+		for (int i = 0; i < tokens.Count; i++)
 		{
-			if (m_EntityCache[entity.GetEntityInformation][i].GetEntityType == entity)
+			if (tokens[i].GetEntityType == entity)
 			{
-				m_EntityCache[entity.GetEntityInformation][i].SetTrackable();
+				tokens[i].SetTrackable();
 			}
 		}
 	}
@@ -421,11 +416,12 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	public void OnEntityStopTracking(EntityTypeComponent entity)
 	{
-		for (int i = 0; i < m_EntityCache[entity.GetEntityInformation].Count; i++)
+		List<EntityToken> tokens = m_EntityCache[entity.GetEntityInformation];
+		for (int i = 0; i < tokens.Count; i++)
 		{
-			if (m_EntityCache[entity.GetEntityInformation][i].GetEntityType == entity)
+			if (tokens[i].GetEntityType == entity)
 			{
-				m_EntityCache[entity.GetEntityInformation][i].SetUntrackable();
+				tokens[i].SetUntrackable();
 			}
 		}
 	}
@@ -476,12 +472,8 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		outEntityToken = m_EntityCache[entity];
 	}
 
-	public bool GetClosestTransformMatchingList(in Vector3 currentPos, out EntityToken outEntityToken, List<EntityState> validEntities, bool allowDeadEntities = false, params EntityInformation[] entities)
+	public bool GetClosestTransformMatchingList(in Vector3 currentPos, out EntityToken outEntityToken, bool allowDeadEntities = false, params EntityInformation[] entities)
 	{
-		if (validEntities == null)
-		{
-			validEntities = new List<EntityState> { EntityState.Abducted, EntityState.Free, EntityState.Hunted };
-		}
 		outEntityToken = null;
 		float cachedSqDist = Mathf.Infinity;
 		foreach (EntityInformation entityInformation in entities)
@@ -492,22 +484,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 				foreach (EntityToken token in m_EntityCache[entityInformation])
 				{
 					// if the entity is in a valid state for the purposes of this request
-					if (validEntities != null)
-					{
-						foreach (EntityState data in validEntities)
-						{
-							if (token.GetEntityState == data && token.IsTrackable && (allowDeadEntities || !token.IsDead))
-							{
-								float sqDist = Vector3.SqrMagnitude(token.GetEntityType.GetTrackingTransform.position - currentPos);
-								if (sqDist < cachedSqDist)
-								{
-									cachedSqDist = sqDist;
-									outEntityToken = token;
-								}
-							}
-						}
-					}
-					else
+					if (token.IsTrackable && (allowDeadEntities || !token.IsDead))
 					{
 						float sqDist = Vector3.SqrMagnitude(token.GetEntityType.GetTrackingTransform.position - currentPos);
 						if (sqDist < cachedSqDist)
@@ -533,6 +510,34 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	}
 
 	public void OnObjectiveValidated(){}
+
+	public void RoostCleared(RoostComponent roost) 
+	{
+		List<EntityToken> tokens = m_EntityCache[m_RoostType];
+		for (int i = 0; i < tokens.Count; i++) 
+		{
+			if (tokens[i].GetEntityTransform.gameObject == roost.gameObject)
+			{
+				tokens[i].SetTrackable();
+				return;
+			}
+		}
+	}
+
+	public float GetMapRadius => GetCurrentLevel.GetLevelRadius;
+	public bool GetRoostingSpot(in Vector3 currentPos, ref RoostComponent roost) 
+	{
+		bool isFound = GetClosestTransformMatchingList(currentPos, out EntityToken token);
+		if (!isFound)
+			return false;
+		roost = token.GetEntityTransform.GetComponent<RoostComponent>();
+		token.SetUntrackable();
+		return true;
+	}
+
+	public float GetFlightPatrolHeightMin => GetCurrentLevel.GetFlightMin;
+
+	public float GetFlightPatrolHeightMax => GetCurrentLevel.GetFlightMax;
 
 	#endregion
 
@@ -562,11 +567,6 @@ public class EntityToken
 	{
 		GetEntityTransform = go.transform;
 		GetEntityType = go;
-		GetEntityState = CowGameManager.EntityState.Free;
-	}
-	public void SetAbductionState(in CowGameManager.EntityState reservationType) 
-	{
-		GetEntityState = reservationType;
 	}
 
 	private bool m_bTrackable = true;
@@ -575,7 +575,6 @@ public class EntityToken
 
 	public void SetUntrackable() { m_bTrackable = false; }
 
-	public CowGameManager.EntityState GetEntityState { get; private set; }
 
 	public Transform GetEntityTransform { get; private set; }
 

@@ -201,17 +201,14 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 		}
 	}
 
-	private static readonly List<CowGameManager.EntityState> validEntitiesToFind = new List<CowGameManager.EntityState>() { CowGameManager.EntityState.Free };
-
 	public bool FindCowToAbduct() 
 	{
-		if (m_Manager.GetClosestTransformMatchingList(m_UfoTransform.position, out EntityToken outEntityToken, validEntitiesToFind, true, m_EntityInformation.GetHunts)) 
+		if (m_Manager.GetClosestTransformMatchingList(m_UfoTransform.position, out EntityToken outEntityToken, true, m_EntityInformation.GetHunts)) 
 		{
 			// in case it dies before we get to it
 			outEntityToken.GetEntityType.GetComponent<HealthComponent>().AddListener(this);
 			outEntityToken.GetEntityType.GetComponent<AbductableComponent>().OnStartedAbducting += OnTargetedCowStartedAbducted;
 			m_TargetCow = outEntityToken.GetEntityType.gameObject;
-			outEntityToken.SetAbductionState(CowGameManager.EntityState.Hunted);
 			return true;
 		}
 		return false;
@@ -227,7 +224,6 @@ public class UfoMain : MonoBehaviour, IPauseListener, IHealthListener
 		if (m_TargetCow)
 		{
 			EntityToken cowToken = m_Manager.GetTokenForEntity(m_TargetCow.GetComponent<EntityTypeComponent>(), m_TargetCow.GetComponent<EntityTypeComponent>().GetEntityInformation);
-			cowToken.SetAbductionState(CowGameManager.EntityState.Free);
 		}
 
 

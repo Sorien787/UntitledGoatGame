@@ -57,6 +57,11 @@ public class InanimateObjectComponent : MonoBehaviour, IFreeFallListener
         {
             animal.OnStruckByObject(m_objectRigidBody.velocity, m_objectRigidBody.mass);
         }
+        BirdComponent bird = go.GetComponent<BirdComponent>();
+        if (bird) 
+        {
+            bird.OnHitByObject();
+        }
         m_StateMachine.RequestTransition(typeof(IObjectPhysicalizedState));
     }
 

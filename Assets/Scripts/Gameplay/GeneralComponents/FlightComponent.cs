@@ -58,10 +58,6 @@ public class FlightComponent : MonoBehaviour, IPauseListener
         StartCoroutine(DelayedStartFollowDestination(destination));
     }
 
-    public void SetHold(in bool shouldHold) 
-    {
-        m_bHoldCommand = shouldHold;
-    }
 
     // for some reason this doesnt work unless it's started delayed in an enumerator...
     private IEnumerator DelayedStartFollowDestination(Vector3 destination) 
@@ -70,6 +66,11 @@ public class FlightComponent : MonoBehaviour, IPauseListener
         OnAutopilotCancelled?.Invoke();
         m_Destination = destination;
         UpdateAction = MovingToDestination;
+    }
+
+    public void SetHold(bool hold) 
+    {
+        m_bHoldCommand = hold;
     }
 
     public void SetTargetSpeed(in float finalVelocity) 

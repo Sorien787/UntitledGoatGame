@@ -61,7 +61,6 @@ public class AbductableComponent : MonoBehaviour
         m_bIsBeingAbducted = true;
         m_ChosenRotationAxis = UnityEngine.Random.onUnitSphere;
         OnStartedAbducting?.Invoke(ufo, this);
-        m_Manager.GetTokenForEntity(m_TypeComponent, m_TypeComponent.GetEntityInformation).SetAbductionState(CowGameManager.EntityState.Abducted);
     }
 
     public Vector3 CurrentDesiredVelocity;
@@ -86,7 +85,6 @@ public class AbductableComponent : MonoBehaviour
         m_AbductionParticleEffects.Stop();
         m_bIsBeingAbducted = false;
         OnEndedAbducting?.Invoke(ufo, this);
-        m_Manager.GetTokenForEntity(m_TypeComponent, m_TypeComponent.GetEntityInformation).SetAbductionState(CowGameManager.EntityState.Free);
     }
 
     public bool HasRegisteredAbduction => hasRegisteredAbduction;

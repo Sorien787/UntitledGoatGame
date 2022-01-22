@@ -6,27 +6,49 @@ using BirdStates;
 
 [RequireComponent(typeof(FlightComponent))]
 [RequireComponent(typeof(HealthComponent))]
+[RequireComponent(typeof(EntityTypeComponent))]
 public class BirdComponent : InanimateObjectComponent
 {
     [SerializeField] private CowGameManager m_Manager;
+	[SerializeField] private EntityTypeComponent m_EntityInformation;
     [SerializeField] private StateMachine<BirdComponent> m_StateMachine;
     [SerializeField] private FlightComponent m_FlightComponent;
 	[SerializeField] private float m_FlyTimeMin;
 	[SerializeField] private float m_FlyTimeMax;
+	[SerializeField] private float m_ScaredDistance;
+	[SerializeField] float m_PatrolDistanceMin;
+	[SerializeField] float m_PatrolDistanceMax;
+	[SerializeField] private AudioManager m_AudioManager;
+
+	private Transform m_Transform;
+
+
+
+	[SerializeField] private SoundObject m_TakeoffSoundEffect;
+	[SerializeField] private SoundObject m_FlapSoundEffect;
+
     // Start is called before the first frame update
     private RoostComponent m_CurrentRoost;
+	bool m_bIsDead = false;
     public bool TryFindRoostingSpot() 
     {
-		return false;
-        //return m_Manager.GetRoostingSpot(ref m_CurrentRoost);
+        return m_Manager.GetRoostingSpot(m_Transform.position, ref m_CurrentRoost);
     }
     public void ClearRoostingSpot() 
     {
+		m_Manager.RoostCleared(m_CurrentRoost);
         m_CurrentRoost = null;
     }
 	private void Awake()
 	{
+		m_EntityInformation.RemoveFromTrackable();
+		m_Transform = transform;
         m_throwableObjectComponent.OnWrangled += OnStopDoingBirdBehaviour;
+	}
+
+	public void OnHitByObject() 
+	{
+
 	}
 	protected override void Start()
     {
@@ -36,23 +58,53 @@ public class BirdComponent : InanimateObjectComponent
         m_StateMachine.AddState(new BirdTakeoffState());
         m_StateMachine.AddState(new BirdLandingState());
 
-		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(BirdRoostingState), typeof(BirdLimpState)).AddOnExit(ClearRoostingSpot));
+		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState)).AddOnExit(ClearRoostingSpot));
+		m_StateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState), typeof(BirdTakeoffState)).AddOnEnter(StartFlyingSound).AddOnExit(StopFlyingSound));
 
 		m_StateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), ShouldTakeOff);
 		m_StateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdTakeoffState), ShouldTakeOff);
+		m_StateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdRoostingState), HasReachedRoost);
 
         m_StateMachine.InitializeStateMachine();
     }
 
+	private void StartFlyingSound() 
+	{
+		m_AudioManager.Play(m_FlapSoundEffect);
+		m_AudioManager.Play(m_TakeoffSoundEffect);
+	}
+
+	private void StopFlyingSound() 
+	{
+		m_AudioManager.StopPlaying(m_FlapSoundEffect);
+	}
+
+	private bool HasReachedRoost() 
+	{
+		return (m_CurrentRoost.GetRoostingLocation - m_Transform.position).sqrMagnitude < 0.2f;
+	}
+
+	public Vector3 GetRoostPosition() 
+	{
+		return m_CurrentRoost.GetRoostingLocation;
+	}
+
+	public void ShouldHoldPosition(bool hold)
+	{
+		m_FlightComponent.SetHold(true);
+	}
 
 	private bool ShouldTakeOff() 
 	{
+		if (m_Manager.GetClosestTransformMatchingList(m_Transform.position, out EntityToken token, false, m_EntityInformation.GetEntityInformation.GetScaredOf))	
+			return ((m_Transform.position - token.GetEntityTransform.position).sqrMagnitude < m_ScaredDistance * m_ScaredDistance);
 		return false;
 	}
 
     private void OnStopDoingBirdBehaviour() 
     {
 		m_throwableObjectComponent.OnWrangled -= OnStopDoingBirdBehaviour;
+		m_EntityInformation.AddToTrackable();
         enabled = false;
         InitializeMachine();
     }
@@ -67,24 +119,38 @@ public class BirdComponent : InanimateObjectComponent
 	public float GetRoamTimeMax => m_FlyTimeMax;
 	public void SetTargetSpeedAtPathEnd(float speed) 
 	{
-
+		m_FlightComponent.SetTargetSpeed(speed);
 	}
-	public void SetOnReachedDestination(Action onReached)
+	public void SetOnReachedDestination(Action OnReachedDestination)
 	{
-
+		if (OnReachedDestination == null)
+		{
+			m_FlightComponent.ResetFlightCallback();
+		}
+		else
+		{
+			m_FlightComponent.OnAutopilotPositionCompleted += OnReachedDestination;
+		}
 	}
 	public void SetDestination(Vector3 destination)
 	{
+		m_FlightComponent.SetLinearDestination(destination);
+	}
 
+	public void UpdateDestination(Vector3 destination) 
+	{
+		m_FlightComponent.UpdateLinearDestination(destination);
 	}
 	public Vector3 GetNewPatrolDestination()
 	{
-		return Vector3.zero;
-	}
-
-	public void OnReachedPatrolWaypoint() 
-	{
-
+		float dst = UnityEngine.Random.Range(m_PatrolDistanceMin, m_PatrolDistanceMax);
+		float height = UnityEngine.Random.Range(m_Manager.GetFlightPatrolHeightMin, m_Manager.GetFlightPatrolHeightMax);
+		float randomDirection = UnityEngine.Random.Range(0, Mathf.Deg2Rad * 360);
+		Vector2 currentPlanarPosition = new Vector2(m_Transform.position.x, m_Transform.position.z);
+		Vector2 newPlanarPosition = new Vector3(Mathf.Sin(randomDirection) * dst + currentPlanarPosition.x, -Mathf.Cos(randomDirection) * dst + currentPlanarPosition.y);
+		Vector2 limitedPlanarPosition = Mathf.Min(m_Manager.GetMapRadius, newPlanarPosition.magnitude) * newPlanarPosition.normalized;
+		Vector3 newWorldPosition = new Vector3(limitedPlanarPosition.x, height, limitedPlanarPosition.y);
+		return newWorldPosition;
 	}
 }
 namespace BirdStates 
@@ -96,42 +162,29 @@ namespace BirdStates
 
 		public BirdFlyingState()
 		{
-			AddTimers(2);
+			AddTimers(1);
 		}
 
 		public override void OnEnter()
 		{
 			m_fTimeToPatrolFor = UnityEngine.Random.Range(Host.GetRoamTimeMin, Host.GetRoamTimeMax);
 			StopTimer(1);
-			Host.SetTargetSpeedAtPathEnd(0.0f);
+			Host.SetTargetSpeedAtPathEnd(1000.0f);
 			Host.SetOnReachedDestination(OnReachedPatrolWaypoint);
 			Host.SetDestination(Host.GetNewPatrolDestination());
 		}
 
 		public override void Tick()
 		{
-			// if the waypoint timer has expired
-			// and we're not currently patrolling, I.E we're at a waypoint
-			if (GetTimerVal(1) > 1.0f)
+			// then if we're not finished patrolling, choose another destination
+			if (GetTimerVal(0) >= m_fTimeToPatrolFor)
 			{
-				// then if we're not finished patrolling, choose another destination
-				if (GetTimerVal(0) < m_fTimeToPatrolFor)
-				{
-					ClearTimer(1);
-					StopTimer(1);
-					Host.SetDestination(Host.GetNewPatrolDestination());
-
-				}
-				// else we change states
-				else
-				{
-					RequestTransition<BirdSearchingState>();
-				}
+				RequestTransition<BirdSearchingState>();
 			}
 		}
 		private void OnReachedPatrolWaypoint()
 		{
-			StartTimer(1);
+			Host.SetDestination(Host.GetNewPatrolDestination());
 		}
 
 		public override void OnExit()
@@ -157,6 +210,19 @@ namespace BirdStates
 	public class BirdTakeoffState : AStateBase<BirdComponent>
 	{ }
 	public class BirdLandingState : AStateBase<BirdComponent>
-	{ }
+	{
+		public override void OnEnter()
+		{
+			Host.UpdateDestination(Host.GetRoostPosition());
+			Host.ShouldHoldPosition(true);
+			Host.SetTargetSpeedAtPathEnd(0.0f);
+		}
+
+		public override void OnExit()
+		{
+			Host.ShouldHoldPosition(false);
+			Host.SetOnReachedDestination(null);
+		}
+	}
 
 }

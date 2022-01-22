@@ -254,7 +254,9 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     public void OnCollide(Vector3 pos, Vector3 norm, GameObject go)
     {
-        OnHitGround(pos, norm);
+        Vector3 momentum = m_AnimalRigidBody.mass * m_AnimalRigidBody.velocity;
+        float momentumInNormalDirection = -Vector3.Dot(norm, momentum);
+        OnHitByMomentum(momentumInNormalDirection);
         m_StateMachine.RequestTransition(typeof(AnimalFreeFallState));
     }
 
@@ -262,13 +264,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     {
         m_bShouldStagger = false;
         m_TotalStaggerTime = 0.0f;
-    }
-
-    private void OnHitGround(Vector3 pos, Vector3 norm) 
-    {
-        Vector3 momentum = m_AnimalRigidBody.mass * m_AnimalRigidBody.velocity;
-        float momentumInNormalDirection = -Vector3.Dot(norm, momentum);
-        OnHitByMomentum(momentumInNormalDirection);
     }
 
     private void OnHitByMomentum(float momentumMagnitude) 
@@ -365,7 +360,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private bool GetEntityTokenToEscapeFrom(out EntityToken token) 
     {
-        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out token, null, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
+        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out token, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
         {
             if (Vector3.SqrMagnitude(token.GetEntityTransform.position - m_AnimalMainTransform.position) < m_ScaredDistance * m_ScaredDistance)
             {
@@ -447,14 +442,14 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     private bool CanHuntEnemy()
     {
-        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objAtkToken, null, false, m_EntityInformation.GetEntityInformation.GetAttacks) && TryHuntObject(objAtkToken))
+        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objAtkToken, false, m_EntityInformation.GetEntityInformation.GetAttacks) && TryHuntObject(objAtkToken))
         {
 			SetCurrentAttack(m_DamageAttackType);
 			m_AnimalAnimator.HasSeenEnemy();
             return true;
         }
 
-        if (!IsFull && m_bIsHungry && m_bIsHungryAfterBreeding && m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objToken, null, true, m_EntityInformation.GetEntityInformation.GetHunts) && TryHuntObject(objToken))
+        if (!IsFull && m_bIsHungry && m_bIsHungryAfterBreeding && m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken objToken, true, m_EntityInformation.GetEntityInformation.GetHunts) && TryHuntObject(objToken))
         { 
 		    SetCurrentAttack(m_EatAttackType);
 		    m_AnimalAnimator.HasSeenFood();
