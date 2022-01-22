@@ -139,6 +139,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
     }
 	[Header("Sound References")]
 	[SerializeField] private SoundObject m_throwSoundRef;
+	[SerializeField] private SoundObject m_throwLassoSoundRef;
 	[SerializeField] private SoundObject m_returnSoundRef;
 	[SerializeField] private SoundObject m_spinSoundRef;
 	[SerializeField] private SoundObject m_pullSoundRef;
@@ -162,7 +163,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
         GetEndTransform = m_LassoEndTransform;
         m_StateMachine = new StateMachine<LassoInputComponent>(new LassoIdleState(), this);
         m_StateMachine.AddState(new LassoReturnState(m_AudioManager.GetSoundBySoundObject(m_returnSoundRef)));
-        m_StateMachine.AddState(new LassoThrowingState(m_AudioManager.GetSoundBySoundObject(m_throwSoundRef)));
+        m_StateMachine.AddState(new LassoThrowingState());
         m_StateMachine.AddState(new LassoSpinningState(m_AudioManager.GetSoundBySoundObject(m_spinSoundRef)));
         m_StateMachine.AddState(new LassoAnimalAttachedState(m_TriggerBinding, m_AudioManager.GetSoundBySoundObject(m_tugSoundRef)));
         m_StateMachine.AddState(new LassoAnimalSpinningState(m_AudioManager.GetSoundBySoundObject(m_spinSoundRef)));
@@ -309,6 +310,7 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	{
 		GetThrowableObject.ThrowObject(m_projectileParams);
 		float throwForce = m_projectileParams.m_fThrowSpeed / GetThrowableObject.GetMass();
+		m_AudioManager.PlayOneShot(m_throwLassoSoundRef);
 		OnThrowObject?.Invoke(throwForce);
 	}
 	private void SetLassoAsChildOfPlayer(bool set)
@@ -739,21 +741,13 @@ namespace LassoStates
 	{
 		private float m_fCurrentAngle = 0.0f;
 		private float m_fRandomSizeMult = 1.0f;
-		private readonly Sound m_ThrowSound;
 		private float m_fRandomRotationSpeedMult = 1.0f;
-
-		public LassoThrowingState(Sound throwSound) 
-		{
-			m_ThrowSound = throwSound;
-		}
 
 		public override void OnEnter()
 		{
 			m_fCurrentAngle = UnityEngine.Random.Range(0.0f, 360.0f);
 			m_fRandomSizeMult = UnityEngine.Random.Range(0.7f, 1.3f);
 			m_fRandomRotationSpeedMult = UnityEngine.Random.Range(0.7f, 1.3f) * Mathf.Sign(UnityEngine.Random.Range(-1.0f, 1.0f));
-			m_ThrowSound.SetPitch(1.0f);
-			m_ThrowSound.PlayOneShot();
 			Host.SetRopeLineRenderer(true);
 			Host.SetLoopLineRenderer(true);
 			AddTimers(1);

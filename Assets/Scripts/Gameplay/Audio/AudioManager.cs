@@ -301,8 +301,9 @@ public class Sound
 
 	private float m_fVolumeModifierInternal = 1.0f;
 	private float m_fPitchModifierInternal = 1.0f;
+	private float m_MutedModifer = 1.0f;
 
-	public float GetVolume => m_fVolumeModifierInternal;
+	public float GetVolume => m_fVolumeModifierInternal * m_MutedModifer;
 	public Sound(in SoundObject soundObject, in AudioSource sourceToplayFrom) 
 	{
 		m_SoundObject = soundObject;
@@ -331,12 +332,13 @@ public class Sound
 	{
 		if (mute)
 		{
-			m_AudioSource.volume = 0.0f;
+			m_MutedModifer = 0.0f;
 		}
 		else
 		{
-			UpdateAudioVolume();
+			m_MutedModifer = 1.0f;	
 		}
+		UpdateAudioVolume();
 	}
 
 	public void UpdateAudioPitch()

@@ -192,6 +192,8 @@ public class AnimalAnimationComponent : MonoBehaviour
             up = hit.normal;
             forward = Vector3.ProjectOnPlane(forward, up).normalized;
         }
+        if (forward.sqrMagnitude < Mathf.Epsilon)
+            forward = AnimTransform.forward;
         return Quaternion.LookRotation(forward, up);
     }
 

@@ -28,9 +28,9 @@ Transform:
   m_GameObject: {fileID: 2445023767158117604}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.258028, y: 0.258028, z: 0.258028}
+  m_LocalScale: {x: 0.25802803, y: 0.258028, z: 0.25802803}
   m_Children: []
-  m_Father: {fileID: 9119922320557816613}
+  m_Father: {fileID: 452738001616307479}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1571663555147739652
@@ -592,6 +592,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_DragSoundBySpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_HazardRef: {fileID: 0}
   m_Manager: {fileID: 0}
   m_GroundImpactEffectsPrefab: {fileID: 0}
@@ -602,6 +608,7 @@ MonoBehaviour:
   m_GravityMultiplier: 1.33
   m_ImpactSoundObject: {fileID: 0}
   m_DragSoundObject: {fileID: 0}
+  m_fMaxSpeedForSoundVal: 0
   m_ThrowingBody: {fileID: 3338445512843362041}
   m_CameraFocusTransform: {fileID: 3338445512843362043}
   m_AttachmentTransform: {fileID: 3338445512843362043}
@@ -772,8 +779,8 @@ MonoBehaviour:
   detailNoiseWeight: 1.18
   detailNoiseWeights: {x: 2.97, y: 1.85, z: 2}
   detailOffset: {x: 0, y: 0, z: 0}
-  lightAbsorptionThroughCloud: 1.32
-  lightAbsorptionTowardSun: 1.8
+  lightAbsorptionThroughCloud: 0.9
+  lightAbsorptionTowardSun: 1.2
   darknessThreshold: 0.936
   forwardScattering: 0
   backScattering: 0.466
@@ -930,6 +937,8 @@ MonoBehaviour:
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_LassoParams: {fileID: 11400000, guid: 54e6bedcceb2de94d9a368bf3b01d740, type: 2}
   m_throwSoundRef: {fileID: 11400000, guid: 7292b50582ad3ec4d823101fc2ba3333, type: 2}
+  m_throwLassoSoundRef: {fileID: 11400000, guid: 489032ca823b76b4f870e600aabe36af,
+    type: 2}
   m_returnSoundRef: {fileID: 11400000, guid: 2ac6413e92e6f8c47a3f20aeb4c6cdd1, type: 2}
   m_spinSoundRef: {fileID: 11400000, guid: dde579c0715a55a4797cc21450bd0b7b, type: 2}
   m_pullSoundRef: {fileID: 11400000, guid: 2ac6413e92e6f8c47a3f20aeb4c6cdd1, type: 2}
@@ -1485,7 +1494,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3338445514129021242}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.004, z: 0}
+  m_LocalPosition: {x: 0, y: -0.849, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3338445514369759825}
@@ -1907,6 +1916,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_DragSoundBySpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_HazardRef: {fileID: 0}
   m_Manager: {fileID: 0}
   m_GroundImpactEffectsPrefab: {fileID: 0}
@@ -1917,6 +1932,7 @@ MonoBehaviour:
   m_GravityMultiplier: 1
   m_ImpactSoundObject: {fileID: 0}
   m_DragSoundObject: {fileID: 0}
+  m_fMaxSpeedForSoundVal: 0
   m_ObjectMass: 1
 --- !u!114 &3338445514369759818
 MonoBehaviour:
@@ -2072,6 +2088,39 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b82f8c7b26ab9de4e8c0cf09e4da4569, type: 2}
   - {fileID: 11400000, guid: 749a97d8e036fed4987023af5d473fe9, type: 2}
   - {fileID: 11400000, guid: 4067fc4592374cf459e2e12e659a61cd, type: 2}
+--- !u!1 &3419590017506941496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 452738001616307479}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &452738001616307479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3419590017506941496}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_Children:
+  - {fileID: 1228732708704286510}
+  - {fileID: 6334852145946379234}
+  - {fileID: 5215695055094983746}
+  m_Father: {fileID: 9119922320557816613}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3761624391994867496
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,9 +2149,9 @@ Transform:
   m_GameObject: {fileID: 3761624391994867496}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.71399754, y: 0.71399754, z: 0.71399754}
+  m_LocalScale: {x: 0.7139976, y: 0.7139975, z: 0.7139976}
   m_Children: []
-  m_Father: {fileID: 9119922320557816613}
+  m_Father: {fileID: 452738001616307479}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4364815107891101106
@@ -2224,9 +2273,9 @@ Transform:
   m_GameObject: {fileID: 4929523037819377885}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2862, y: 1.2862, z: 1.2862}
+  m_LocalScale: {x: 1.2862002, y: 1.2862, z: 1.2862002}
   m_Children: []
-  m_Father: {fileID: 9119922320557816613}
+  m_Father: {fileID: 452738001616307479}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9161570666122248754
@@ -2385,9 +2434,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.83107, y: 0.6925583, z: 0.83107}
   m_Children:
-  - {fileID: 1228732708704286510}
-  - {fileID: 6334852145946379234}
-  - {fileID: 5215695055094983746}
+  - {fileID: 452738001616307479}
   m_Father: {fileID: 3338445514369759825}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

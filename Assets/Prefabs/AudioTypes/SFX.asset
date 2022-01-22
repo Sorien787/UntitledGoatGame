@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bc9a7e7e731934097065736653145b, type: 3}
   m_Name: SFX
   m_EditorClassIdentifier: 
-  viewModelPropertyName: 
+  viewModelPropertyName: SettingsManager.SFXVol
   m_ViewModel: {fileID: 11400000, guid: 384e163cb1a253d4380dc85a9054e034, type: 2}

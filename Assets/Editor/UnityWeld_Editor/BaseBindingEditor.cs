@@ -28,7 +28,15 @@ namespace UnityWeld_Editor
 
             setter(newValue);
 
-            InspectorUtils.MarkSceneDirty(((Component)target).gameObject);
+            if (target is Component component)
+            {
+                InspectorUtils.MarkSceneDirty(component.gameObject);
+                return;
+            }
+            if (target is ScriptableObject @object) 
+            {
+                EditorUtility.SetDirty(@object);
+            }
         }
 
         /// <summary>

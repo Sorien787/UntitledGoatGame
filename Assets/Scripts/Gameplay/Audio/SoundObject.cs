@@ -8,7 +8,7 @@ public class SoundObject : ScriptableObject
 	{
 		if (m_clips.Count == 0)
 			return null;
-		int val = UnityEngine.Random.Range(0, m_clips.Count - 1);
+		int val = Mathf.FloorToInt(UnityEngine.Random.Range(0.0f, m_clips.Count));
 		return m_clips[val];
 	}
 
