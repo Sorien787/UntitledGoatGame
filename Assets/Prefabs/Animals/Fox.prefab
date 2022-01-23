@@ -176,6 +176,12 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_ImpactSoundObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 71ad46df377ba4240aca6378ab0edc41,
+        type: 2}
     - target: {fileID: 6261768213309388384, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -272,6 +278,11 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RunSpeed
@@ -317,6 +328,18 @@ PrefabInstance:
       propertyPath: m_HopAnimationCurve.m_Curve.Array.data[4].time
       value: 1.0111814
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_GeneralCall
+      value: 
+      objectReference: {fileID: 11400000, guid: 4fde21d972896df4bb27811de238bf28,
+        type: 2}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_DamagedCall
+      value: 
+      objectReference: {fileID: 11400000, guid: 4fde21d972896df4bb27811de238bf28,
+        type: 2}
     - target: {fileID: 8017869404291731759, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_listOfObjsToChangeLayer.Array.data[0]

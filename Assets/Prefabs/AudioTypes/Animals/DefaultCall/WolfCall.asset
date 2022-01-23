@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: WolfCall
   m_EditorClassIdentifier: 
-  m_clips: []
+  m_clips:
+  - {fileID: 8300000, guid: c9e9c652c8d7a2448bcff7445b2ff969, type: 3}
+  - {fileID: 8300000, guid: d32b7f6b4725f2a44851c80bda54d856, type: 3}
+  - {fileID: 8300000, guid: 1370ef7c68547c948b771926984bd057, type: 3}
+  - {fileID: 8300000, guid: d69ceae54acda304b9c589eb9137c8e6, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
@@ -21,4 +25,5 @@ MonoBehaviour:
   pitchRandomize: 0.125
   volRandomize: 0.124
   distance: 17.8
+  is3DSound: 1
   loop: 0

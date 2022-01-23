@@ -689,7 +689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988646388, guid: aea3e7101c8ae3a47bf7574c15d5310d, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1988646388, guid: aea3e7101c8ae3a47bf7574c15d5310d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -778,12 +778,18 @@ PrefabInstance:
     - target: {fileID: 3847187933735988313, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_ImpactSoundObject
+      value: 
+      objectReference: {fileID: 11400000, guid: d832f1980356eee4f96c464b2a21d383,
+        type: 2}
     - target: {fileID: 6061486578075039898, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388384, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -889,12 +895,12 @@ PrefabInstance:
     - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_Mass
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_AngularDrag
-      value: 4.44
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -981,6 +987,12 @@ PrefabInstance:
       propertyPath: m_BornEffectsSize
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_WalkSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 749a97d8e036fed4987023af5d473fe9,
+        type: 2}
     - target: {fileID: 7107208444515908565, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -989,7 +1001,7 @@ PrefabInstance:
     - target: {fileID: 7107208444515908565, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7651879451718294537, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

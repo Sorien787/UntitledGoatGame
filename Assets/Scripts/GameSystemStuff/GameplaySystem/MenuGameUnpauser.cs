@@ -10,7 +10,7 @@ public class MenuGameUnpauser : MonoBehaviour
     {
 		m_Manager.SetPausedState(false);
 		
-		Cursor.lockState = CursorLockMode.Confined;
+		Cursor.lockState = CursorLockMode.None;
 
 		m_Manager.InMenuStarted();
 	}

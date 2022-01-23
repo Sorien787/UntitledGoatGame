@@ -397,6 +397,11 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RunSpeed
@@ -407,6 +412,24 @@ PrefabInstance:
       propertyPath: m_BornEffectsSize
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_GeneralCall
+      value: 
+      objectReference: {fileID: 11400000, guid: b4b3a7b14d1620648899cb6ae7f7ea7e,
+        type: 2}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_WalkSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 578e585eb6ba9b946a4a4ab57945e20f,
+        type: 2}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_DamagedCall
+      value: 
+      objectReference: {fileID: 11400000, guid: badec850a5f8f2a458efcb0132c68fc0,
+        type: 2}
     - target: {fileID: 8017869404291731759, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_listOfObjsToChangeLayer.Array.data[0]

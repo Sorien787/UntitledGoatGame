@@ -21,4 +21,6 @@ MonoBehaviour:
   maxVolumeModifier: 1
   pitchRandomize: 0
   volRandomize: 0
+  distance: 20
+  is3DSound: 0
   loop: 0

@@ -26,7 +26,7 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
     }
 
     private float m_CurrentFoodSize = 0.0f;
-    private readonly List<Flower> m_Flowers = new List<Flower>();
+    private List<Flower> m_Flowers = new List<Flower>();
     private Matrix4x4[] m_Matrices;
 
     static void AddMeshAndTransformDataForUse(in List<Mesh> meshes, in List<Transform> transforms, GameObject gameObjectToAdd) 
@@ -112,7 +112,6 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
         }
         berryMesh.normals = normals;
 
-        m_BerryMesh = GetComponentInChildren<MeshFilter>().sharedMesh;
         GetComponent<FoodSourceComponent>().AddListener(this);
 
         List<Mesh> meshes = new List<Mesh>();
@@ -166,6 +165,8 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
                 }
             });
         }
+        UnityUtils.UnityUtils.ShuffleList(ref m_Flowers);
+
         m_Matrices = new Matrix4x4[m_Flowers.Count];
         for (int i = 0; i < m_Matrices.Length; i++) 
         {
@@ -203,7 +204,7 @@ public class BushComponent : MonoBehaviour, IFoodSourceSizeListener
     {
 
 
-		Graphics.DrawMeshInstanced(berryMesh, 0, m_BerryMaterial, m_Matrices);
+		Graphics.DrawMeshInstanced(m_BerryMesh, 0, m_BerryMaterial, m_Matrices);
 
         if (!m_bUpdateSizes)
             return;

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: PigCall
   m_EditorClassIdentifier: 
-  m_clips: []
+  m_clips:
+  - {fileID: 8300000, guid: 2d5aa7a94811f4a48a8ea9b4ffe8ab60, type: 3}
+  - {fileID: 8300000, guid: 859071409334efa4ca675f0885a47d14, type: 3}
+  - {fileID: 8300000, guid: 91716cdcdfe2e7c4b81844253c096291, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1

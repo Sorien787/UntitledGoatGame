@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: GoatHurt
   m_EditorClassIdentifier: 
-  m_clips: []
+  m_clips:
+  - {fileID: 8300000, guid: c449fc54219d47b4ebcdfe85df4a7797, type: 3}
+  - {fileID: 8300000, guid: 5e7aefbd945ec974bbf42760c372a6bc, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
@@ -21,4 +23,5 @@ MonoBehaviour:
   pitchRandomize: 0
   volRandomize: 0
   distance: 17.4
+  is3DSound: 1
   loop: 0

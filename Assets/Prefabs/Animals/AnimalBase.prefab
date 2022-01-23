@@ -15476,8 +15476,6 @@ MonoBehaviour:
   m_AlertFleeEffectsController: {fileID: 2973502529295201285}
   m_AlertBreedEffectsController: {fileID: 1183819916}
   m_AlertIdleEffectsController: {fileID: 2973502529295201285}
-  m_FreeFallingParticleController: {fileID: 6747988760286121710}
-  m_BashedParticleController: {fileID: 2973502529295201285}
   m_AudioManager: {fileID: 8292355820667919450}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_PhysicalEntity: {fileID: 5535792141253275086}
@@ -15640,8 +15638,8 @@ MonoBehaviour:
   m_GroundImpactLayermask:
     serializedVersion: 2
     m_Bits: 2100480
-  m_ThrowinSound: {fileID: 0}
-  m_Audio: {fileID: 0}
+  m_ThrowinSound: {fileID: 11400000, guid: c0a5f93b4885b1049b8b9257f0030c28, type: 2}
+  m_Audio: {fileID: 8292355820667919450}
 --- !u!114 &5028166405719411816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16374,6 +16372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+  m_bManualGroundedUpdate: 1
 --- !u!114 &8990483345826721983
 MonoBehaviour:
   m_ObjectHideFlags: 0

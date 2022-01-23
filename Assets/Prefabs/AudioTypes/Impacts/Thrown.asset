@@ -16,10 +16,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9e51eade48ad5644c811906af9ef8e78, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
-  defaultPitch: 1.228
+  defaultPitch: 1.44
   maxPitchModifier: 1
   maxVolumeModifier: 1
   pitchRandomize: 0
   volRandomize: 0
   distance: 20.2
+  is3DSound: 1
   loop: 0

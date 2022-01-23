@@ -22,4 +22,5 @@ MonoBehaviour:
   pitchRandomize: 0
   volRandomize: 0
   distance: 20.2
+  is3DSound: 0
   loop: 1

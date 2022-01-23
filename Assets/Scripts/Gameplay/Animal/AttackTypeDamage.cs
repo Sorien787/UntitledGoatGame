@@ -11,7 +11,7 @@ public class AttackTypeDamage : AttackBase
 	{
 		HealthComponent healthComponent = target.GetComponent<HealthComponent>();
 		healthComponent.TakeDamageInstance(gameObject, DamageType.PredatorDamage, m_DamageAmount);
-		GameObject attackFXObject = Instantiate(healthComponent.GetDamagedParticleType(DamageType.PredatorDamage), m_AttackPoint.position, m_AttackPoint.rotation, null);
+		GameObject attackFXObject = Instantiate(healthComponent.GetDamagedParticleType(), m_AttackPoint.position, m_AttackPoint.rotation, null);
 		OnDamagedTarget?.Invoke(m_DamageAmount, target);
 	}
 }

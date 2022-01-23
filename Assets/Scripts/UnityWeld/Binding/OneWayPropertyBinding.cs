@@ -71,6 +71,7 @@ namespace UnityWeld.Binding
         {
             string propertyName;
             Component view;
+   
             ParseViewEndPointReference(viewPropertyName, out propertyName, out view);
 
             var viewModelEndPoint = MakeViewModelEndPoint(viewModelPropertyName, null, null);

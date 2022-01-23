@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_fHealthThresholdForEaten: 0.1
   m_fHealthThresholdForReadyForEating: 0.5
-  m_fFoodSizeChangeTime: 1
+  m_fFoodSizeChangeTime: 0.3
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_EntityInformation: {fileID: 8193576897066533465}
   m_DebugText: {fileID: 3286334779938863179}
@@ -119,11 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b55fa25a8baab34a82cef98a70af4d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TimeForFlowerAnim: 0.5
-  m_TargetNumOfFlowers: 40
-  m_MaxAngleFromUp: 70
-  m_FlowerSizeRandom: 0.2
-  m_FlowerScalar: 0.15
+  m_TimeForFlowerAnim: 0.13
+  m_TargetNumOfFlowers: 100
+  m_MaxAngleFromUp: 90
+  m_FlowerSizeRandom: 0.1
+  m_FlowerScalar: 12
   m_BerryMesh: {fileID: 4444728127320036556, guid: a2b4232d5fe9fb443aa948d4c7f124de,
     type: 3}
   m_BerryMaterial: {fileID: 2100000, guid: f6f7bc95d6e4674439999f5bd72d53d1, type: 2}

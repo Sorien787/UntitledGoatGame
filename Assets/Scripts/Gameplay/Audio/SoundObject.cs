@@ -37,6 +37,8 @@ public class SoundObject : ScriptableObject
 	[Range(0.0f, 100f)]
 	public float distance = 20f;
 
+	public bool is3DSound = true;
+
 	public bool loop = false;
 }
 

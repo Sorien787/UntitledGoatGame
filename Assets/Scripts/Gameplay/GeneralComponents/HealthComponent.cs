@@ -45,7 +45,7 @@ public class HealthComponent : MonoBehaviour
         m_CurrentHealth = m_MaxHealth;
     }
 
-    public GameObject GetDamagedParticleType(DamageType type) => m_DamagedParticleType;
+    public GameObject GetDamagedParticleType() => m_DamagedParticleType;
 
     public void Revive(in float health) 
     {
@@ -134,7 +134,7 @@ public class HealthComponent : MonoBehaviour
             m_CurrentHealth -= damageAmount;
             if (m_CurrentHealth <= 0)
             {
-
+                m_CurrentHealth = 0;
 				if (m_bCanDie)
 					OnKilled(gameObject, damagedBy, damageType);
             }

@@ -270,6 +270,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_ImpactSoundObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 71ad46df377ba4240aca6378ab0edc41,
+        type: 2}
     - target: {fileID: 6061486578075039898, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
@@ -356,6 +362,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goat
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_Mass
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_fChaseBufferSize
@@ -366,6 +377,18 @@ PrefabInstance:
       propertyPath: m_BornEffectsSize
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_GeneralCall
+      value: 
+      objectReference: {fileID: 11400000, guid: 04d455dfc8a91d84e82d8c01209e796b,
+        type: 2}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_DamagedCall
+      value: 
+      objectReference: {fileID: 11400000, guid: 605175774b456404a989284263c5c6d2,
+        type: 2}
     - target: {fileID: 8017869404291731759, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_listOfObjsToChangeLayer.Array.data[0]

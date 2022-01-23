@@ -25,12 +25,15 @@ public class AudioManager : MonoBehaviour
 		source.loop = sound.loop;
 		source.rolloffMode = AudioRolloffMode.Linear;
 		source.maxDistance = sound.distance;
+		source.spatialBlend = sound.is3DSound ? 1.0f : 0.0f;
 		Sound newSound = new Sound(sound, source);
 		m_SoundDict.Add(sound, newSound);
 	}
 
-	public Sound GetSoundBySoundObject(SoundObject soundObject) 
+	public Sound GetSoundBySoundObject(SoundObject soundObject)
 	{
+		if (!m_SoundDict.ContainsKey(soundObject))
+			AddSoundToDict(soundObject);
 		return m_SoundDict[soundObject];
 	}
 

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f471f5a79a4d0d146ab5062aa7b06cc5, type: 3}
   m_Name: PigHurt
   m_EditorClassIdentifier: 
-  m_clips: []
+  m_clips:
+  - {fileID: 8300000, guid: 5c352252bc26e3d4394930f8c036d831, type: 3}
+  - {fileID: 8300000, guid: 4a08da7b55f60644d85625183d5c0701, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
@@ -21,4 +23,5 @@ MonoBehaviour:
   pitchRandomize: 0
   volRandomize: 0
   distance: 17.4
+  is3DSound: 1
   loop: 0

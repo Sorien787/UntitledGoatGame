@@ -443,6 +443,12 @@ PrefabInstance:
       propertyPath: m_ImpactMagnitudeByImpactMomentum.m_Curve.Array.data[0].value
       value: 0.0022023749
       objectReference: {fileID: 0}
+    - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_ImpactSoundObject
+      value: 
+      objectReference: {fileID: 11400000, guid: d832f1980356eee4f96c464b2a21d383,
+        type: 2}
     - target: {fileID: 6061486578075039898, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -562,7 +568,7 @@ PrefabInstance:
     - target: {fileID: 6261768213309388412, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_AngularDrag
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388414, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -694,6 +700,24 @@ PrefabInstance:
       propertyPath: m_SizeVariation
       value: 0.134
       objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_GeneralCall
+      value: 
+      objectReference: {fileID: 11400000, guid: c9a9126a05e7a5744909b7cf0db3f356,
+        type: 2}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_DamagedCall
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a6de132ba222d74ab86e28325572018,
+        type: 2}
+    - target: {fileID: 6261768213309388415, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_WalkSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 749a97d8e036fed4987023af5d473fe9,
+        type: 2}
     - target: {fileID: 7569937641280573871, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_LocalPosition.y

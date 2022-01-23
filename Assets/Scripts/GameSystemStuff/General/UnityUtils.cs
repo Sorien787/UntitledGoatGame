@@ -17,6 +17,22 @@ namespace UnityUtils
 			return me.Member.Name;
 		}
 
+		public static void ShuffleList<T>(ref List<T> list) 
+		{
+			System.Random _random = new System.Random();
+
+			T currentT;
+
+			int n = list.Count;
+			for (int i = 0; i < n; i++) 
+			{
+				// NextDouble returns a random number between 0 and 1
+				int r = i + (int)(_random.NextDouble() * (n - i));
+				currentT = list[r];
+				list[i] = currentT;
+			}
+		}
+
 		public static Quaternion SmoothDampQuat(Quaternion rot, Quaternion target, ref Quaternion deriv, float time)
 		{
 			if (Time.deltaTime < Mathf.Epsilon) return rot;

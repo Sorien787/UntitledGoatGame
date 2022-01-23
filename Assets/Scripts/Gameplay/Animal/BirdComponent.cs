@@ -207,6 +207,7 @@ public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthLi
 
 		}
 		m_HealthComponent.RemoveListener(this);
+		m_Manager.RemoveFromPauseUnpause(this);
 		Destroy(gameObject);
 	}
 
