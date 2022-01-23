@@ -25,6 +25,7 @@ public class AudioManager : MonoBehaviour
 		source.loop = sound.loop;
 		source.rolloffMode = AudioRolloffMode.Linear;
 		source.maxDistance = sound.distance;
+		source.playOnAwake = false;
 		source.spatialBlend = sound.is3DSound ? 1.0f : 0.0f;
 		Sound newSound = new Sound(sound, source);
 		m_SoundDict.Add(sound, newSound);
@@ -95,17 +96,10 @@ public class AudioManager : MonoBehaviour
 
 	public void ApplyToSound(in SoundObject sound, in Action<Sound> soundAction) 
 	{
+		Sound soundToPlay = GetSoundBySoundObject(sound);
 		if (!m_SoundDict.ContainsKey(sound))
 			AddSoundToDict(sound);
-
-		if (m_SoundDict.TryGetValue(sound, out Sound value))
-		{
-			soundAction.Invoke(value);
-		}
-		else
-		{
-			Debug.Log("Could not find sound with identifier " + sound + " in object " + gameObject.name, gameObject);
-		}
+		soundAction.Invoke(soundToPlay);
 	}
 
 	private void OnDestroy()
