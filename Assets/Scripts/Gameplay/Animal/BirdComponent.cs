@@ -13,11 +13,16 @@ public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthLi
     [SerializeField] private CowGameManager m_Manager;
 	[SerializeField] private SoundObject m_TakeoffSoundEffect;
 	[SerializeField] private SoundObject m_FlapSoundEffect;
+	[SerializeField] private SoundObject m_DeathSound;
 
 	[Header("Anim Params")]
 	[SerializeField] private float m_DeathDuration = 1.0f;
 	[SerializeField] private float m_SizeVariation = 0.0f;
 	[SerializeField] private AnimationCurve m_DeathSizeAnimationCurve = default;
+	[SerializeField] private float m_FlapWindUpDistance = 3.0f;
+	[SerializeField] private float m_TurnTime = 0.7f;
+	[SerializeField] private Transform m_AnimRotationTransform; 
+	[SerializeField] private Animator m_BirdAnimator = default;
 
 	[Header("Gameplay Params")]
 	[SerializeField] private float m_ScaredDistance;
@@ -32,15 +37,52 @@ public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthLi
 	private HealthComponent m_HealthComponent;
 	private FlightComponent m_FlightComponent;
 	private AudioManager m_AudioManager;
+	private Rigidbody m_Body;
 
 
 
 	private float m_DeathAnimTime = 0.0f;
 	private float m_SizeMult;
 	private RoostComponent m_CurrentRoost;
+	private Vector3 m_RoostSpotWorldSpace;
+
+	Quaternion m_CurrentAngVel = Quaternion.identity;
+	public void UpdateLookDirToVelocity() 
+	{
+		Quaternion target = Quaternion.LookRotation(Vector3.ProjectOnPlane(m_Body.velocity, Vector3.up), Vector3.up);
+		m_AnimRotationTransform.rotation = UnityUtils.UnityUtils.SmoothDampQuat(m_AnimRotationTransform.rotation, target, ref m_CurrentAngVel, m_TurnTime);
+	}
+
+	public void TakeOff() 
+	{
+		m_AudioManager.PlayOneShot(m_TakeoffSoundEffect);
+	}
+
+	float m_currentFlapStrength = 0.0f;
+	public void PlayFlapSoundEffect() 
+	{
+		m_AudioManager.SetVolume(m_FlapSoundEffect, m_currentFlapStrength);
+		m_AudioManager.PlayOneShot(m_FlapSoundEffect);
+	}
+
+	public void UpdateFlapStrength() 
+	{
+		float strUnclamped = (m_Transform.position - m_RoostSpotWorldSpace).magnitude / m_FlapWindUpDistance;
+		SetFlapStrength(strUnclamped);
+	}
+
+	public void SetFlapStrength(float strength) 
+	{
+		m_currentFlapStrength = Mathf.Clamp01(strength);
+		m_BirdAnimator.SetFloat("flapStrength", m_currentFlapStrength);
+	}
+
     public bool TryFindRoostingSpot() 
     {
-        return m_Manager.GetRoostingSpot(m_Transform.position, ref m_CurrentRoost);
+		if (!m_Manager.GetRoostingSpot(m_Transform.position, ref m_CurrentRoost))
+			return false;
+		m_RoostSpotWorldSpace = m_CurrentRoost.GetRoostingLocation;
+		return true;
     }
     public void ClearRoostingSpot() 
     {
@@ -50,15 +92,15 @@ public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthLi
 	protected override void Awake()
 	{
 		base.Awake();
-
 		m_SizeMult = 1.0f + UnityEngine.Random.Range(-m_SizeVariation, m_SizeVariation);
-
 
 		m_EntityInformation = GetComponent<EntityTypeComponent>();
 		m_Transform = GetComponent<Transform>();
 		m_HealthComponent = GetComponent<HealthComponent>();
 		m_FlightComponent = GetComponent<FlightComponent>();
 		m_AudioManager = GetComponent<AudioManager>();
+		m_Body = GetComponent<Rigidbody>();
+
 		m_Manager.AddToPauseUnpause(this);
 		m_Transform = transform;
         m_throwableObjectComponent.OnWrangled += OnStopDoingBirdBehaviour;
@@ -86,7 +128,7 @@ public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthLi
 		m_BirdStateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState)).AddOnExit(ClearRoostingSpot));
 		m_BirdStateMachine.AddStateGroup(StateGroup.Create(typeof(BirdLandingState), typeof(BirdRoostingState), typeof(BirdTakeoffState)).AddOnEnter(StartFlyingSound).AddOnExit(StopFlyingSound));
 
-		m_BirdStateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), ShouldTakeOff);
+		m_BirdStateMachine.AddTransition(typeof(BirdRoostingState), typeof(BirdTakeoffState), ShouldTakeOffFromRoost);
 		m_BirdStateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdTakeoffState), ShouldTakeOff);
 		m_BirdStateMachine.AddTransition(typeof(BirdLandingState), typeof(BirdRoostingState), HasReachedRoost);
 
@@ -126,12 +168,30 @@ public class BirdComponent : InanimateObjectComponent, IPauseListener, IHealthLi
 		return false;
 	}
 
+	private bool ShouldTakeOffFromRoost() 
+	{
+		if (m_Manager.GetClosestTransformMatchingList(m_Transform.position, out EntityToken token, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
+		{
+			bool takeOff = ((m_Transform.position - token.GetEntityTransform.position).sqrMagnitude < m_ScaredDistance * m_ScaredDistance);
+			if (takeOff) 
+			{
+				m_AudioManager.PlayOneShot(m_TakeoffSoundEffect);
+			}
+			return takeOff;
+		}
+			
+		return false;
+	}
+
     private void OnStopDoingBirdBehaviour() 
     {
 		m_throwableObjectComponent.OnWrangled -= OnStopDoingBirdBehaviour;
 		m_throwableObjectComponent.EnableImpacts(true);
 		m_throwableObjectComponent.EnableDragging(true);
 		m_EntityInformation.AddToTrackable();
+		m_BirdAnimator.enabled = false;
+		m_AudioManager.PlayOneShot(m_DeathSound);
+		SetFlapStrength(0.0f);
         enabled = false;
         InitializeMachine();
     }
@@ -237,6 +297,7 @@ namespace BirdStates
 
 		public override void OnEnter()
 		{
+			Host.SetFlapStrength(1.0f);
 			m_fTimeToPatrolFor = UnityEngine.Random.Range(Host.GetRoamTimeMin, Host.GetRoamTimeMax);
 			StartTimer(0);
 			Host.SetTargetSpeedAtPathEnd(1000.0f);
@@ -246,6 +307,7 @@ namespace BirdStates
 
 		public override void Tick()
 		{
+			Host.UpdateLookDirToVelocity();
 			// then if we're not finished patrolling, choose another destination
 			if (GetTimerVal(0) >= m_fTimeToPatrolFor)
 			{
@@ -276,7 +338,12 @@ namespace BirdStates
 	public class BirdLimpState : AStateBase<BirdComponent>
 	{ }
 	public class BirdRoostingState : AStateBase<BirdComponent>
-	{ }
+	{
+		public override void OnEnter()
+		{
+			Host.SetFlapStrength(0.0f);
+		}
+	}
 	public class BirdTakeoffState : AStateBase<BirdComponent>
 	{
 		public override void OnEnter()
@@ -284,6 +351,12 @@ namespace BirdStates
 			Host.SetTargetSpeedAtPathEnd(1000.0f);
 			Host.SetOnReachedDestination(OnReachedSky);
 			Host.SetDestination(Host.GetNewPatrolDestination());
+		}
+
+		public override void Tick()
+		{
+			Host.UpdateFlapStrength();
+			Host.UpdateLookDirToVelocity();
 		}
 
 		private void OnReachedSky() 
@@ -306,6 +379,11 @@ namespace BirdStates
 			Host.SetTargetSpeedAtPathEnd(0.0f);
 		}
 
+		public override void Tick()
+		{
+			Host.UpdateFlapStrength();
+			Host.UpdateLookDirToVelocity();
+		}
 		public override void OnExit()
 		{
 			Host.ShouldHoldPosition(false);
