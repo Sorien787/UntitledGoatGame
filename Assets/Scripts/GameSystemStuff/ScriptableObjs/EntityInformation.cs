@@ -8,6 +8,17 @@ public class EntityInformation : ScriptableObject
     [SerializeField] private EntityInformation[] m_ScaredOf;
     [SerializeField] private EntityInformation[] m_Attacks;
     [SerializeField] private bool m_bIsStatic = false;
+
+    [SerializeField] private Sprite m_AssociatedSprite = default;
+    [SerializeField] private bool m_DisplayInTable = false;
+
+    public Sprite GetAssociatedSprite => m_AssociatedSprite;
+
+    public bool CanDisplayInTable() 
+    {
+        return m_DisplayInTable;
+    }
+
     public ref EntityInformation[] GetHunts => ref m_Hunts;
     public ref EntityInformation[] GetScaredOf => ref m_ScaredOf;
     public ref EntityInformation[] GetAttacks => ref m_Attacks;

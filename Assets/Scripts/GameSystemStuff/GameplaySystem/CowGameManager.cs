@@ -13,7 +13,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	[SerializeField] private RestartState m_RestartState;
 
 	[SerializeField] private List<LevelData> m_LevelData = new List<LevelData>();
-
+	private UnityUtils.ListenerSet<IEntityListener> m_EntityListeners = new UnityUtils.ListenerSet<IEntityListener>();
 	private readonly Dictionary<EntityInformation, List<EntityToken>> m_EntityCache = new Dictionary<EntityInformation, List<EntityToken>>();
 	private readonly List<LevelObjective> m_ObjectiveDict = new List<LevelObjective>();
 	private readonly Dictionary<UIObjectReference, GameObject> m_UICache = new Dictionary<UIObjectReference, GameObject>();
@@ -196,6 +196,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		m_ObjectiveDict.Clear();
 		m_LevelListeners.Clear();
 		m_PauseListeners.Clear();
+		m_EntityListeners.Clear();
 		m_UICache.Clear();
 	}
 	#endregion
@@ -220,6 +221,22 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		m_LevelListeners.ForEachListener((ILevelListener listener) => { listener.OnExitLevel(transitionTime); });
 	}
 
+	public void AddEntityAddedListener(IEntityListener listener) 
+	{
+		m_EntityListeners.Add(listener);
+		foreach(List<EntityToken> entityTokens in m_EntityCache.Values) 
+		{
+			foreach(EntityToken token in entityTokens) 
+			{
+				listener.OnEntityAdded(token);
+			}
+		}
+	}
+
+	public void RemoveEntityAddedListener(IEntityListener listener)
+	{
+		m_EntityListeners.Remove(listener);
+	}
 	public void RemoveFromPauseUnpause(IPauseListener pausable)
 	{
 		m_PauseListeners.Remove(pausable);
@@ -366,6 +383,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		{
 			entities = new List<EntityToken>();
 			m_EntityCache.Add(entity.GetEntityInformation, entities);
+
 		}
 		for (int i = 0; i < m_ObjectiveDict.Count; i++)
 		{
@@ -375,6 +393,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 			}
 		}
 		EntityToken newToken = new EntityToken(entity);
+		m_EntityListeners.ForEachListener((IEntityListener listener) => listener.OnEntityAdded(newToken));
 		entities.Add(newToken);		
 	}
 
@@ -396,7 +415,9 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		{
 			if (m_EntityCache[entity.GetEntityInformation][i].GetEntityType == entity)
 			{
+				m_EntityListeners.ForEachListener((IEntityListener listener) => listener.OnEntityRemoved(m_EntityCache[entity.GetEntityInformation][i]));
 				m_EntityCache[entity.GetEntityInformation].RemoveAt(i);
+	
 				if (m_EntityCache[entity.GetEntityInformation].Count == 0)
 				{
 					m_EntityCache.Remove(entity.GetEntityInformation);
@@ -549,6 +570,13 @@ public interface IPauseListener
 {
 	void Pause();
 	void Unpause();
+}
+
+public interface IEntityListener 
+{
+	void OnEntityAdded(EntityToken token);
+
+	void OnEntityRemoved(EntityToken token);
 }
 
 public interface ILevelListener 
