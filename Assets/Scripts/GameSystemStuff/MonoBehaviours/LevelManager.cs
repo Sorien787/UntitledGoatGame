@@ -38,6 +38,7 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private CanvasGroup m_StartCountdownCanvas;
 	[SerializeField] private CanvasGroup m_PauseCanvas;
 	[SerializeField] private CanvasGroup m_EndSuccessCanvas;
+	[SerializeField] private CanvasGroup m_OpenDictCanvas;
 	[SerializeField] private CanvasGroup m_EndFailureCanvas;
 	[SerializeField] private CanvasGroup m_StartButtonCanvas;
 	[SerializeField] private CanvasGroup m_TextCanvas;
@@ -48,6 +49,7 @@ public class LevelManager : MonoBehaviour
 
 	[SerializeField] private ControlBinding m_ShowHealthBinding;
 	[SerializeField] private ControlBinding m_ShowHungerBinding;
+	[SerializeField] private ControlBinding m_OpenDictBinding;
 	#endregion
 
 	private void OnDrawGizmosSelected()
@@ -214,9 +216,16 @@ public class LevelManager : MonoBehaviour
 	{
 		m_LevelState = new StateMachine<LevelManager>(new StartState( m_StartButtonCanvas), this);
 		m_LevelState.AddState(new PausedState( m_PauseCanvas, m_LevelUIAnimator));
-		m_LevelState.AddState(new EndFailureState( m_EndFailureCanvas, m_LevelUIAnimator));
-		m_LevelState.AddState(new EndSuccessState( m_EndSuccessCanvas, m_LevelUIAnimator));
+		m_LevelState.AddState(new EndFailureState( m_EndFailureCanvas));
+		m_LevelState.AddState(new EndSuccessState( m_EndSuccessCanvas));
 		m_LevelState.AddState(new PlayingState( m_MainCanvas));
+		m_LevelState.AddState(new DictState(m_OpenDictCanvas));
+
+		m_LevelState.AddTransition(typeof(PlayingState), typeof(DictState), () => m_OpenDictBinding.IsBindingPressed());
+		m_LevelState.AddTransition(typeof(PlayingState), typeof(DictState), () => !m_OpenDictBinding.IsBindingPressed());
+		m_LevelState.AddTransition(typeof(PlayingState), typeof(PausedState), () => Input.GetKeyDown(KeyCode.Escape));
+		m_LevelState.AddTransition(typeof(PausedState), typeof(PlayingState), () => Input.GetKeyDown(KeyCode.Escape));
+
 		m_LevelTransitionAnimator.Play("TransitionIn", -1);
 		m_Manager.NewLevelLoaded(this);
 		PauseLevel(true);
@@ -391,11 +400,26 @@ public class LevelManager : MonoBehaviour
 
 namespace LevelManagerStates
 {
+
+	public class DictState : AStateBase<LevelManager> 
+	{
+		private readonly CanvasGroup m_CanvasGroup;
+
+		public DictState(CanvasGroup canvasGroup) 
+		{
+			m_CanvasGroup = canvasGroup;
+		}
+		public override void OnEnter()
+		{
+			Host.SetCurrentCanvas(m_CanvasGroup);
+		}
+	}
 	public class PlayingState : AStateBase<LevelManager>
 	{
 		private bool m_bHasAlreadyStarted = false;
 		private bool m_bZTestAlways = false;
 		private readonly CanvasGroup m_CanvasGroup;
+
 		public PlayingState( CanvasGroup pauseGroup)
 		{
 			m_CanvasGroup = pauseGroup;
@@ -417,11 +441,6 @@ namespace LevelManagerStates
 
 		public override void Tick()
 		{
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				RequestTransition<PausedState>();
-			}
-
 			bool isHealthBindingPressed = Host.GetShowHealthBinding.IsBindingPressed();
 			bool isHungerBindingPressed = Host.GetShowHungerBinding.IsBindingPressed();
 
@@ -464,30 +483,14 @@ namespace LevelManagerStates
 				m_CanvasGroup.blocksRaycasts = true;
 				m_CanvasGroup.interactable = true;
 			});
-			//m_AnimationController.Play("AnimIn", -1);
-		}
-
-		public override void Tick()
-		{
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				Host.ResumeLevel();
-			}
-		}
-
-		public override void OnExit()
-		{
-			//m_AnimationController.Play("AnimOut", -1);
 		}
 	}
 
 	public class EndFailureState : AStateBase<LevelManager>
 	{
 		private readonly CanvasGroup m_CanvasGroup;
-		private readonly Animator m_AnimationController;
-		public EndFailureState(CanvasGroup pauseGroup, Animator animator)
+		public EndFailureState(CanvasGroup pauseGroup)
 		{
-			m_AnimationController = animator;
 			m_CanvasGroup = pauseGroup;
 		}
 		public override void OnEnter()
@@ -498,23 +501,15 @@ namespace LevelManagerStates
 				m_CanvasGroup.interactable = true;
 			}, delay: 1.0f);
 			Host.PopulateFailureScreen();
-			//m_AnimationController.Play("AnimIn", -1);
-		}
-
-		public override void OnExit()
-		{
-			//m_AnimationController.Play("AnimOut", -1);
 		}
 	}
 
 	public class EndSuccessState : AStateBase<LevelManager>
 	{
 		private readonly CanvasGroup m_CanvasGroup;
-		private readonly Animator m_AnimationController;
 
-		public EndSuccessState(CanvasGroup pauseGroup, Animator animator)
+		public EndSuccessState(CanvasGroup pauseGroup)
 		{
-			m_AnimationController = animator;
 			m_CanvasGroup = pauseGroup;
 		}
 
@@ -526,12 +521,6 @@ namespace LevelManagerStates
 				m_CanvasGroup.interactable = true;
 			}, delay: 1.0f);
 			Host.PopulateSuccessScreen();
-			//m_AnimationController.Play("AnimIn", -1);
-		}
-
-		public override void OnExit()
-		{
-			//m_AnimationController.Play("AnimOut", -1);
 		}
 	}
 
