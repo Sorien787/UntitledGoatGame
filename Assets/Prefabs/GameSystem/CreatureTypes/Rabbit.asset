@@ -21,3 +21,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cca81a070d91c3a41b1eafa0fca42585, type: 2}
   m_Attacks: []
   m_bIsStatic: 0
+  m_AssociatedSprite: {fileID: 0}
+  m_DisplayInTable: 1
