@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   m_Hunts: []
-  m_HuntedBy: []
+  m_ScaredOf: []
+  m_Attacks: []
+  m_bIsStatic: 0
+  m_AssociatedSprite: {fileID: 21300000, guid: 28a231e410f30ac4696540c7cc80a2be, type: 3}
+  m_DisplayInTable: 0

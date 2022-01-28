@@ -3613,6 +3613,17 @@ PrefabInstance:
       propertyPath: m_PlayerCameraContainerTransform
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4532346970193033580, guid: aae7d4b0155e0034481e9e72ac68c74e,
+        type: 3}
+      propertyPath: m_OpenDictCanvas
+      value: 
+      objectReference: {fileID: 3897043157109567348}
+    - target: {fileID: 4532346970193033580, guid: aae7d4b0155e0034481e9e72ac68c74e,
+        type: 3}
+      propertyPath: m_OpenDictBinding
+      value: 
+      objectReference: {fileID: 11400000, guid: b597f519f8ca65748bf10ed891e4d139,
+        type: 2}
     - target: {fileID: 6554326534241664459, guid: aae7d4b0155e0034481e9e72ac68c74e,
         type: 3}
       propertyPath: sounds.Array.data[0]
@@ -3933,6 +3944,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aae7d4b0155e0034481e9e72ac68c74e, type: 3}
+--- !u!225 &3897043157109567348 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8762570609469473469, guid: aae7d4b0155e0034481e9e72ac68c74e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5733068657132907977}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2968970530082294214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7402815415580992527, guid: aae7d4b0155e0034481e9e72ac68c74e,

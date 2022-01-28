@@ -16,3 +16,5 @@ MonoBehaviour:
   m_ScaredOf: []
   m_Attacks: []
   m_bIsStatic: 1
+  m_AssociatedSprite: {fileID: 21300000, guid: 9f6c42d7349d0df4e850ca5729d4c97c, type: 3}
+  m_DisplayInTable: 0

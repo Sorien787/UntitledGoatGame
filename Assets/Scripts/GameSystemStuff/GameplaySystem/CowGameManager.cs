@@ -35,6 +35,16 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	#region Properties
 	public int GetCurrentLevelIndex { get; private set; } = 0;
 
+	public HashSet<EntityInformation> GetEntitiesPresent()
+	{
+		HashSet<EntityInformation> entitiesPresent = new HashSet<EntityInformation>();
+		foreach(var thing in m_EntityCache) 
+		{
+			entitiesPresent.Add(thing.Key);
+		}
+		return entitiesPresent;
+	}
+
 	public EntityInformation GetHazardType { get => m_HazardType; }
 
 	public Transform GetPlayerCameraContainerTransform => m_PlayerCameraContainerTransform;

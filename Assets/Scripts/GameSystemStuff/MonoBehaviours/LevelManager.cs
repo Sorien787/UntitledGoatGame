@@ -222,9 +222,11 @@ public class LevelManager : MonoBehaviour
 		m_LevelState.AddState(new DictState(m_OpenDictCanvas));
 
 		m_LevelState.AddTransition(typeof(PlayingState), typeof(DictState), () => m_OpenDictBinding.IsBindingPressed());
-		m_LevelState.AddTransition(typeof(PlayingState), typeof(DictState), () => !m_OpenDictBinding.IsBindingPressed());
+		m_LevelState.AddTransition(typeof(DictState), typeof(PlayingState), () => !m_OpenDictBinding.IsBindingPressed());
 		m_LevelState.AddTransition(typeof(PlayingState), typeof(PausedState), () => Input.GetKeyDown(KeyCode.Escape));
 		m_LevelState.AddTransition(typeof(PausedState), typeof(PlayingState), () => Input.GetKeyDown(KeyCode.Escape));
+
+		m_LevelState.AddStateGroup(StateGroup.Create(typeof(PlayingState), typeof(DictState)).AddOnEnter(() => PauseLevel(false)).AddOnExit(() => PauseLevel(true)));
 
 		m_LevelTransitionAnimator.Play("TransitionIn", -1);
 		m_Manager.NewLevelLoaded(this);
@@ -431,7 +433,7 @@ namespace LevelManagerStates
 				m_bHasAlreadyStarted = true;
 				Host.StartLevel();
 			}
-			Host.PauseLevel(false);
+
 			Host.SetCurrentCanvas(m_CanvasGroup, () =>
 			{
 				m_CanvasGroup.blocksRaycasts = true;
@@ -458,11 +460,6 @@ namespace LevelManagerStates
 				}
 			}
 
-		}
-
-		public override void OnExit()
-		{
-			Host.PauseLevel(true);
 		}
 	}
 
