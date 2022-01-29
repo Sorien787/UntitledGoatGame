@@ -51,7 +51,8 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private ControlBinding m_ShowHungerBinding;
 	[SerializeField] private ControlBinding m_OpenDictBinding;
 	#endregion
-
+	public event Action OnPressedShowFullnessOrHealth;
+	public event Action OnShowTableOfHunger;
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawSphere(Vector3.zero, m_LevelRadius);
@@ -143,16 +144,16 @@ public class LevelManager : MonoBehaviour
 
 	private void OnSecondIntroAnimationPortionShown(CustomAnimation.AnimationClip clip)
 	{
-		m_LevelIntroTextLeft.text = "Time to Beat";
-		m_LevelIntroTextRight.text = UnityUtils.UnityUtils.TurnTimeToString(m_LevelData.GetTargetTime);
-		ShowIntroText(clip);
+		//m_LevelIntroTextLeft.text = "Time to Beat";
+		//m_LevelIntroTextRight.text = UnityUtils.UnityUtils.TurnTimeToString(m_LevelData.GetTargetTime);
+		//ShowIntroText(clip);
 	}
 
 	private void OnThirdIntroAnimationPortionShown(CustomAnimation.AnimationClip clip)
 	{
-		m_LevelIntroTextLeft.text = "I dont know what to put here.";
-		m_LevelIntroTextRight.text = "Difficulty?";
-		ShowIntroText(clip);
+		//m_LevelIntroTextLeft.text = "I dont know what to put here.";
+		//m_LevelIntroTextRight.text = "Difficulty?";
+		//ShowIntroText(clip);
 	}
 
 	private void StartCountdownTimer()

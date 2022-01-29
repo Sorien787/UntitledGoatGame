@@ -334,6 +334,9 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	public void OnObjectiveLeftLoss(){}
 	public void InitializeData(LevelObjective objective) { }
 
+	public event Action OnSuccessCounterStarted;
+
+
 	public void OnObjectiveFailed()
 	{
 		GetCurrentLevel.OnLevelFailed();
@@ -350,6 +353,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	{
 		if (m_NumObjectivesCompleted == m_NumObjectivesToComplete && m_bHasStarted && m_NumObjectivesCompleted != 0)
 		{
+			OnSuccessCounterStarted?.Invoke();
 			GetCurrentLevel.StartSucceedCountdown();
 		}
 	}

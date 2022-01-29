@@ -57,7 +57,7 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 4
       m_NumAlphaKeys: 2
-    m_RolledColor: {r: 0, g: 0, b: 0, a: 0}
+    m_RolledColor: {r: 0.053539902, g: 0.009849323, b: 0.009849323, a: 1}
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
     m_changeChildObjects: 0
@@ -689,7 +689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988646388, guid: aea3e7101c8ae3a47bf7574c15d5310d, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1988646388, guid: aea3e7101c8ae3a47bf7574c15d5310d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -768,7 +768,7 @@ PrefabInstance:
     - target: {fileID: 2191496813081671577, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3268333415586914426, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -778,7 +778,7 @@ PrefabInstance:
     - target: {fileID: 3847187933735988313, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5028166405719411816, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -789,7 +789,7 @@ PrefabInstance:
     - target: {fileID: 6061486578075039898, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388384, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -870,6 +870,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Height
       value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388385, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_BaseOffset
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388388, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
@@ -1001,7 +1006,7 @@ PrefabInstance:
     - target: {fileID: 7107208444515908565, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7651879451718294537, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

@@ -22,6 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
   - {fileID: 11400000, guid: 6ecb4f9c47941b742b4b50d1ceb94b64, type: 2}
   - {fileID: 11400000, guid: aac3ae616d0381e4286bc6abbfee7561, type: 2}
+  - {fileID: 11400000, guid: b597f519f8ca65748bf10ed891e4d139, type: 2}
   m_SFXVol: 0.6083711
   m_AmbientVol: 0.56900597
   m_MusicVol: 0.40205413

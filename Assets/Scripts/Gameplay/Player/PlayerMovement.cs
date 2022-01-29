@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
     void Start()
     {
         m_LassoComponent.OnSetPullingObject += OnIsPullingObject;
-        m_LassoComponent.OnSetSwingingObject += OnIsSpinningObject;
+        m_LassoComponent.OnStartSwingingObject += OnIsSpinningObject;
         m_LassoComponent.OnSetSwingingStrength += OnSetSpinningStrength;
 
         m_LassoComponent.OnStoppedPullingObject += OnStoppedPulling;

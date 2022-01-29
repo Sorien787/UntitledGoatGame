@@ -1,19 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!136 &8821738951847959157
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6889064560725485259}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 3.2
-  m_Height: 21.95
-  m_Direction: 2
-  m_Center: {x: -2.76, y: 4.8, z: 36.4}
 --- !u!114 &8368793181858925313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +49,20 @@ MonoBehaviour:
     m_MaterialColourId: _Color
     m_changeChildObjects: 0
   m_bRandomizeOnStart: 0
+--- !u!136 &8821738951847959157
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6889064560725485259}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 3.2
+  m_Height: 21.95
+  m_Direction: 2
+  m_Center: {x: -2.76, y: 4.8, z: 36.4}
 --- !u!1001 &3538294645752755178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -239,6 +239,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Radius
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6261768213309388385, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_BaseOffset
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6261768213309388409, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

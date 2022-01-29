@@ -16,8 +16,8 @@ MonoBehaviour:
   m_MinimumValue: 2
   m_HasMaximumFailure: 1
   m_MaximumValue: 14
-  m_MinimumGoal: 6
-  m_MaximumGoal: 10
+  m_MinimumGoal: 7
+  m_MaximumGoal: 9
   m_TimerMaximum: 30
   m_ObjectiveType: 0
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}

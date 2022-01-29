@@ -91,10 +91,11 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	#region Events
 
 	public event Action<ThrowableObjectComponent> OnSetPullingObject;
+	public event Action OnPullObject;
     public event Action OnStoppedPullingObject;
     public event Action<float, float> OnSetPullingStrength;
     public event Action<float> OnSetSwingingStrength;
-    public event Action<ThrowableObjectComponent> OnSetSwingingObject;
+    public event Action<ThrowableObjectComponent> OnStartSwingingObject;
     public event Action OnStoppedSwingingObject;
     public event Action<float> OnThrowObject;
 	public event Action OnStartUsingLasso;
@@ -224,12 +225,18 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 
 	public void StartSwingingObject() 
     {
-        OnSetSwingingObject(GetThrowableObject);
+        OnStartSwingingObject(GetThrowableObject);
     }
+
+	public void Tug() 
+	{
+		OnPullObject?.Invoke();
+		GetThrowableObject.TuggedByLasso();
+	}
 
     public void StopSwingingObject() 
     {
-        OnStoppedSwingingObject();
+        OnStoppedSwingingObject?.Invoke();
     }
 
     public void StartDraggingObject() 
@@ -847,7 +854,7 @@ namespace LassoStates
 			{
 				m_lassoSound.SetPitch(1 + (m_fTotalCurrentForce / Host.MaxForceForPull) / 3f);
 				m_lassoSound.PlayOneShot();
-				Host.GetThrowableObject.TuggedByLasso();
+				Host.Tug();
 				m_fCurrentJerkTime = Host.JerkTimeForPull;
 				float fForceIncrease = Host.ForceIncreasePerPull.Evaluate(m_fTotalCurrentForce / Host.MaxForceForPull);
 				m_fTotalCurrentForce = Mathf.Min(m_fTotalCurrentForce + fForceIncrease, Host.MaxForceForPull);

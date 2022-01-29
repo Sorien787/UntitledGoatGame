@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: ChickenHurt
   m_EditorClassIdentifier: 
   m_clips:
-  - {fileID: 8300000, guid: 932d18824b0918b42a6e4b0f3fad8ee8, type: 3}
-  - {fileID: 8300000, guid: 62826dc077055124bbdd4196567c762a, type: 3}
+  - {fileID: 8300000, guid: abe592c9b85b3454ba46788144e8b6ad, type: 3}
   m_AudioType: {fileID: 11400000, guid: 50d3ff64198b9a645aeddb785be41538, type: 2}
   defaultVolume: 1
   defaultPitch: 1
@@ -23,4 +22,5 @@ MonoBehaviour:
   pitchRandomize: 0
   volRandomize: 0
   distance: 17.4
+  is3DSound: 1
   loop: 0
