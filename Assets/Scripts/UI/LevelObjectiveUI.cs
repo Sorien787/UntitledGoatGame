@@ -92,7 +92,8 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 
 	public void OnObjectiveEnteredLoss(in Action callOnComplete, in int time)
 	{
-		m_AudioManager.PlayOneShot(m_EnterLossZoneAudioIdentifier);
+		if (m_Manager.HasLevelStarted())
+			m_AudioManager.PlayOneShot(m_EnterLossZoneAudioIdentifier);
 		m_CountdownTimer.ShowTimer();
 		m_CountdownTimer.StartTimerFromTime(time);
 		m_CountdownTimer.OnTimerComplete += callOnComplete;
@@ -116,7 +117,8 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 
 	public void OnObjectiveLeftLoss()
 	{
-		m_AudioManager.PlayOneShot(m_ExitLossZoneAudioIdentifier);
+		if (m_Manager.HasLevelStarted())
+			m_AudioManager.PlayOneShot(m_ExitLossZoneAudioIdentifier);
 		m_CountdownTimer.StopTimer();
 		m_SliderBackgroundImage.color = m_EnterGoalPulseColour;
 		LeanTween.color(m_SliderBackgroundRect, m_InitialBackgroundColor, 0.5f).setRecursive(false).setEaseOutCubic();
@@ -124,13 +126,15 @@ public class LevelObjectiveUI : MonoBehaviour, IObjectiveListener
 
 	public void OnObjectiveEnteredGoal()
 	{
-		m_AudioManager.PlayOneShot(m_EnterGoalZoneAudioIdentifier);
+		if (m_Manager.HasLevelStarted())
+			m_AudioManager.PlayOneShot(m_EnterGoalZoneAudioIdentifier);
 		PulseBackground(m_EnterGoalPulseColour, 1.0f);
 	}
 
 	public void OnObjectiveLeftGoal()
 	{
-		m_AudioManager.PlayOneShot(m_ExitGoalZoneAudioIdentifier);
+		if (m_Manager.HasLevelStarted())
+			m_AudioManager.PlayOneShot(m_ExitGoalZoneAudioIdentifier);
 		PulseBackground(m_ExitGoalPulseColour, 1.0f);
 	}
 

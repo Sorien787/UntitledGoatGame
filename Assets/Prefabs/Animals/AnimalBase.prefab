@@ -16385,7 +16385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ded0389cad3b145befb5318f8923c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _highlightAlways: 1
+  _highlightAlways: 0
   _highlightColor: {r: 1, g: 1, b: 1, a: 1}
   _ZTestAlways: 0
 --- !u!114 &8292355820667919450

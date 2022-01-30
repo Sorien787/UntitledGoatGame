@@ -21,7 +21,7 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 	[SerializeField] private float m_TimerFadeTime;
 	[SerializeField] private string m_FinalTimerTickString = "0";
 	[SerializeField] private bool m_bAffectedByPause = false;
-
+	[SerializeField] private bool m_bRequireLevelStart = true;
 	[SerializeField] private AnimationCurve m_PitchModifierByTimerTime;
 	// Start is called before the first frame update
 	private int m_CurrentTime;
@@ -113,8 +113,11 @@ public class CountdownTimerUI : MonoBehaviour, IPauseListener
 
 	private void TimerTick(in string timerText, in SoundObject tickAudioIdentifier)
 	{
-		m_AudioManager.SetPitch(tickAudioIdentifier, m_PitchModifierByTimerTime.Evaluate(1 - m_CurrentTime / m_InitialTime));
-		m_AudioManager.PlayOneShot(tickAudioIdentifier);
+		if (m_Manager.HasLevelStarted() || !m_bRequireLevelStart) 
+		{
+			m_AudioManager.SetPitch(tickAudioIdentifier, m_PitchModifierByTimerTime.Evaluate(1 - m_CurrentTime / m_InitialTime));
+			m_AudioManager.PlayOneShot(tickAudioIdentifier);
+		}
 		OnTimerTick?.Invoke(1 - m_CurrentTime / m_InitialTime);
 		m_TimerRect.localScale = Vector3.one * (1 + m_TextPulseSizeByTimer.Evaluate(m_CurrentTime / m_InitialTime));
 		LeanTween.scale(m_TimerRect.gameObject, Vector3.one, 1.0f).setEaseInOutCubic();

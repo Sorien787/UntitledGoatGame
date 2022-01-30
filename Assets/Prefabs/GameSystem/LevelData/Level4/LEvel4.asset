@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LEvel4
   m_EditorClassIdentifier: 
   m_sLevelName: Chunkers
-  m_nTargetTime: 260
+  m_nTargetTime: 120
   m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: fbbf26f2da44b3644a724f4537dee081, type: 2}

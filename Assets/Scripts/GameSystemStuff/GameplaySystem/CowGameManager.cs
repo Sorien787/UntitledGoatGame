@@ -182,6 +182,11 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		levelData.ForEachObjective(AddNewObjective);
 	}
 
+	public void SetCompletionTimeForCurrentLevelData(float completionTime) 
+	{
+		m_LevelData[GetCurrentLevelIndex - 1].TrySetNewTime(completionTime);
+	}
+
 	private void AddNewObjective(LevelObjective objective) 
 	{
 		m_ObjectiveDict.Add(objective); 

@@ -239,10 +239,15 @@ public class LevelManager : MonoBehaviour
 		m_LevelState.InitializeStateMachine();
 		InitializeIntroAnimation();
 	}
-
+	private float m_fLevelTime = 0.0f;
 	private void Update()
 	{
 		m_LevelState.Tick(Time.deltaTime);
+	}
+
+	public void TickGameTimer(float tickTime) 
+	{
+		m_fLevelTime += tickTime;
 	}
 
 	#endregion
@@ -359,6 +364,7 @@ public class LevelManager : MonoBehaviour
 	public void OnLevelSucceeded()
 	{
 		OnLevelFinished?.Invoke();
+		m_Manager.SetCompletionTimeForCurrentLevelData(m_fLevelTime);
 		//m_CameraTransform.GetComponent<CameraStartEndAnimator>().AnimateOut();
 		m_LevelState.RequestTransition(typeof(EndSuccessState));
 	}
@@ -416,6 +422,11 @@ namespace LevelManagerStates
 		{
 			Host.SetCurrentCanvas(m_CanvasGroup);
 		}
+
+		public override void Tick()
+		{
+			Host.TickGameTimer(Time.deltaTime);
+		}
 	}
 	public class PlayingState : AStateBase<LevelManager>
 	{
@@ -446,7 +457,7 @@ namespace LevelManagerStates
 		{
 			bool isHealthBindingPressed = Host.GetShowHealthBinding.IsBindingPressed();
 			bool isHungerBindingPressed = Host.GetShowHungerBinding.IsBindingPressed();
-
+			Host.TickGameTimer(Time.deltaTime);
 			if (isHealthBindingPressed)
 				Host.GetManager.UpdateHealthColourAnimalOutline();
 			if (isHungerBindingPressed)

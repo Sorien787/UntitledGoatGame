@@ -15,6 +15,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
     [SerializeField] private LayerMask m_GroundImpactLayermask;
     [SerializeField] private SoundObject m_ThrowinSound;
     [SerializeField] private AudioManager m_Audio;
+    [SerializeField] private bool m_bUsesTriggers = false;
 
     private bool m_bIsFalling = false;
     private ProjectileParams projectile;
@@ -87,10 +88,11 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
         }
     }
 
-	//private void OnTriggerStay(Collider other)
-	//{
-	//	OnCollide(other.transform.position, Vector3.zero, other.gameObject);
-	//}
+	private void OnTriggerStay(Collider other)
+	{
+        if (m_bUsesTriggers)
+		    OnCollide(other.transform.position, Vector3.zero, other.gameObject);
+	}
 
 	private void OnCollisionEnter(Collision collision)
     {

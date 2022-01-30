@@ -48,7 +48,7 @@ MonoBehaviour:
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
     m_changeChildObjects: 0
-  m_bRandomizeOnStart: 0
+  m_bRandomizeOnStart: 1
 --- !u!136 &8821738951847959157
 CapsuleCollider:
   m_ObjectHideFlags: 0

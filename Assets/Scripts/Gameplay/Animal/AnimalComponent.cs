@@ -973,7 +973,7 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	{
         m_StateMachine.RequestTransition(typeof(AnimalIdleState));
 		m_Manager.AddAnimal(this);
-		m_Overlay.EnableOutline(true);
+	
 	}
 
 	public void LevelFinished(){}
@@ -1006,7 +1006,10 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_AnimalAnimator.OnDead();
     }
 
-	public void PlayerPerspectiveBegin(){}
+	public void PlayerPerspectiveBegin()
+    {
+        m_Overlay.EnableOutline(true);
+    }
 
 	public void OnStopFalling(){}
 

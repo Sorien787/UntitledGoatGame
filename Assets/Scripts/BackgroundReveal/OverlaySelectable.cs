@@ -7,7 +7,7 @@ public class OverlaySelectable : MonoBehaviour
     private static HashSet<OverlaySelectable> _instances = new HashSet<OverlaySelectable>();
     public static IReadOnlyCollection<OverlaySelectable> Instances { get { return _instances; } }
 
-	[SerializeField] private bool _highlightAlways = true;
+	[SerializeField] private bool _highlightAlways = false;
 	[SerializeField] private Color _highlightColor = Color.white;
 	[SerializeField] private bool _ZTestAlways = false;
 

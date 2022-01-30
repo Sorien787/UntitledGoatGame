@@ -292,6 +292,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_DragSoundBySpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
@@ -305,6 +311,7 @@ MonoBehaviour:
   m_ImpactSoundObject: {fileID: 11400000, guid: 41be18bbabbf7f6499389bb1cd981f27,
     type: 2}
   m_DragSoundObject: {fileID: 11400000, guid: 4067fc4592374cf459e2e12e659a61cd, type: 2}
+  m_fMaxSpeedForSoundVal: 0
   m_ThrowingBody: {fileID: 1444594708651495038}
   m_CameraFocusTransform: {fileID: 8565041533130692324}
   m_AttachmentTransform: {fileID: 8565041533130692324}
@@ -332,6 +339,8 @@ MonoBehaviour:
   m_GroundImpactLayermask:
     serializedVersion: 2
     m_Bits: 1051904
+  m_ThrowinSound: {fileID: 11400000, guid: 9599a2c5e8952cf4caf1c1885cdd4455, type: 2}
+  m_Audio: {fileID: -4811363959966868363}
 --- !u!114 &653192708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+  m_bManualGroundedUpdate: 1
 --- !u!82 &-5728346209284533729
 AudioSource:
   m_ObjectHideFlags: 0
