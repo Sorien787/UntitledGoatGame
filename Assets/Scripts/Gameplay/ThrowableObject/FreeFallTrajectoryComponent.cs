@@ -19,6 +19,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
     private bool m_bIsFalling = false;
     private ProjectileParams projectile;
+    private Transform m_Transform;
     private float m_fCurrentTime = 0.0f;
 
 	private UnityUtils.ListenerSet<IFreeFallListener> m_Listeners = new UnityUtils.ListenerSet<IFreeFallListener>();
@@ -35,6 +36,7 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 
 	private void Awake()
 	{
+        m_Transform = transform;
         m_Manager.AddToPauseUnpause(this);
     }
 
@@ -91,7 +93,10 @@ public class FreeFallTrajectoryComponent : MonoBehaviour, IPauseListener
 	private void OnTriggerStay(Collider other)
 	{
         if (m_bUsesTriggers)
-		    OnCollide(other.transform.position, Vector3.zero, other.gameObject);
+		{
+            var collisionPoint = other.ClosestPoint(m_Transform.position);
+            OnCollide(collisionPoint, Vector3.up, other.gameObject);
+        }
 	}
 
 	private void OnCollisionEnter(Collision collision)

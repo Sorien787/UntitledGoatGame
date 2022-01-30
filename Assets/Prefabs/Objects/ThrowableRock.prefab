@@ -308,7 +308,7 @@ MonoBehaviour:
   m_CausesDragging: 1
   m_CausesImpacts: 1
   m_GravityMultiplier: 1.93
-  m_ImpactSoundObject: {fileID: 11400000, guid: 41be18bbabbf7f6499389bb1cd981f27,
+  m_ImpactSoundObject: {fileID: 11400000, guid: d832f1980356eee4f96c464b2a21d383,
     type: 2}
   m_DragSoundObject: {fileID: 11400000, guid: 4067fc4592374cf459e2e12e659a61cd, type: 2}
   m_fMaxSpeedForSoundVal: 0
@@ -341,6 +341,7 @@ MonoBehaviour:
     m_Bits: 1051904
   m_ThrowinSound: {fileID: 11400000, guid: 9599a2c5e8952cf4caf1c1885cdd4455, type: 2}
   m_Audio: {fileID: -4811363959966868363}
+  m_bUsesTriggers: 0
 --- !u!114 &653192708
 MonoBehaviour:
   m_ObjectHideFlags: 0

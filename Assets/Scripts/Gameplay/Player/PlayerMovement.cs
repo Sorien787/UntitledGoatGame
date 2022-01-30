@@ -223,7 +223,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
         float angle = Vector3.Angle(Vector3.up, m_LastGroundedNormal);
         m_bIsSliding = (angle >= m_SlopeLimit) && m_bIsGrounded;
 
-        float val = Mathf.Clamp01((angleInternal - m_SlopeLimit) / m_angleAtMaxSlide);
+        float val = Mathf.Clamp01((angleInternal - m_SlopeLimit) / m_angleAtMaxSlide) * (m_bIsSliding ? 1.0f : 0.0f);
         m_currentEffectsStrength = Mathf.SmoothDamp(m_currentEffectsStrength, val, ref m_effectChangeVelocity, m_effectChangeTime);
         if (m_bIsSliding) 
         {

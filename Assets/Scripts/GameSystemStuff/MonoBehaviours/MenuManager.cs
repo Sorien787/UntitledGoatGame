@@ -128,15 +128,6 @@ public class MenuManager : MonoBehaviour
 		m_LevelSelectCanvas.blocksRaycasts = false;
 		int sceneId = m_LevelSelectUI.GetChosenLevelId;
 		StartCoroutine(BeginSceneTransition(() => m_Manager.MoveToSceneWithSceneId(sceneId+1)));
-		if (!m_Manager.GetLevelDataByLevelIndex(m_LevelSelectUI.GetChosenLevelId).HasEnteredLevelBefore)
-		{
-			m_Manager.SetDefaultEntry();
-			m_Manager.GetLevelDataByLevelIndex(m_LevelSelectUI.GetChosenLevelId).OnEnterLevel();
-		}
-		else
-		{
-			m_Manager.SetQuickEntry();
-		}
 	}
 
 	#endregion

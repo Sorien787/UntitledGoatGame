@@ -13,16 +13,10 @@ MonoBehaviour:
   m_Name: LEvel4
   m_EditorClassIdentifier: 
   m_sLevelName: Chunkers
-  m_nTargetTime: 120
-  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_ReferenceClip: {fileID: 32900000, guid: d34d157e808daf94994068cc2cb9e228, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: fbbf26f2da44b3644a724f4537dee081, type: 2}
   - {fileID: 11400000, guid: 5c00690c1d7cd044ea5845450ce9b7ff, type: 2}
-  m_Checkpoints:
-  - 25
-  - 60
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 40
-  m_StarRating: 1
-  m_AchievedScore: 0
-  m_bHasEnteredLevel: 0
+  m_SuccessTimerTime: 0
+  m_bHasEnteredLevel: 1

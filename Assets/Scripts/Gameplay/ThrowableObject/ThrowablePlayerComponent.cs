@@ -18,14 +18,12 @@ public class ThrowablePlayerComponent : IThrowableObjectComponent
 
 	public override void ThrowObject(in ProjectileParams pParams)
 	{
-		Debug.Log("!");
 		base.ThrowObject(pParams);
 		StartCoroutine(OnThrownRoutine());
 	}
 
 	private IEnumerator OnThrownRoutine() 
 	{
-		Debug.Log("!!");
 		yield return new WaitForSeconds(0.2f);
 		OnPlayerCanUseLasso();
 	}

@@ -168,13 +168,19 @@ public abstract class IThrowableObjectComponent : MonoBehaviour
 
     private void CreateImpactAtPosition(float momentum, Vector3 position, Quaternion rotation, GameObject other) 
     {
+        if (!m_Manager.HasLevelStarted())
+            return;
         if (m_fImpactFXCooldown > Mathf.Epsilon)
             return;
 
         m_fImpactFXCooldown = m_DelayBetweenImpacts;
 
+
         float shakeStrength = Mathf.Clamp(momentum / Mathf.Sqrt((m_Transform.position - m_Manager.GetPlayer.transform.position).magnitude) / 10, 3, 200);
         CameraShaker.Instance.ShakeOnce(shakeStrength, shakeStrength, 0.1f, 1.0f);
+
+
+
 
         GameObject impactObject = Instantiate(m_GroundImpactEffectsPrefab, position, rotation);
         impactObject.GetComponent<ImpactEffectStrengthManager>().SetParamsOfObject(m_ImpactMagnitudeByImpactMomentum.Evaluate(momentum));

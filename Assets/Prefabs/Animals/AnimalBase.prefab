@@ -15453,7 +15453,6 @@ MonoBehaviour:
   m_GeneralCall: {fileID: 11400000, guid: da8274a33031a1a45aa9e7b73fa40e92, type: 2}
   m_DamagedCall: {fileID: 11400000, guid: 8fc6313fd60140e43a74068f172a4582, type: 2}
   m_WalkSound: {fileID: 11400000, guid: 4ca40283eff70e2449c536bec87c60b6, type: 2}
-  m_EatSound: {fileID: 11400000, guid: 38d44faf7ae15e24384d188ff1d557ac, type: 2}
   m_AttackSound: {fileID: 11400000, guid: bdfc6d217a5724b49855f2fee00b8d05, type: 2}
   m_BornSound: {fileID: 11400000, guid: e19551a612622944ab2d3836bbe57ab4, type: 2}
   m_CapturedPullSound: {fileID: 11400000, guid: 51ada9095f30c4948bef3f8c6f1fae3d,
@@ -15640,6 +15639,7 @@ MonoBehaviour:
     m_Bits: 2100480
   m_ThrowinSound: {fileID: 11400000, guid: c0a5f93b4885b1049b8b9257f0030c28, type: 2}
   m_Audio: {fileID: 8292355820667919450}
+  m_bUsesTriggers: 0
 --- !u!114 &5028166405719411816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16166,6 +16166,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_AttackSound: {fileID: 11400000, guid: 38d44faf7ae15e24384d188ff1d557ac, type: 2}
   m_Duration: 1.413
   m_AttackRange: 0.91
   m_AttackLossRange: 3
@@ -16344,6 +16345,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_AttackSound: {fileID: 11400000, guid: 71ad46df377ba4240aca6378ab0edc41, type: 2}
   m_Duration: 0.999
   m_AttackRange: 1.015
   m_AttackLossRange: 3

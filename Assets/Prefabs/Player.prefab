@@ -509,7 +509,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3338445513821783082}
-  - {fileID: 3338445513980101059}
   m_Father: {fileID: 3338445514369759825}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -937,6 +936,10 @@ MonoBehaviour:
   m_CancelBinding: {fileID: 11400000, guid: 8802dd796a6bf0a49b50b54c7034891d, type: 2}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_LassoParams: {fileID: 11400000, guid: 54e6bedcceb2de94d9a368bf3b01d740, type: 2}
+  m_ImpactObj: {fileID: 39283687198362961, guid: ce1398a7cf30ebf448f9d0ae22a27b91,
+    type: 3}
+  m_HazardObj: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
+    type: 3}
   m_throwSoundRef: {fileID: 11400000, guid: 7292b50582ad3ec4d823101fc2ba3333, type: 2}
   m_throwLassoSoundRef: {fileID: 11400000, guid: 489032ca823b76b4f870e600aabe36af,
     type: 2}
@@ -1299,50 +1302,6 @@ Transform:
   m_Father: {fileID: 4954449043776117430}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
---- !u!1 &3338445513980101068
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3338445513980101059}
-  - component: {fileID: 3338445513980101058}
-  m_Layer: 9
-  m_Name: GroundCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3338445513980101059
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3338445513980101068}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3338445512843362043}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3338445513980101058
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3338445513980101068}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.2, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3338445514006639544
 GameObject:
   m_ObjectHideFlags: 0

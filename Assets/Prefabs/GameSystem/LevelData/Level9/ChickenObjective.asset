@@ -18,7 +18,7 @@ MonoBehaviour:
   m_MaximumValue: 10
   m_MinimumGoal: 4
   m_MaximumGoal: 9
-  m_TimerMaximum: 120
+  m_TimerMaximum: 39
   m_ObjectiveType: 0
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
   m_CounterAnimalType: {fileID: 11400000, guid: c34ad58007ce1e1428b3907ffa6562ba,

@@ -712,6 +712,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
       propertyPath: m_AnimalBodyTransform
       value: 
       objectReference: {fileID: 2892103360532038603}
@@ -724,6 +729,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_DamagedDuration
       value: 0.248
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].time
+      value: 130.77966
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].value
+      value: 5.272159
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].inSlope
+      value: 0.058391657
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].outSlope
+      value: 0.058391657
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].inWeight
+      value: 0.06708595
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 2166936209954653869, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

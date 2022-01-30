@@ -13,17 +13,11 @@ MonoBehaviour:
   m_Name: Level5
   m_EditorClassIdentifier: 
   m_sLevelName: Bunny Flats
-  m_nTargetTime: 0
-  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_ReferenceClip: {fileID: 32900000, guid: ad0fb6c8bc8dceb4796bca0ed0887964, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: 659ff7809d27224439ae3c5728adfaed, type: 2}
   - {fileID: 11400000, guid: 467b1645aca66e645b41b21a8bd7eed8, type: 2}
   - {fileID: 11400000, guid: d8314ad698dbc0546b9c5174f4b39508, type: 2}
-  m_Checkpoints:
-  - 0
-  - 0
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 40
-  m_StarRating: 1
-  m_AchievedScore: 0
+  m_SuccessTimerTime: 50
   m_bHasEnteredLevel: 0

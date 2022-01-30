@@ -37,6 +37,8 @@ public class LevelSelectUI : MonoBehaviour
 	private void Awake()
 	{
 		bool lastLevelCompleted = true;
+		// TODO: re-implement score based on time
+		m_StarUI.enabled = false;
 
 		for (int i = 0; i < m_GameManager.GetNumLevels; i++)
 		{
@@ -85,10 +87,10 @@ public class LevelSelectUI : MonoBehaviour
 			m_TextFadeInOutTime,
 			ref animIDs[currentPoint]);
 		currentPoint++;
-		EditField(() => m_StarUI.SetStarsVisible((int)levelData.GetCurrentStarRating),
-			m_LevelScoreCanvasGroup,
-			currentPoint * m_TextFadeNextDelay,
-			m_TextFadeInOutTime,
-			ref animIDs[currentPoint]);
+		//EditField(() => m_StarUI.SetStarsVisible((int)levelData.GetCurrentStarRating),
+		//	m_LevelScoreCanvasGroup,
+		//	currentPoint * m_TextFadeNextDelay,
+		//	m_TextFadeInOutTime,
+		//	ref animIDs[currentPoint]);
 	}
 }

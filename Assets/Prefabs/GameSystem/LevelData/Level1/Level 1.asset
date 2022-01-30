@@ -13,15 +13,9 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: 
   m_sLevelName: Of Cows And Men
-  m_nTargetTime: 69
-  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_ReferenceClip: {fileID: 32900000, guid: 255860a86b62a594f8b9d9cbc0b852ea, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: f80f16ff19e9a074499f662c27269d5f, type: 2}
-  m_Checkpoints:
-  - 100
-  - 200
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 40
-  m_StarRating: 1
-  m_AchievedScore: 0
-  m_bHasEnteredLevel: 0
+  m_SuccessTimerTime: 30
+  m_bHasEnteredLevel: 1

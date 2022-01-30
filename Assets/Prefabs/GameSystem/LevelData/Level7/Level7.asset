@@ -12,19 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52bcf59d6003374baf968310ba8618e, type: 3}
   m_Name: Level7
   m_EditorClassIdentifier: 
-  m_sLevelName: Fractured Butt Whole
-  m_nTargetTime: 10
-  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_sLevelName: Fractured But Whole
+  m_ReferenceClip: {fileID: 32900000, guid: 442ff81703f48d140a075caaafb76eb8, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: 00c556008ee6e0445b6095b84bd22f96, type: 2}
   - {fileID: 11400000, guid: 7e3884f14aecc334e981c7cf8d3f9c5f, type: 2}
   - {fileID: 11400000, guid: b1fae5f3f089cac4295fef15cb1506ed, type: 2}
   - {fileID: 11400000, guid: 1cde25d6dcbdfa749be08488f8b163eb, type: 2}
-  m_Checkpoints:
-  - 0
-  - 0
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 40
-  m_StarRating: 1
-  m_AchievedScore: 0
+  m_SuccessTimerTime: 40
   m_bHasEnteredLevel: 0

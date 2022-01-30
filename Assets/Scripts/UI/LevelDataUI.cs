@@ -127,11 +127,11 @@ public class LevelDataUI : MonoBehaviour, IPointerExitHandler, IPointerEnterHand
 		m_LevelId = m_Data.GetLevelNumber;
 
 		m_LevelSplashCanvasGroup.alpha = m_bIsUnlocked ? 1.0f : 0.0f;
-		m_StarUI.SetStarsVisible((int)m_Data.GetCurrentStarRating);
+		//m_StarUI.SetStarsVisible((int)m_Data.GetCurrentStarRating);
 		m_BlurPlaneGo.SetActive(!m_bIsUnlocked);
 		m_OutGlowCanvasGroup.alpha = 0.0f;
 
-		float aspectRatio = (float)m_Data.GetLevelVideoClip.pixelAspectRatioNumerator / m_Data.GetLevelVideoClip.pixelAspectRatioDenominator;
+		float aspectRatio = (float)m_Data.GetLevelVideoClip.width / m_Data.GetLevelVideoClip.height;
 		m_AspectRatioFitter.aspectRatio = aspectRatio;
 
 		m_VideoPlayer.clip = m_Data.GetLevelVideoClip;

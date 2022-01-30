@@ -13,17 +13,11 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: 
   m_sLevelName: Oh Wow A Circle
-  m_nTargetTime: 400000
-  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_ReferenceClip: {fileID: 32900000, guid: 14b3651e80bfc3a409f0966e9bdede26, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: b7f93ef3a7754ab48932bebf8b722361, type: 2}
   - {fileID: 11400000, guid: 7b214afb363ddd240bbdb18466bc620b, type: 2}
   - {fileID: 11400000, guid: c7b464b76856d634198c6936d309e602, type: 2}
-  m_Checkpoints:
-  - 0
-  - 0
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 40
-  m_StarRating: 1
-  m_AchievedScore: 0
+  m_SuccessTimerTime: 40
   m_bHasEnteredLevel: 0

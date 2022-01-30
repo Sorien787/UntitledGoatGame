@@ -36,6 +36,8 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 	[SerializeField] private ControlBinding m_CancelBinding;
     [SerializeField] private CowGameManager m_Manager;
 	[SerializeField] private LassoParams m_LassoParams;
+	[SerializeField] private GameObject m_ImpactObj;
+	[SerializeField] private GameObject m_HazardObj;
 	#endregion
 
 	#region Properties
@@ -288,6 +290,13 @@ public class LassoInputComponent : MonoBehaviour, IPauseListener, IFreeFallListe
 		}
 		else
 		{
+			Instantiate(m_ImpactObj, position, Quaternion.identity, null);
+			GameObject hazardObject = Instantiate(m_HazardObj, position, Quaternion.identity, null);
+			HazardComponent hazard = hazardObject.GetComponent<HazardComponent>();
+			hazard.SetLifetime(3.0f);
+			hazard.SetRadius(10.0f);
+			
+			// we've hit terrain here - so make a hazard for it
 			m_StateMachine.RequestTransition(typeof(LassoReturnState));
 		}
 

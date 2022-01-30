@@ -77,6 +77,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
+      propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
+        type: 3}
       propertyPath: m_AnimalBodyTransform
       value: 
       objectReference: {fileID: 6111682779072052337}
@@ -88,32 +93,32 @@ PrefabInstance:
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].time
-      value: 77.11596
+      value: 115.63475
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].value
-      value: 3.9097033
+      value: 4.1822624
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].inSlope
-      value: 0.06288597
+      value: 0.053841252
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].outSlope
-      value: 0.06288597
+      value: 0.053841252
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].inWeight
-      value: 0.25111473
+      value: 0.11530411
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}
       propertyPath: m_StaggerTimeByImpactMomentum.m_Curve.Array.data[1].outWeight
-      value: 0.29163283
+      value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 1498368937383450501, guid: aea3e7101c8ae3a47bf7574c15d5310d,
         type: 3}

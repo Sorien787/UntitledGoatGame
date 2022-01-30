@@ -72,7 +72,6 @@ public class AnimalAnimationComponent : MonoBehaviour
     [SerializeField] private SoundObject m_GeneralCall;
     [SerializeField] private SoundObject m_DamagedCall;
     [SerializeField] private SoundObject m_WalkSound;
-    [SerializeField] private SoundObject m_EatSound;
     [SerializeField] private SoundObject m_AttackSound;
     [SerializeField] private SoundObject m_BornSound;
     [SerializeField] private SoundObject m_CapturedPullSound;
@@ -115,6 +114,7 @@ public class AnimalAnimationComponent : MonoBehaviour
     private float m_fSizeVariationActual = 1.0f;
     private float m_fAnimationSpeedRandomMult;
 
+    public Sound GetCurrentEatSound => m_AudioManager.GetSoundBySoundObject(m_CurrentAttack.GetAttackSound);
     public float GetCurrentHopHeight => m_HopHeightMultiplier * m_HopAnimationCurve.Evaluate(GetHopAnimationTime);
     public float GetHopAnimationTime => (m_CurrentAnimationTime + m_Phase % 1) % 1;
     public float GetCurrentTilt => m_TiltSizeMultiplier * m_TiltAnimationCurve.Evaluate(m_CurrentAnimationTime);
@@ -210,7 +210,7 @@ public class AnimalAnimationComponent : MonoBehaviour
         m_AnimatorStateMachine.AddState(new AnimalWalkingAnimationState(m_runEdgeTrigger, m_AudioManager.GetSoundBySoundObject(m_GeneralCall), m_lowSound, m_highSound));
         m_AnimatorStateMachine.AddState(new AnimalCapturedAnimationState(m_runEdgeTrigger));
         m_AnimatorStateMachine.AddState(new AnimalFreeFallAnimationState());
-        m_AnimatorStateMachine.AddState(new AnimalAttackAnimationState(m_AudioManager.GetSoundBySoundObject(m_EatSound)));
+        m_AnimatorStateMachine.AddState(new AnimalAttackAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalDamagedAnimationState(m_AudioManager.GetSoundBySoundObject(m_DamagedCall)));
         m_AnimatorStateMachine.AddState(new AnimalBreedingAnimationState());
         m_AnimatorStateMachine.AddState(new AnimalBornAnimationState(m_AudioManager.GetSoundBySoundObject(m_BornSound)));
@@ -711,15 +711,14 @@ public class AnimalAttackAnimationState : AStateBase<AnimalAnimationComponent>
     private EdgeTrigger m_EatSoundTrigger;
 
     private Sound m_EatSound;
-    public AnimalAttackAnimationState(Sound eatSound) 
+    public AnimalAttackAnimationState() 
     {
         AddTimers(1);
-        m_EatSound = eatSound;
     }
 
     public override void OnEnter()
     {
-        m_EatSoundTrigger = new EdgeTrigger(EdgeBehaviour.FallingEdge, Host.GetAttackPitchCurve, m_EatSound);
+        m_EatSoundTrigger = new EdgeTrigger(EdgeBehaviour.FallingEdge, Host.GetAttackPitchCurve, Host.GetCurrentEatSound);
         m_startQuat = Host.AnimTransform.localRotation;
     }
 

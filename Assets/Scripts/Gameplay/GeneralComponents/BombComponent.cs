@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+
 [RequireComponent(typeof(ThrowableObjectComponent))]
 [RequireComponent(typeof(FreeFallTrajectoryComponent))]
 public class BombComponent : MonoBehaviour, IFreeFallListener
@@ -19,7 +21,11 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
     [Header("Internal References")]
     [SerializeField] private ParticleEffectsController m_ParticleFXController;
     [SerializeField] private AudioManager m_AudioManager;
+    [SerializeField] private SoundObject m_Fizzle;
     [SerializeField] private SoundObject m_Splosion;
+    [SerializeField] private Collider m_Collider;
+    [SerializeField] private Rigidbody m_Body;
+    [SerializeField] private MeshRenderer m_Renderer;
 
     private FreeFallTrajectoryComponent m_FreeFallComponent;
     private bool m_bBombPrimed = false;
@@ -53,6 +59,7 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
 	void OnThrown(ProjectileParams projectileParams) 
     {
         m_bBombPrimed = true;
+        m_AudioManager.Play(m_Fizzle);
         m_ParticleFXController.TurnOnAllSystems();
     }
 
@@ -92,6 +99,7 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
         EZCameraShake.CameraShaker.Instance.Shake(EZCameraShake.CameraShakePresets.Explosion);
         Instantiate(m_HazardRef, m_Transform.position, m_Transform.rotation);
         m_AudioManager.PlayOneShot(m_Splosion);
+        m_AudioManager.StopPlaying(m_Fizzle);
         Vector3 forward = Vector3.forward;
         if (Vector3.Dot(norm, Vector3.up ) != 1.0f) 
         {
@@ -99,6 +107,15 @@ public class BombComponent : MonoBehaviour, IFreeFallListener
         }
         Quaternion upRot = Quaternion.LookRotation(forward, norm);
         Instantiate(m_ExplosionRef, m_Transform.position, upRot);
+        StartCoroutine(DelayedDestroy());
+    }
+
+    private IEnumerator DelayedDestroy() 
+    {
+        m_Renderer.enabled = false;
+        m_Collider.enabled = false;
+        m_Body.isKinematic = true;
+        yield return new WaitForSecondsRealtime(3.0f);
         Destroy(gameObject);
     }
 

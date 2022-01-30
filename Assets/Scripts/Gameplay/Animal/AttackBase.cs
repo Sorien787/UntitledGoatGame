@@ -8,6 +8,7 @@ public abstract class AttackBase : MonoBehaviour
 	[SerializeField] private AnimationCurve m_AttackForwardAnimationCurve;
 	[SerializeField] private AnimationCurve m_AttackHopAnimationCurve;
 	[SerializeField] private AnimationCurve m_AttackTiltAnimationCurve;
+	[SerializeField] private SoundObject m_AttackSound;
 
 	[Range(0f, 3f)][SerializeField] private float m_Duration = 1.0f;
 	[Range(0f, 3f)] [SerializeField] private float m_AttackRange = 1.0f;
@@ -15,6 +16,7 @@ public abstract class AttackBase : MonoBehaviour
 	[Range(0f, 3f)] [SerializeField] private float m_AttackCooldownTime = 1.0f;
 	[Range(0f, 1f)] [SerializeField] private float m_AttackTriggerTime = 0.3f;
 
+	public SoundObject GetAttackSound => m_AttackSound;
 	public AnimationCurve GetPitchCurve => m_AttackPitchAnimationCurve;
 	public AnimationCurve GetForwardCurve => m_AttackForwardAnimationCurve;
 	public AnimationCurve GetHopCurve => m_AttackHopAnimationCurve;

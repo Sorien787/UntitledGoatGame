@@ -13,15 +13,10 @@ MonoBehaviour:
   m_Name: Level9
   m_EditorClassIdentifier: 
   m_sLevelName: There Is No Way Over The Mountain
-  m_nTargetTime: 10
-  m_ReferenceClip: {fileID: 32900000, guid: 0b1c67d8da2e89c48b78614eceda3df0, type: 3}
+  m_ReferenceClip: {fileID: 32900000, guid: f549ce33125943944ac2d3a53c002d23, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: d25a196e5f2537e4a92476d16a3a1406, type: 2}
-  m_Checkpoints:
-  - 0
-  - 0
+  - {fileID: 11400000, guid: 92dc109b7a1f15e4087428626ef3f83c, type: 2}
   m_nAchievedTime: 0
-  m_LevelCompleteTime: 40
-  m_StarRating: 1
-  m_AchievedScore: 0
-  m_bHasEnteredLevel: 0
+  m_SuccessTimerTime: 30
+  m_bHasEnteredLevel: 1

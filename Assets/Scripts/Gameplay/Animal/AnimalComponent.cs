@@ -163,7 +163,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
             currentState != typeof(AnimalFreeFallState) &&
             currentState != typeof(AnimalGrowingState) &&
             currentState != typeof(AnimalWrangledAttackState) &&
-            currentState != typeof(AnimalWrangledRunState)) 
+            currentState != typeof(AnimalWrangledRunState) &&
+            !m_bIsDead && m_Manager.HasLevelStarted())
         {
 			m_StateMachine.RequestTransition(typeof(AnimalIdleState));
 
@@ -922,6 +923,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     public void FixedUpdate()
     {
+        if (m_bIsDead)
+            return;
         if (m_fFullness > m_fMaximumFullness && m_bIsHungry)
             m_bIsHungry = false;
 
@@ -996,8 +999,6 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_EntityInformation.MarkAsDead();
         m_AnimalHealthComponent.DisableHealthRegeneration();
         m_AnimalHealthComponent.SetInvulnerabilityTime(0.0f);
-
-        enabled = false;
 
         SetManagedByAgent(false);
         SetGeneralPhysics();

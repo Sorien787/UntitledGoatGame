@@ -177,6 +177,15 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 		ClearLevelData();
 		LevelData levelData = m_LevelData[GetCurrentLevelIndex - 1];
+		if (levelData.HasEnteredLevelBefore)
+		{
+			SetQuickEntry();
+		}
+		else 
+		{
+			SetDefaultEntry();
+			levelData.OnEnterLevel();
+		}
 		m_NumObjectivesToComplete = levelData.GetObjectiveCount;
 		newLevel.InitializeLevel(levelData, m_PlayerCameraTransform);
 		levelData.ForEachObjective(AddNewObjective);

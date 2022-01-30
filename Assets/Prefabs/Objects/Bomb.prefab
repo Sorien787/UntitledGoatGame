@@ -9683,8 +9683,8 @@ Rigidbody:
   m_GameObject: {fileID: 4929366444259242028}
   serializedVersion: 2
   m_Mass: 9.4
-  m_Drag: 0.74
-  m_AngularDrag: 7.21
+  m_Drag: 5.74
+  m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -9720,9 +9720,9 @@ MonoBehaviour:
   m_ExplosionRef: {fileID: 6897984119125962195, guid: 8b3977f006b393e4e9137ed051c5eb71,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
-  m_MaxExplosionRadius: 5
-  m_MaxStunRadius: 12
-  m_MaxExplosionPower: 100
+  m_MaxExplosionRadius: 8.3
+  m_MaxStunRadius: 13.5
+  m_MaxExplosionPower: 153.2
   m_BombStunTimeByRadius:
     serializedVersion: 2
     m_Curve:
@@ -9773,7 +9773,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_ParticleFXController: {fileID: 3983800817042991404}
   m_AudioManager: {fileID: -796687148799462152}
-  m_Splosion: {fileID: 11400000, guid: 71ad46df377ba4240aca6378ab0edc41, type: 2}
+  m_Fizzle: {fileID: 11400000, guid: cabc25b160552844da3dd17ba2589cfc, type: 2}
+  m_Splosion: {fileID: 11400000, guid: 3f23acbcc98b34e438f2630b470476d0, type: 2}
+  m_Collider: {fileID: 3983800817042991401}
+  m_Body: {fileID: 3983800817042991400}
+  m_Renderer: {fileID: 6957355335438572062}
 --- !u!114 &3983800817042991402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9833,6 +9837,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_DragSoundBySpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_HazardRef: {fileID: 8319685372030332453, guid: 6d6189f0d210017498bb9c51397dd697,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
@@ -9846,6 +9856,7 @@ MonoBehaviour:
   m_ImpactSoundObject: {fileID: 11400000, guid: d832f1980356eee4f96c464b2a21d383,
     type: 2}
   m_DragSoundObject: {fileID: 11400000, guid: 4067fc4592374cf459e2e12e659a61cd, type: 2}
+  m_fMaxSpeedForSoundVal: 0
   m_ThrowingBody: {fileID: 3983800817042991400}
   m_CameraFocusTransform: {fileID: 8229195216089481791}
   m_AttachmentTransform: {fileID: 8229195216089481791}
@@ -9873,6 +9884,9 @@ MonoBehaviour:
   m_GroundImpactLayermask:
     serializedVersion: 2
     m_Bits: 1051904
+  m_ThrowinSound: {fileID: 11400000, guid: 9599a2c5e8952cf4caf1c1885cdd4455, type: 2}
+  m_Audio: {fileID: -796687148799462152}
+  m_bUsesTriggers: 0
 --- !u!114 &1076372699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9886,6 +9900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
+  m_bManualGroundedUpdate: 1
 --- !u!114 &-796687148799462152
 MonoBehaviour:
   m_ObjectHideFlags: 0
