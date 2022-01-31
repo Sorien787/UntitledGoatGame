@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CowObjective
   m_EditorClassIdentifier: 
   m_HasMinimumFailure: 1
-  m_MinimumValue: 4
+  m_MinimumValue: 2
   m_HasMaximumFailure: 1
-  m_MaximumValue: 10
-  m_MinimumGoal: 6
-  m_MaximumGoal: 8
+  m_MaximumValue: 8
+  m_MinimumGoal: 4
+  m_MaximumGoal: 6
   m_TimerMaximum: 50
   m_ObjectiveType: 0
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}

@@ -16,6 +16,6 @@ MonoBehaviour:
   m_ReferenceClip: {fileID: 32900000, guid: 255860a86b62a594f8b9d9cbc0b852ea, type: 3}
   m_LevelObjectives:
   - {fileID: 11400000, guid: f80f16ff19e9a074499f662c27269d5f, type: 2}
-  m_nAchievedTime: 0
+  m_nAchievedTime: 233.08473
   m_SuccessTimerTime: 30
   m_bHasEnteredLevel: 1

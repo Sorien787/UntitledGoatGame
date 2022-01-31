@@ -16,7 +16,7 @@ MonoBehaviour:
   m_MinimumValue: 8
   m_HasMaximumFailure: 1
   m_MaximumValue: 25
-  m_MinimumGoal: 15
+  m_MinimumGoal: 12
   m_MaximumGoal: 20
   m_TimerMaximum: 40
   m_ObjectiveType: 0

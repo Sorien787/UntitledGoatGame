@@ -64,7 +64,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	#region LevelTransitionFunctions
 	public void MoveToNextLevel()
 	{
-		SceneManager.LoadScene(GetCurrentLevelIndex++);
+		SceneManager.LoadScene(GetCurrentLevelIndex+2);
 	}
 
 	public bool HasLevelStarted()
