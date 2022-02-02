@@ -152,27 +152,34 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_bIsInTractorBeam = false;
     }
 
-    public void OnScaredByHazard(HazardComponent hazard)
-	{
-        EntityTypeComponent hazardTypeComponent = hazard.GetTypeComponent;
+    public bool CanBeAffectedByHazard() 
+    {
         Type currentState = m_StateMachine.GetCurrentState();
-
-        if (currentState != typeof(AnimalFreeFallState) && 
+        return currentState != typeof(AnimalFreeFallState) &&
             currentState != typeof(AnimalStaggeredState) &&
             currentState != typeof(AnimalLassoThrownState) &&
             currentState != typeof(AnimalFreeFallState) &&
             currentState != typeof(AnimalGrowingState) &&
             currentState != typeof(AnimalWrangledAttackState) &&
             currentState != typeof(AnimalWrangledRunState) &&
-            !m_bIsDead && m_Manager.HasLevelStarted())
-        {
-			m_StateMachine.RequestTransition(typeof(AnimalIdleState));
+            !m_bIsDead && m_Manager.HasLevelStarted();
+    }
 
-			m_AnimalAnimator.IsScared();
-			SetRelevantTargetAnimal(hazardTypeComponent);
+    public void OnFoodFromHazard(HazardComponent hazard) 
+    {
 
-			m_StateMachine.RequestTransition(typeof(AnimalEvadingState));
-		}
+    }
+
+    public void OnScaredByHazard(HazardComponent hazard)
+	{
+        EntityTypeComponent hazardTypeComponent = hazard.GetTypeComponent;
+
+		m_StateMachine.RequestTransition(typeof(AnimalIdleState));
+
+		m_AnimalAnimator.IsScared();
+		SetRelevantTargetAnimal(hazardTypeComponent);
+
+		m_StateMachine.RequestTransition(typeof(AnimalEvadingState));
         
 	}
 
@@ -356,27 +363,54 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 	#region evading logic
 	protected bool ShouldStopActionToEvadeNext() 
     {
-        return GetEntityTokenToEscapeFrom(out EntityToken _);
+        return GetEntityTokenToEscapeFrom(out EntityTypeComponent _);
     }
 
-    private bool GetEntityTokenToEscapeFrom(out EntityToken token) 
+    // run from players first
+    // then hazards
+    // then other animals
+
+    private bool GetEntityTokenToEscapeFrom(out EntityTypeComponent entity) 
     {
-        if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out token, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
+        entity = null;
+        for (int i = 0; i < m_EntityInformation.GetEntityInformation.GetScaredOf.Length; i++)
         {
-            if (Vector3.SqrMagnitude(token.GetEntityTransform.position - m_AnimalMainTransform.position) < m_ScaredDistance * m_ScaredDistance)
+            // if we're scared of players, and what we're scared of right now *isnt* a player, then let's be scared of the player :^)
+            if (m_EntityInformation.GetEntityInformation.GetScaredOf[i] == m_Manager.GetPlayerType && GetTargetEntity.GetEntityInformation != m_Manager.GetPlayerType && IsWithinScareDistanceFromObject(m_Manager.GetPlayer.GetTrackingTransform))
             {
+                entity = m_Manager.GetPlayer;
+                return true;
+            }
+        }
+
+        // if we're currently scared from a hazard, ignore anything else to escape from (such as animals)
+        if (GetTargetEntity.GetEntityInformation == m_Manager.GetHazardType) 
+        {
+            return false;
+        }
+
+		if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken token, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
+        {
+            if (IsWithinScareDistanceFromObject(token.GetEntityType.GetTrackingTransform))
+            {
+                entity = token.GetEntityType;
                 return true;
             }
         }
         return false;
     }
 
+    private bool IsWithinScareDistanceFromObject(Transform otherObject) 
+    {
+        return Vector3.SqrMagnitude(otherObject.position - m_AnimalMainTransform.position) < m_ScaredDistance * m_ScaredDistance;
+    }
+
     protected bool ShouldEvade()
     {
-       if (GetEntityTokenToEscapeFrom(out EntityToken token)) 
+       if (GetEntityTokenToEscapeFrom(out EntityTypeComponent token)) 
        {
             m_AnimalAnimator.IsScared();
-            SetRelevantTargetAnimal(token.GetEntityType);
+            SetRelevantTargetAnimal(token);
             return true;
        }
         return false;

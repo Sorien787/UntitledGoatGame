@@ -47,6 +47,8 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	public EntityInformation GetHazardType { get => m_HazardType; }
 
+	public EntityInformation GetPlayerType { get => m_PlayerEntityInformation;  }
+
 	public Transform GetPlayerCameraContainerTransform => m_PlayerCameraContainerTransform;
 
 	public RestartState GetRestartState { get => m_RestartState; }
@@ -86,23 +88,48 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 
 	public void OnHazardSpawn(HazardComponent hazard) 
 	{
-		foreach(KeyValuePair<EntityInformation, List<EntityToken>> thing in m_EntityCache) 
+		foreach(KeyValuePair<EntityInformation, List<EntityToken>> keyValPair in m_EntityCache) 
 		{
-			if (!hazard.Affects(thing.Key))
-				continue;
-
-			foreach(EntityToken token in thing.Value) 
+			if (!hazard.Affects(keyValPair.Key))
 			{
-				if ((token.GetEntityTransform.position - hazard.GetPosition).sqrMagnitude > hazard.GetHazardRadius)
-					continue;
-
-				AnimalComponent animalComponent = token.GetEntityTransform.GetComponent<AnimalComponent>();
-
-				if (!animalComponent)
-					return;
-
-				animalComponent.OnScaredByHazard(hazard);
+				OnHazardAttractAnimals(hazard, keyValPair.Value);
 			}
+			else 
+			{
+				OnHazardRepelAnimals(hazard, keyValPair.Value);
+			}
+		}
+	}
+
+	private bool HazardAffectsAnimal(in EntityToken token, in HazardComponent hazard, out AnimalComponent animal) 
+	{
+		animal = token.GetEntityTransform.GetComponent<AnimalComponent>();
+		if (!animal)
+			return false;
+		if ((token.GetEntityTransform.position - hazard.GetPosition).sqrMagnitude > hazard.GetHazardRadius)
+			return false;
+		if (!animal.CanBeAffectedByHazard())
+			return false;
+		return true;
+	}
+
+	private void OnHazardAttractAnimals(HazardComponent hazard, in List<EntityToken> tokens) 
+	{
+		for (int i = 0; i < tokens.Count; i++) 
+		{
+			if (!HazardAffectsAnimal( tokens[i], hazard, out AnimalComponent animal))
+				continue;
+			animal.OnFoodFromHazard(hazard);
+		}
+	}
+
+	private void OnHazardRepelAnimals(HazardComponent hazard, in List<EntityToken> tokens) 
+	{
+		for (int i = 0; i < tokens.Count; i++)
+		{
+			if (!HazardAffectsAnimal(tokens[i], hazard, out AnimalComponent animal))
+				continue;
+			animal.OnScaredByHazard(hazard);
 		}
 	}
 
