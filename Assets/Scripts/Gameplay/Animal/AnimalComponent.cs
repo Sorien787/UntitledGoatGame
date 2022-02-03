@@ -124,8 +124,12 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     #region Component Event Handlers
 
-    private void Awake()
-	{
+    private LayerMask m_iLayerMask;
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    void Awake()
+    {
+        m_iLayerMask = 1 << NavMesh.GetNavMeshLayerFromName("Default");
         m_AnimalGroundCollider = GetComponentInChildren<Collider>();
 	}
 
@@ -167,7 +171,13 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
 
     public void OnFoodFromHazard(HazardComponent hazard) 
     {
+        Type currentState = m_StateMachine.GetCurrentState();
+        if (currentState == typeof(AnimalAttackState))
+            return;
 
+        SetRelevantTargetAnimal(hazard.GetTypeComponent);
+
+        m_StateMachine.RequestTransition(typeof(AnimalPredatorChaseState));
     }
 
     public void OnScaredByHazard(HazardComponent hazard)
@@ -373,29 +383,36 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
     private bool GetEntityTokenToEscapeFrom(out EntityTypeComponent entity) 
     {
         entity = null;
+        // first, check if we should be running from a player
         for (int i = 0; i < m_EntityInformation.GetEntityInformation.GetScaredOf.Length; i++)
         {
+            if (m_EntityInformation.GetEntityInformation.GetScaredOf[i] != m_Manager.GetPlayerType)
+                continue;
+
+            if (GetTargetEntity && GetTargetEntity.GetEntityInformation == m_Manager.GetPlayerType)
+                break;
             // if we're scared of players, and what we're scared of right now *isnt* a player, then let's be scared of the player :^)
-            if (m_EntityInformation.GetEntityInformation.GetScaredOf[i] == m_Manager.GetPlayerType && GetTargetEntity.GetEntityInformation != m_Manager.GetPlayerType && IsWithinScareDistanceFromObject(m_Manager.GetPlayer.GetTrackingTransform))
-            {
-                entity = m_Manager.GetPlayer;
-                return true;
-            }
+            if (!IsWithinScareDistanceFromObject(m_Manager.GetPlayer.GetTrackingTransform))
+                break;
+
+            entity = m_Manager.GetPlayer;
+            return true;
         }
 
         // if we're currently scared from a hazard, ignore anything else to escape from (such as animals)
-        if (GetTargetEntity.GetEntityInformation == m_Manager.GetHazardType) 
+        if (GetTargetEntity && GetTargetEntity.GetEntityInformation == m_Manager.GetHazardType) 
         {
             return false;
         }
 
+        //
 		if (m_Manager.GetClosestTransformMatchingList(m_AnimalMainTransform.position, out EntityToken token, false, m_EntityInformation.GetEntityInformation.GetScaredOf))
         {
-            if (IsWithinScareDistanceFromObject(token.GetEntityType.GetTrackingTransform))
-            {
-                entity = token.GetEntityType;
-                return true;
-            }
+            if (!IsWithinScareDistanceFromObject(token.GetEntityType.GetTrackingTransform))
+                return false;
+
+            entity = token.GetEntityType;
+            return true;
         }
         return false;
     }
@@ -723,11 +740,19 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         if (m_fTimeStill < 1.0f)
             return false;
 
-        if (!m_AnimalMovement.IsNearNavMesh())
+        if (!IsNearNavMesh())
             return false;
 
 
         return true;
+    }
+
+
+    public bool IsNearNavMesh()
+    {
+        bool isHit = NavMesh.SamplePosition(m_AnimalBodyTransform.position, out NavMeshHit _, 0.7f, m_iLayerMask);
+        bool isGrounded = m_AnimalPhysicalEntity.IsGrounded;
+        return  isHit || isGrounded;
     }
 
     #endregion
@@ -875,8 +900,8 @@ public class AnimalComponent : MonoBehaviour, IPauseListener, IEntityTrackingLis
         m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalAbductedAndWrangledState), () => m_bIsInTractorBeam);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalAbductedAndWrangledState), () => m_bIsWrangled);
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalFreeFallState), () => !m_bIsInTractorBeam);
-        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalFreeFallState), () => !m_bIsWrangled && m_bShouldStagger);
-        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalIdleState), () => !m_bIsWrangled && !m_bShouldStagger);
+        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalFreeFallState), () => !m_bIsWrangled && (m_bShouldStagger || !IsNearNavMesh()));
+        m_StateMachine.AddTransition(typeof(AnimalWrangledState), typeof(AnimalIdleState), () => !m_bIsWrangled && (!m_bShouldStagger && IsNearNavMesh()));
         m_StateMachine.AddTransition(typeof(AnimalAbductedState), typeof(AnimalFreeFallState), () => !m_bIsInTractorBeam);
         m_StateMachine.AddTransition(typeof(AnimalGrowingState), typeof(AnimalIdleState), () => m_StateMachine.TimeBeenInstate() > m_BornTime);
 

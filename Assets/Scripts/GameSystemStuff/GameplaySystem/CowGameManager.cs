@@ -66,7 +66,7 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	#region LevelTransitionFunctions
 	public void MoveToNextLevel()
 	{
-		SceneManager.LoadScene(GetCurrentLevelIndex+2);
+		SceneManager.LoadScene(GetCurrentLevelIndex+1);
 	}
 
 	public bool HasLevelStarted()
@@ -148,6 +148,8 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	}
 
 	private readonly HashSet<AnimalComponent> m_Animals = new HashSet<AnimalComponent>();
+
+	private readonly HashSet<IThrowableObjectComponent> m_Throwables = new HashSet<IThrowableObjectComponent>();
 	public void RemoveAnimal(AnimalComponent animal)
 	{
 		m_Animals.Remove(animal);
@@ -156,6 +158,16 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	public void AddAnimal(AnimalComponent animal)
 	{
 		m_Animals.Add(animal);
+	}
+
+	public void AddThrowable(IThrowableObjectComponent throwable) 
+	{
+		m_Throwables.Add(throwable);
+	}
+
+	public void RemoveThrowable(IThrowableObjectComponent throwable) 
+	{
+		m_Throwables.Remove(throwable);
 	}
 
 	public void SetAnimalOutlineDefaultColour(Color color)
@@ -180,6 +192,11 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		{
 			animal.UpdateFullnessColourAnimalOutline();
 		}
+	}
+
+	public void UpdateObjectsColourOutline(bool show) 
+	{
+
 	}
 
 	public void RestartCurrentLevel() 
@@ -218,6 +235,11 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		levelData.ForEachObjective(AddNewObjective);
 	}
 
+	public void MenuLoaded() 
+	{
+		ClearLevelDataBase();
+	}
+
 	public void SetCompletionTimeForCurrentLevelData(float completionTime) 
 	{
 		m_LevelData[GetCurrentLevelIndex - 1].TrySetNewTime(completionTime);
@@ -234,12 +256,8 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 	}
 
 	// called when new scene is beginning to load
-	public void ClearLevelData()
+	private void ClearLevelDataBase() 
 	{
-		m_LevelData[GetCurrentLevelIndex-1].ForEachObjective((LevelObjective objective) =>
-		{
-			objective.ClearListeners();
-		});
 		m_Animals.Clear();
 		m_NumObjectivesToComplete = 0;
 		m_NumObjectivesCompleted = 0;
@@ -249,6 +267,14 @@ public class CowGameManager : ScriptableObject, IObjectiveListener
 		m_PauseListeners.Clear();
 		m_EntityListeners.Clear();
 		m_UICache.Clear();
+	}
+	private void ClearLevelData()
+	{
+		m_LevelData[GetCurrentLevelIndex-1].ForEachObjective((LevelObjective objective) =>
+		{
+			objective.ClearListeners();
+		});
+		ClearLevelDataBase();
 	}
 	#endregion
 

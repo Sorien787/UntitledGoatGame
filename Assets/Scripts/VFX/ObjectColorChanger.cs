@@ -33,7 +33,8 @@ public class ObjectColorChanger : MonoBehaviour
         SetColours();
     }
 
-    public void SetColours() 
+
+	public void SetColours() 
     {
         MaterialPropertyBlock matPropertyBlock = new MaterialPropertyBlock();
         foreach(ObjectColorChangeMaterialSetting setting in m_ColourSettings) 
@@ -46,9 +47,9 @@ public class ObjectColorChanger : MonoBehaviour
                 {
                     Transform childTransform = thisTransform.GetChild(i);
                     MeshRenderer meshRenderer = childTransform.GetComponent<MeshRenderer>();
-                    if (!meshRenderer && ! childTransform.GetComponent<ObjectColorChanger>())
+                    if (!meshRenderer && !childTransform.GetComponent<ObjectColorChanger>())
                         continue;
-                    ChangeMaterialForRenderer(matPropertyBlock, setting, meshRenderer);
+                    ChangeMaterialForRendererByName(matPropertyBlock, setting, meshRenderer);
                 }
             }
 			else 
@@ -58,6 +59,18 @@ public class ObjectColorChanger : MonoBehaviour
 
         }
 
+    }
+
+    private void ChangeMaterialForRendererByName(in MaterialPropertyBlock matPropertyBlock, in ObjectColorChangeMaterialSetting setting, in MeshRenderer meshRenderer) 
+    {
+        for (int i = 0; i < meshRenderer.sharedMaterials.Length; i++) 
+        {
+            if (meshRenderer.sharedMaterials[i].name.Contains(setting.m_materialNameFilter)) 
+            {
+                setting.m_MaterialIndex = i;
+                ChangeMaterialForRenderer(matPropertyBlock, setting, meshRenderer);
+            }
+        }
     }
 
     private void ChangeMaterialForRenderer(in MaterialPropertyBlock matPropertyBlock, in ObjectColorChangeMaterialSetting setting, in MeshRenderer meshRenderer) 
@@ -76,6 +89,7 @@ public class ObjectColorChangeMaterialSetting
     public int m_MaterialIndex;
     public string m_MaterialColourId;
     public bool m_changeChildObjects;
+    public string m_materialNameFilter;
     public void RollColour() 
     {
         float rand = Random.Range(0.0f, 1.0f);

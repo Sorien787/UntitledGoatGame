@@ -69,7 +69,7 @@ public class LevelData : ScriptableObject
 
     public void TrySetNewTime(in float time) 
     {
-        if (m_nAchievedTime > time || IsCompleted) 
+        if (m_nAchievedTime > time || !IsCompleted) 
         {
             m_nAchievedTime = time;
         }

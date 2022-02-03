@@ -88,6 +88,10 @@ public class ObjectColourChangerEditor : Editor
             {
                 GUILayout.Label("Use child objs");
                 clip.m_changeChildObjects = EditorGUILayout.Toggle(clip.m_changeChildObjects);
+                if (clip.m_changeChildObjects) 
+                {
+                    clip.m_materialNameFilter = EditorGUILayout.TextField(clip.m_materialNameFilter);
+                }
             }
 
 

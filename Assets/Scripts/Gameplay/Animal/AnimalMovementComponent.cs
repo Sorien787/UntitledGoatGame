@@ -81,11 +81,6 @@ public class AnimalMovementComponent : MonoBehaviour
         return false;
     }
 
-    public bool IsNearNavMesh() 
-    {
-        return NavMesh.SamplePosition(m_tObjectTransform.position, out NavMeshHit _, 1.0f, m_iLayerMask);
-    }
-
     public void ClearDestination() 
     {
         if (m_NavMeshAgent.isOnNavMesh) 

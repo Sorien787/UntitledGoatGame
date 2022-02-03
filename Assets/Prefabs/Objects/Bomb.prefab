@@ -9683,7 +9683,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929366444259242028}
   serializedVersion: 2
-  m_Mass: 9.4
+  m_Mass: 8.83
   m_Drag: 5.74
   m_AngularDrag: 10
   m_UseGravity: 1
@@ -9721,9 +9721,9 @@ MonoBehaviour:
   m_ExplosionRef: {fileID: 6897984119125962195, guid: 8b3977f006b393e4e9137ed051c5eb71,
     type: 3}
   m_Manager: {fileID: 11400000, guid: f022c58eada24e94f87295ec6ca7c09f, type: 2}
-  m_MaxExplosionRadius: 8.3
-  m_MaxStunRadius: 13.5
-  m_MaxExplosionPower: 153.2
+  m_MaxExplosionRadius: 10
+  m_MaxStunRadius: 17.76
+  m_MaxExplosionPower: 196.7
   m_BombStunTimeByRadius:
     serializedVersion: 2
     m_Curve:

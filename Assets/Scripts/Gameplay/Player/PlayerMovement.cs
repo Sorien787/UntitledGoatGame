@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour, IPauseListener
             m_externalVelocity += new Vector3(m_LastGroundedNormal.x, 0, m_LastGroundedNormal.z) * m_slidingSpeedCurve.Evaluate(val);
         }
 
-        m_bShowingSlidingFX = (angleInternal - m_SlopeLimit) / m_angleAtMaxSlide > m_slideFXThreshold;
+        m_bShowingSlidingFX = (angleInternal - m_SlopeLimit) / m_angleAtMaxSlide > m_slideFXThreshold && m_bIsSliding;
         m_AudioManager.SetVolume(m_DragSoundObject, m_currentEffectsStrength);
         m_DragEffectsStrengthManager.SetParamsOfObject(m_currentEffectsStrength);
         if (m_bShowingSlidingFX) 

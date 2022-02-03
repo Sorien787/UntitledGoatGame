@@ -29,8 +29,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.0533109
     - serializedVersion: 3
-      time: 1.0077236
-      value: 204.96857
+      time: 1.0104702
+      value: 232.16985
       inSlope: -1.5576267
       outSlope: -1.5576267
       tangentMode: 0
@@ -54,13 +54,13 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.114166334
     - serializedVersion: 3
-      time: 1.0041711
-      value: 471.3933
-      inSlope: -94.9837
-      outSlope: -94.9837
+      time: 1.0013095
+      value: 675.1665
+      inSlope: 1.7904013
+      outSlope: 1.7904013
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.17448434
+      inWeight: 0.2921274
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -69,14 +69,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0031289496
-      value: 3.8983917
-      inSlope: 1102.1024
-      outSlope: 1102.1024
+      time: -0.0052689947
+      value: 3.2530365
+      inSlope: 659.32355
+      outSlope: 659.32355
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.078044154
+      outWeight: 0.067795545
     - serializedVersion: 3
       time: 1.0053626
       value: 261.2647
@@ -113,7 +113,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_JerkTimeForPull: 0.282
+  m_JerkTimeForPull: 0.312
   m_LassoRelaxTime: 5.44
   m_TimeBeforeUserCanThrow: 0.2
   m_MaxTimeSpinning: 1.5
@@ -166,17 +166,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.29074752
     - serializedVersion: 3
-      time: 0.67243344
-      value: 0.7883946
-      inSlope: -0.8595958
-      outSlope: -0.8595958
-      tangentMode: 136
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0001781
-      value: 0.60646516
+      time: 0.9973705
+      value: 0.72206575
       inSlope: 0
       outSlope: 0
       tangentMode: 136

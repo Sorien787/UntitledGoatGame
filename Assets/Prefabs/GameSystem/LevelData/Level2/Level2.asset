@@ -17,6 +17,7 @@ MonoBehaviour:
   m_LevelObjectives:
   - {fileID: 11400000, guid: d0303c953f3c2b64fa217cf341c8041d, type: 2}
   - {fileID: 11400000, guid: df98269c42bef8a45ba9b71fcfe89965, type: 2}
+  - {fileID: 11400000, guid: d4420c8f290724240b586fc2d2b89fc8, type: 2}
   m_nAchievedTime: 0
-  m_SuccessTimerTime: 30
-  m_bHasEnteredLevel: 0
+  m_SuccessTimerTime: 40
+  m_bHasEnteredLevel: 1

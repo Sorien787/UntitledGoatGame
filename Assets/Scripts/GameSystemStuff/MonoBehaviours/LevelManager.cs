@@ -49,6 +49,7 @@ public class LevelManager : MonoBehaviour
 
 	[SerializeField] private ControlBinding m_ShowHealthBinding;
 	[SerializeField] private ControlBinding m_ShowHungerBinding;
+	[SerializeField] private ControlBinding m_ShowObjectBinding;
 	[SerializeField] private ControlBinding m_OpenDictBinding;
 	#endregion
 	public event Action OnPressedShowFullnessOrHealth;
@@ -79,6 +80,8 @@ public class LevelManager : MonoBehaviour
 	public Transform GetObjectiveCanvasTransform => m_ObjectiveCanvasTransform;
 
 	public ControlBinding GetShowHungerBinding => m_ShowHungerBinding;
+
+	public ControlBinding GetShowObjectBinding => m_ShowObjectBinding;
 
 	public ControlBinding GetShowHealthBinding => m_ShowHealthBinding;
 
@@ -457,11 +460,15 @@ namespace LevelManagerStates
 		{
 			bool isHealthBindingPressed = Host.GetShowHealthBinding.IsBindingPressed();
 			bool isHungerBindingPressed = Host.GetShowHungerBinding.IsBindingPressed();
+
 			Host.TickGameTimer(Time.deltaTime);
 			if (isHealthBindingPressed)
 				Host.GetManager.UpdateHealthColourAnimalOutline();
 			if (isHungerBindingPressed)
 				Host.GetManager.UpdateFullnessColourAnimalOutline();
+
+
+
 			if ((isHealthBindingPressed | isHungerBindingPressed) != m_bZTestAlways)
 			{ 
 				m_bZTestAlways = isHealthBindingPressed | isHungerBindingPressed;

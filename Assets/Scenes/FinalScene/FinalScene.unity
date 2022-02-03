@@ -121,21 +121,21 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!84 &172518071
+--- !u!84 &253047355
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ShapeNoise
+  m_Name: DetailNoise
   m_ImageContentsHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_ForcedFallbackFormat: 4
   m_DownscaleFallback: 0
   serializedVersion: 3
-  m_Width: 132
-  m_Height: 132
+  m_Width: 64
+  m_Height: 64
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthFormat: 0
@@ -155,7 +155,7 @@ RenderTexture:
     m_WrapV: 0
     m_WrapW: 0
   m_Dimension: 3
-  m_VolumeDepth: 132
+  m_VolumeDepth: 64
 --- !u!1 &423393226
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +396,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1297693878
+--- !u!84 &1562042886
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -514,21 +514,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1891795367
+--- !u!84 &2048588909
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DetailNoise
+  m_Name: ShapeNoise
   m_ImageContentsHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_ForcedFallbackFormat: 4
   m_DownscaleFallback: 0
   serializedVersion: 3
-  m_Width: 64
-  m_Height: 64
+  m_Width: 132
+  m_Height: 132
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthFormat: 0
@@ -548,7 +548,7 @@ RenderTexture:
     m_WrapV: 0
     m_WrapW: 0
   m_Dimension: 3
-  m_VolumeDepth: 64
+  m_VolumeDepth: 132
 --- !u!224 &92419555280841059
 RectTransform:
   m_ObjectHideFlags: 0
@@ -646,6 +646,7 @@ MonoBehaviour:
     type: 2}
   m_ShowHungerBinding: {fileID: 11400000, guid: aac3ae616d0381e4286bc6abbfee7561,
     type: 2}
+  m_ShowObjectBinding: {fileID: 0}
   m_OpenDictBinding: {fileID: 11400000, guid: b597f519f8ca65748bf10ed891e4d139, type: 2}
 --- !u!1 &776825138553016392
 GameObject:
@@ -6028,7 +6029,7 @@ MonoBehaviour:
   noiseCompute: {fileID: 7200000, guid: 610906fb135f245baaa76a04f34d7c24, type: 3}
   noiseSettings: {fileID: 11400000, guid: 8f9c3a65f6f63a54d82c0477aedeac54, type: 2}
   resolution: 512
-  weatherMap: {fileID: 1297693878}
+  weatherMap: {fileID: 1562042886}
   testParams: {x: 0, y: 1, z: 1, w: 0}
   container: {fileID: 8594001209540938638}
   viewerEnabled: 0
@@ -6149,8 +6150,8 @@ MonoBehaviour:
   viewerTileAmount: 1
   viewerSize: 0.217
   showSettingsEditor: 0
-  shapeTexture: {fileID: 172518071}
-  detailTexture: {fileID: 1891795367}
+  shapeTexture: {fileID: 2048588909}
+  detailTexture: {fileID: 253047355}
 --- !u!114 &8700529905269903349
 MonoBehaviour:
   m_ObjectHideFlags: 0

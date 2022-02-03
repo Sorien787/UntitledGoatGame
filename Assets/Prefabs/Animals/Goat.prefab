@@ -58,10 +58,11 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 3
       m_NumAlphaKeys: 2
-    m_RolledColor: {r: 0.53570545, g: 0.53570545, b: 0.53570545, a: 1}
+    m_RolledColor: {r: 0.41234216, g: 0.31389296, b: 0.062008813, a: 1}
     m_MaterialIndex: 0
     m_MaterialColourId: _Color
     m_changeChildObjects: 0
+    m_materialNameFilter: 
   m_bRandomizeOnStart: 1
 --- !u!1001 &5532832258119098577
 PrefabInstance:
